@@ -1,0 +1,15 @@
+
+Dont go bigger then this quote
+“If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.” ― Oprah Winfrey
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the welcome container
+    var welcomeContainer = document.getElementById('welcomeContainer');
+
+    // Add a click event listener
+    welcomeContainer.addEventListener('click', function() {
+        // Redirect to home.html when clicked
+        window.location.href = 'home.html';
+    });
+});

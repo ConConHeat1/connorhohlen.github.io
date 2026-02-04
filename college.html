@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet">
+    <link rel="icon" type="png" href="images/Logo/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+/* Variable name*/
+:root{
+    --hue: 172;
+    --darkhue: 12%;
+    --color: hsl(var(--hue), 100%, 50%);
+    --darkColor: hsl(var(--hue), 100%, 25%);
+    --backgroundColor: hsl(0, 0%, var(--darkhue));
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--backgroundColor);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    text-align: center; /* Center text */
+}
+
+/* Loading Screen Styles */
+#loading-screen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: var(--backgroundColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+/* Spinner Styles */
+.spinner {
+  border: 16px solid var(--darkColor); /* Light grey */
+  border-top: 16px solid var(--color); /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* This is the top navigation bar */
+.navbar {
+    overflow: visible;
+    background-color: var(--backgroundColor);
+    position: relative;
+    top: 1px;
+    width: 100%;
+    z-index: 3;
+
+}
+.navbar a {
+    float: left;
+
+    color: var(--color);
+    text-align: center;
+    padding: 16px 20px;
+    text-decoration: none;
+
+}
+.navbar a:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+/* Style for the home button */
+.home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 51px;
+    background-color: var(--color); /* Start with the theme color */
+    outline: 1px solid var(--color); /* Maintain the outline */
+}
+
+/* Ensure the icon fits within the button */
+.home-button .home-icon {
+    width: 50px;
+    height: 50px;
+    margin-top: -10px;
+}
+/* Style changes on hover for home button */
+.home-button:hover {
+    background-color: var(--darkColor);
+    color: var(--darkColor);
+}
+.home-button:hover img{
+    transform: scale(1.1); /* Slightly enlarge image on hover */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+/* Dropdown container */
+.dropdown {
+    float: left;
+    overflow: hidden;
+    outline: 1px solid var(--color);
+
+}
+
+.dropdown .dropbtn {
+    color: var(--color);
+    text-align: center;
+    padding: 16px 4vw;
+    text-decoration: none;
+    outline: 1px solid var(--color);
+}
+
+.dropdown .dropbtn:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--backgroundColor);
+    min-width: 270px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 3;
+    margin-top: 50px; /* Add a small margin to avoid overlap */
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    float: none;
+    color: var(--color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    outline: 1px solid var(--color);
+}
+
+.dropdown-content a:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+@media (max-width: 500px) {
+    .color-slider {
+        position: absolute;
+
+        width: 80%;
+        left: 4%;
+        height: 8px;
+        top: 130px;
+    }
+    .dropdown .dropbtn {
+        color: var(--color);
+        text-align: center;
+        padding: 16px 11vw;
+        text-decoration: none;
+        outline: 1px solid var(--color);
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: var(--backgroundColor);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 3;
+        margin-top: 50px; /* Add a small margin to avoid overlap */
+    }
+    .color-slider[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 30px;
+        height: 30px;
+
+    }
+    .color-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: absolute;
+        top: 10px;
+        right: 3%;
+    }
+    .navbar .dropdown:nth-child(6) { /* Adjust this if Skills is not the fourth child */
+        display: none;
+    }
+}
+
+
+/* General Styles */
+header {
+    text-align: center;
+    padding: 60px;  /* Increased padding for more prominence */
+    background-color: var(--backgroundColor);
+    color: var(--color);
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 10px var(--color), 0 0 20px var(--darkColor);
+}
+
+p {
+    margin: 30px 0;  /* Increased margin for better spacing */
+}
+
+/* Main Image Section */
+.main-image-section {
+    text-align: center;
+    padding: 60px 40px;  /* Increased padding */
+    background-color: var(--backgroundColor);
+    color: var(--color);
+}
+
+.main-image {
+    width: 100%;
+    max-width: 1200px;  /* Larger max-width for very large screens */
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 40px;  /* Increased margin for separation */
+}
+
+.description-text {
+    max-width: 1000px;  /* Increased max-width */
+    margin: 0 auto;
+    padding: 0 60px;  /* Increased padding for better spacing */
+    font-size: 1.3rem;  /* Larger font size */
+}
+
+/* Academic Achievements Section */
+.academic-achievements {
+    padding: 60px 40px;  /* Increased padding */
+    background-color: var(--backgroundColor);
+    margin-top: 40px;  /* Increased margin */
+}
+
+.academic-achievements h2 {
+    text-align: center;
+    margin-bottom: 40px;  /* Increased margin */
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 10px var(--color), 0 0 20px var(--darkColor);
+    color: var(--color);
+}
+
+.achievement-content {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.achievement-image {
+    flex: 1 1 500px;  /* Larger flex basis */
+    max-width: 500px;  /* Increased max-width */
+    margin: 40px;  /* Increased margin */
+    border-radius: 12px;
+}
+
+.achievement-text {
+    flex: 2 1 800px;  /* Increased flex basis */
+    max-width: 1000px;  /* Increased max-width */
+    padding: 40px;  /* Increased padding */
+    color: var(--color);
+    font-size: 1.6rem;  /* Increased font size */
+}
+
+/* Extracurricular Activities Section */
+.extracurricular-activities {
+    padding: 60px 40px;  /* Increased padding */
+    background-color: var(--backgroundColor);
+    margin-top: 40px;  /* Increased margin */
+    color: var(--color);
+}
+
+.extracurricular-activities h2 {
+    text-align: center;
+    margin-bottom: 40px;  /* Increased margin */
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 10px var(--color), 0 0 20px var(--darkColor);
+    color: var(--color);
+}
+
+.show-choir-video {
+    text-align: center;
+    margin: 40px 0;  /* Increased margin */
+    font-size: clamp(1rem, 1.5vw, 100vw);
+    text-shadow: 0 0 10px var(--color), 0 0 20px var(--darkColor);
+}
+
+.show-choir-video video {
+    width: 100%;
+    max-width: 1000px;  /* Larger max-width for bigger screens */
+    border-radius: 12px;
+}
+
+.extracurricular-images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 40px;  /* Increased margin */
+}
+
+.extracurricular-images img {
+    flex: 1 1 400px;  /* Increased flex basis */
+    max-width: 400px;
+    margin: 20px;
+    border-radius: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        padding: 40px;  /* Reduced padding for smaller screens */
+    }
+
+    .achievement-content {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .achievement-image,
+    .achievement-text {
+        max-width: 100%;
+        padding: 20px;  /* Reduced padding */
+    }
+
+    .extracurricular-images img {
+        max-width: 100%;
+    }
+
+    h1, .academic-achievements h2, .extracurricular-activities h2 {
+        font-size: clamp(2rem, 4vw, 100vw);  /* Adjusted font size for smaller screens */
+    }
+
+    .description-text, .achievement-text {
+        font-size: 1.4rem;  /* Slightly smaller font size for better readability */
+        padding: 0 20px;  /* Reduced padding */
+    }
+}
+
+
+
+/* Container for social buttons */
+.social-media-container h2{
+    position: relative;
+    text-align: center;
+    color: var(--color);
+    
+}
+.social-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center; /* Center align the buttons */
+    margin-top: 20px; /* Add some spacing from other content */
+    padding-bottom: 20px;
+}
+
+/* General button styles */
+.social-button {
+    width: 60px; /* Width of the button */
+    height: 60px; /* Height of the button */
+    border: 2px solid var(--color); /* Border color */
+    border-radius: 50%; /* Rounded corners for circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--backgroundColor); /* Background color */
+    cursor: pointer;
+    position: relative; /* For positioning pseudo-elements */
+    transition: box-shadow 0.3s;
+    text-decoration: none; /* Remove underline */
+    color: var(--color); /* Default icon color */
+    font-size: 24px; /* Default icon size */
+    z-index: 1; /* Ensure button is above other elements */
+    overflow: hidden; /* Ensure inner elements don't overflow */
+}
+
+/* Email button styles */
+.email-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.email_icon {
+    margin-top: 5px; /* Adjust margin to fit within the button */
+    width: 0px; /* Width of the main part of the envelope */
+    height: 10px; /* Height of the main part of the envelope - scaled down */
+    border-top: 14px solid var(--backgroundColor); /* Top border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    background-color: var(--color); /* Envelope color */
+    transition: .3s; /* Transition duration for smooth animation */
+    padding: 0; /* No padding */
+    margin: 0; /* No margin */
+    position: relative; /* For positioning pseudo-elements */
+}
+
+.email_icon:before {
+    padding: 0; /* No padding */
+    margin: 0; /* No margin */
+    content: ""; /* Empty content for pseudo-element */
+    position: absolute; /* Absolute positioning */
+    top: -15px; /* Positioning above the main icon - scaled down */
+    left: -20px; /* Positioning to the left - scaled down */
+    border-top: 14px solid var(--color); /* Top border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    transition: .1s; /* Transition duration for smooth animation */
+}
+
+.social-button:hover .email_icon {
+    background-color: var(--color); /* Background color on hover */
+}
+.social-button:hover{
+    box-shadow: 0 0 15px var(--color);
+    transform: scale(1.2);
+}
+.social-button:hover .email_icon:before {
+    position: absolute; /* Absolute positioning */
+    top: -30px; /* Positioning further above */
+    left: -20px; /* Positioning slightly left */
+    border-bottom: 15px solid var(--color); /* Bottom border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    border-top: 0px; /* No top border */
+    transition: .1s; /* Transition duration for smooth animation */
+}
+
+/* Phone button animation */
+.call-button {
+    position: relative; /* Needed for the lines animation */
+}
+
+.call-button:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px var(--color);
+}
+
+.phone-arcs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1; /* Ensure arcs appear behind the button */
+}
+
+.arc {
+    position: absolute;
+    border: 2px solid var(--color);
+    border-top-left-radius: 60px; /* Should be half of the width */
+    border-top-right-radius: 60px; /* Should be half of the width */
+    border-bottom: none; /* Remove bottom border for arc effect */
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.arc1 {
+    top: -8px; /* Adjust vertical position */
+    left: 0px; /* Adjust horizontal position */
+    width: 11px; /* Adjust to change the length */
+    height: 5px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: 0s;
+
+}
+
+.arc2 {
+    top: -14px; /* Further adjust vertical position */
+    left: 0px; /* Further adjust horizontal position */
+    width: 20px; /* Adjust to change the length */
+    height: 9px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: 0.3s;
+}
+
+.arc3 {
+    top: -20px; /* Further adjust vertical position */
+    left: -3px; /* Further adjust horizontal position */
+    width: 32px; /* Adjust to change the length */
+    height: 15px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: .6s;
+}
+
+
+.call-button:hover .arc1 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+.call-button:hover .arc2 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+.call-button:hover .arc3 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+/* Adjust LinkedIn button styling */
+.indeed-button {
+    position: relative; /* Needed to position the bouncing ball */
+    background-color: var(--backgroundColor); /* Set background color to match */
+}
+.fa-linkedin{
+    transform: scale(1.7);
+}
+
+/* Styling for the stationary ball */
+.indeed-button .stationary-ball {
+    position: absolute;
+    top: 16px; /* Position to cover the ball of the 'i' */
+    left: calc(35% - 1px);
+    transform: translateX(-50%);
+    width: 9px; /* Size of the stationary ball */
+    height: 9px;
+    background-color: var(--color); /* Match the background color */
+    border-radius: 50%; /* Make it circular */
+    z-index: 2; /* Ensure it stays above the LinkedIn logo */
+}
+
+/* Styling for the bouncing ball */
+.indeed-button .bouncing-ball {
+    position: absolute;
+    top: 17px; /* Same initial position as the stationary ball */
+    left: calc(35% - 1px);
+    transform: translateX(-50%);
+    width: 6px; /* Size of the bouncing ball */
+    height: 6px;
+    background-color: var(--backgroundColor); /* Color to match the LinkedIn logo */
+    border-radius: 50%; /* Make it circular */
+    z-index: 3; /* Ensure it stays above the stationary ball */
+    transition: transform 0.3s;
+}
+
+/* Keyframes for forward hop effect */
+@keyframes rainbow-hop-forward {
+    0% {
+        transform: translate(-150%, 0); /* Start further to the left */
+    }
+    25% {
+        transform: translate(-75%, -10px); /* Hop to a further middle-left */
+    }
+    50% {
+        transform: translate(0%, 0); /* Reach the middle */
+    }
+    75% {
+        transform: translate(75%, -10px); /* Hop to a further middle-right */
+    }
+    100% {
+        transform: translate(150%, 0); /* Reach further to the right */
+    }
+}
+
+/* Keyframes for bouncing effect */
+@keyframes bounce {
+    0%, 100% {
+        transform: translate(-50%, 0); /* Start and end at the same position */
+    }
+    50% {
+        transform: translate(-50%, -6px); /* Move the ball up by 10px */
+    }
+}
+
+/* Trigger bouncing on hover */
+.indeed-button:hover .bouncing-ball {
+    animation: bounce 0.6s ease-in-out infinite; /* Apply the bouncing animation */
+}
+
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Changed from left: 20px */
+    width: 50px;
+    height: 50px;
+    background-color: var(--color);
+    color: #000;
+    text-align: center;
+    line-height: 50px;
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: none; /* Initially hidden */
+    z-index: 1000; /* Ensure it's on top */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.scroll-to-top-btn:hover {
+    background-color: var(--darkColor);
+    transform: scale(1.1);
+}
+
+
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--color);
+    position: fixed;
+    bottom: -14px;
+    width: 100%;
+    left: 45%;
+    display: none; /* Initially hidden */
+}
+@media (max-width: 2200px) {
+    footer {
+        left: 43%;
+    }
+}
+@media (max-width: 1800px) {
+    footer {
+        left: 40%;
+    }
+}
+@media (max-width: 1200px) {
+    footer {
+        left: 35%;
+    }
+}
+@media (max-width: 800px) {
+    footer {
+        left: 30%;
+    }
+}
+@media (max-width: 600px) {
+    footer {
+        left: 25%;
+    }
+}
+@media (max-width: 500px) {
+    footer {
+        left: -45%;
+        position: absolute;
+    }
+}
+</style>
+</head>
+<body>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="dropdown home-button">
+            <a href="index.html" class="dropbtn home-button"><img src="images/Home/Home_Icon.png" alt="Home" class="home-icon"></a>
+        </div>
+        <div class="dropdown">
+            <a href="#about" class="dropbtn">About Me</a>
+            <div class="dropdown-content">
+                <a href="about.html">Connor Hohlen</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#projects" class="dropbtn">Projects</a>
+            <div class="dropdown-content">
+                <a href="project1.html">This Website</a>
+                <a href="project2.html">FPV Drone</a>
+                <a href="project3.html">LED Lights</a>
+                <a href="project4.html">Plant Monitor</a>
+                <a href="project5.html">Company SQL and Java Coding</a>
+                <a href="project6.html">Rocket System</a>
+                <a href="project7.html">Project 7</a>
+                <a href="project8.html">Project 8</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#education-workspace" class="dropbtn">Education</a>
+            <div class="dropdown-content">
+                <a href="college.html">College</a>
+                <a href="highschool.html">Highschool</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#workspace" class="dropbtn">Workspace</a>
+            <div class="dropdown-content">
+                <a href="workspace1.html">Amur Equipment Finance</a>
+                <a href="workspace2.html">Menards</a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Title Section -->
+    <header>
+        <h1>University of Nebraska Lincoln</h1>
+        <p>August 2023 --- Present</p>
+    </header>
+
+    <!-- Main Image with Description -->
+    <section class="main-image-section">
+        <img src="images/College/College.jpg" alt="High School" class="main-image">
+        <p class="description-text">
+            A brief description about your high school experience. You can share what made your high school years memorable, important lessons learned, or anything else you'd like to highlight.
+        </p>
+    </section>
+
+    <!-- Academic Achievements -->
+    <section class="academic-achievements">
+        <h2>Academic Achievements</h2>
+        <div class="achievement-content">
+            <img src="images/Home/image-coming-soon.jpeg" alt="Academic Image" class="achievement-image">
+            <div class="achievement-text">
+                <ul>
+                    <li>Valedictorian of the Class of 20XX</li>
+                    <li>National Honor Society Member</li>
+                    <li>AP Scholar with Distinction</li>
+                    <li>Science Olympiad State Champion</li>
+                    <li>Mathletes Team Captain</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Extracurricular Activities -->
+    <section class="extracurricular-activities">
+        <h2>Extracurricular Activities</h2>
+        <p>Throughout high school, I was involved in numerous extracurricular activities that enriched my experience:</p>
+        <ul>
+            <li>Student Council President</li>
+            <li>Varsity Soccer Team</li>
+            <li>Show Choir Lead Singer</li>
+            <li>Debate Team Member</li>
+            <li>Art Club President</li>
+        </ul>
+    </section>
+
+    <!-- Academic Achievements -->
+    <section class="academic-achievements">
+        <h2>Future Plans</h2>
+        <div class="achievement-content">
+            <img src="images/Home/image-coming-soon.jpeg" alt="Academic Image" class="achievement-image">
+            <div class="achievement-text">
+                <ul>
+                    <li>Valedictorian of the Class of 20XX</li>
+                    <li>National Honor Society Member</li>
+                    <li>AP Scholar with Distinction</li>
+                    <li>Science Olympiad State Champion</li>
+                    <li>Mathletes Team Captain</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Social Media Section -->
+    <section class="social-media-container" id="contact">
+        <h2>Contact Info</h2>
+        <div class="social-buttons">
+            <!-- Email Icon -->
+            <a href="mailto:connorhohlen@gmail.com" class="social-button email-icon-container">
+                <div class="email_icon"></div>
+            </a>
+            <!-- Phone Icon -->
+            <a href="tel:3083891407" class="social-button call-button">
+                <i class="fas fa-phone-alt"></i>
+                <div class="phone-arcs">
+                    <div class="arc arc1"></div>
+                    <div class="arc arc2"></div>
+                    <div class="arc arc3"></div>
+                </div>
+            </a>
+            <!-- LinkedIn Icon -->
+            <a href="https://www.linkedin.com/in/connor-hohlen/" class="social-button indeed-button">
+                <i class="fab fa-linkedin"></i>
+                <!-- Stationary ball to cover the original ball of the 'i' -->
+                <div class="stationary-ball"></div>
+                <!-- Bouncing ball -->
+                <div class="bouncing-ball"></div>
+            </a>
+        </div>
+    </section>
+    <footer id="footer">
+        <p>&copy; <span id="year"></span>.</p>
+    </footer>
+    <div id="scrollToTopBtn" class="scroll-to-top-btn">
+        &#9650;
+    </div>
+<script>
+
+// script.js
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const mainContent = document.getElementById('main-content');
+    
+    // Hide loading screen and show main content
+    loadingScreen.style.display = 'none';
+});
+
+
+// Function to update the background color based on stored hue and theme colors
+function updateBackgroundColor(darkHue) {
+    document.documentElement.style.setProperty('--darkhue', darkHue);
+}
+function getStoredHueValue() {
+    return localStorage.getItem('darkhue');
+}
+const storedDarkHue = getStoredHueValue();
+if (storedDarkHue) {
+    updateBackgroundColor(storedDarkHue);
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const savedHue = localStorage.getItem('hue');
+    if (savedHue !== null) {
+        const hueColor = `hsl(${savedHue}, 100%, 50%)`;
+        document.documentElement.style.setProperty('--color', hueColor);
+        const darkColor = `hsl(${savedHue}, 100%, 25%)`;
+        document.documentElement.style.setProperty('--darkColor', darkColor);
+    }
+});
+
+// JavaScript for handling dropdown menus
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    // Close dropdown when clicking/touching outside of it
+    document.addEventListener('click', function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            closeDropdowns();
+        }
+    });
+
+    // Toggle dropdown when clicking/touching the button
+    dropdowns.forEach(function (dropdown) {
+        const dropbtn = dropdown.querySelector('.dropbtn');
+        dropbtn.addEventListener('click', function (event) {
+            closeDropdowns(); // Close all other dropdowns
+            dropdown.classList.toggle('active');
+        });
+    });
+
+    // Function to close all dropdowns
+    function closeDropdowns() {
+        dropdowns.forEach(function (dropdown) {
+            dropdown.classList.remove('active');
+        });
+    }
+});
+
+
+
+// Show the scroll-to-top button when the user scrolls down
+window.onscroll = function () {
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    const footer = document.getElementById('footer');
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = 'block';
+        footer.style.display = 'block';
+    } else {
+        footer.style.display = 'none';
+        scrollToTopBtn.style.display = 'none';
+    }
+};
+// This code updates the year in the footer automatically
+document.addEventListener('DOMContentLoaded', () => {
+    const yearElement = document.getElementById('year');
+    const currentYear = new Date().getFullYear();
+    yearElement.textContent = currentYear;
+});
+
+
+// Scroll to the top of the page when the button is clicked
+document.getElementById('scrollToTopBtn').addEventListener('click', function () {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+</script>
+</body>
+</html>
