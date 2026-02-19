@@ -1,0 +1,461 @@
+let slideIndex = 0;
+let startX;
+let startY;
+let isMoving = false;
+
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const mainContent = document.getElementById('main-content');
+    
+    // Hide loading screen and show main content
+    loadingScreen.style.display = 'none';
+
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const navbarLinks = document.querySelectorAll('.navbar a');
+    navbarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            // Check if the link is an internal link
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+});
+
+
+// JavaScript for handling dropdown menus
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    // Close dropdown when clicking/touching outside of it
+    document.addEventListener('click', function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            closeDropdowns();
+        }
+    });
+
+    // Toggle dropdown when clicking/touching the button
+    dropdowns.forEach(function (dropdown) {
+        const dropbtn = dropdown.querySelector('.dropbtn');
+        dropbtn.addEventListener('click', function (event) {
+            closeDropdowns(); // Close all other dropdowns
+            dropdown.classList.toggle('active');
+        });
+    });
+
+    // Function to close all dropdowns
+    function closeDropdowns() {
+        dropdowns.forEach(function (dropdown) {
+            dropdown.classList.remove('active');
+        });
+    }
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const colorSlider = document.getElementById('colorSlider');
+    const sliderHandle = colorSlider.querySelector('input[type="range"]::-webkit-slider-thumb');
+
+    const updateSliderColor = () => {
+        const hue = colorSlider.value;
+        const hueColor = `hsl(${hue}, 100%, 50%)`;
+        sliderHandle.style.backgroundColor = hueColor;
+    };
+
+    const saveHue = (hue) => {
+        localStorage.setItem('hue', hue);
+    };
+
+    colorSlider.addEventListener('input', updateSliderColor);
+
+    colorSlider.addEventListener('change', function() {
+        const hue = colorSlider.value;
+        const hueColor = `hsl(${hue}, 100%, 50%)`;
+        document.documentElement.style.setProperty('--color', hueColor);
+        const darkColor = `hsl(${hue}, 100%, 25%)`;
+        document.documentElement.style.setProperty('--darkColor', darkColor);
+
+        saveHue(hue);
+    });
+
+    const savedHue = localStorage.getItem('hue');
+    if (savedHue !== null) {
+        colorSlider.value = savedHue;
+        const hueColor = `hsl(${savedHue}, 100%, 50%)`;
+        document.documentElement.style.setProperty('--color', hueColor);
+        const darkColor = `hsl(${savedHue}, 100%, 25%)`;
+        document.documentElement.style.setProperty('--darkColor', darkColor);
+        updateSliderColor();
+    } else {
+        updateSliderColor();
+    }
+});
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const darkModeBtn = document.getElementById("darkModeBtn");
+    const grayModeBtn = document.getElementById("grayModeBtn");
+    const lightModeBtn = document.getElementById("lightModeBtn");
+
+    // Function to update the background color based on stored hue
+    function updateBackgroundColor(darkHue) {
+        document.documentElement.style.setProperty('--darkhue', darkHue);
+    }
+
+    // Function to save the hue value in localStorage
+    function saveHueValue(darkHue) {
+        localStorage.setItem('darkhue', darkHue);
+    }
+
+    // Event listeners for the buttons
+    darkModeBtn.addEventListener("click", () => {
+        const darkHue = '0%'; // Dark hue for black
+        saveHueValue(darkHue);
+        updateBackgroundColor(darkHue);
+    });
+
+    grayModeBtn.addEventListener("click", () => {
+        const darkHue = '12%'; // Dark hue for gray
+        saveHueValue(darkHue);
+        updateBackgroundColor(darkHue);
+    });
+
+    lightModeBtn.addEventListener("click", () => {
+        const darkHue = '80%'; // Dark hue for white
+        saveHueValue(darkHue);
+        updateBackgroundColor(darkHue);
+    });
+
+    // Check for stored hue value on page load
+    const storedDarkHue = localStorage.getItem('darkhue');
+    if (storedDarkHue) {
+        updateBackgroundColor(storedDarkHue);
+    }
+});
+
+
+
+
+
+
+
+
+
+
+// Function to generate random 0s and 1s
+function generateRandomBinary() {
+    const binaryChars = ['0', '1'];
+    return binaryChars[Math.floor(Math.random() * binaryChars.length)];
+}
+
+// Function to create the matrix background
+function createMatrixBackground() {
+    const matrixBg = document.getElementById('matrixBg');
+    const numChars = 800; // Number of characters in the background
+    const matrixWidth = matrixBg.offsetWidth;
+    const matrixHeight = matrixBg.offsetHeight;
+
+    let matrixHtml = '';
+    for (let i = 0; i < numChars; i++) {
+        const x = Math.floor(Math.random() * matrixWidth);
+        const y = Math.floor(Math.random() * matrixHeight);
+        const duration = Math.random() * 5 + 1; // Random duration between 1 to 6 seconds
+        const opacity = Math.random() * 0.5 + 0.1; // Random opacity between 0.1 to 0.6
+        const char = generateRandomBinary();
+        matrixHtml += `<span style="top:${y}px; left:${x}px; animation-duration:${duration}s; opacity:${opacity};">${char}</span>`;
+    }
+    matrixBg.innerHTML = matrixHtml;
+}
+
+// Function to handle scroll events
+function handleScroll() {
+    const matrixBg = document.getElementById('matrixBg');
+    const viewportHeight = window.innerHeight;
+
+    // Check if scrolled past the initial viewport height
+    if (window.scrollY > (viewportHeight - (viewportHeight / 2))) {
+        // Optionally, you can smoothly fade out the matrix background
+        matrixBg.style.opacity = '0';
+        matrixBg.style.transition = 'opacity 0.5s';
+    } else {
+        // Reset opacity and transition if scrolled back up
+        matrixBg.style.opacity = '1';
+        matrixBg.style.transition = 'none';
+    }
+}
+
+// Event listener for window resize to adjust the matrix background
+window.addEventListener('resize', () => {
+    createMatrixBackground();
+});
+
+// Event listener for scroll to handle matrix background visibility
+window.addEventListener('scroll', handleScroll);
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const projects = [
+        { id: "project1", img: "images/Project1/ConnorWebImgPortrait.png", url: "project1.html", description: "A Website comprised of learning HTML, CSS, and JavaScript" },
+        { id: "project2", img: "images/Project2/Drone.png", url: "project2.html", description: "Creating and Building a FPV Drone from scratch" },
+        { id: "project3", img: "images/Home/image-coming-soon.jpeg", url: "project3.html", description: "Description of Project 3" },
+        { id: "project4", img: "images/Home/image-coming-soon.jpeg", url: "project4.html", description: "Description of Project 4" },
+        { id: "project5", img: "images/Home/image-coming-soon.jpeg", url: "project5.html", description: "Description of Project 5" },
+        { id: "project6", img: "images/Home/image-coming-soon.jpeg", url: "project6.html", description: "Description of Project 6" },
+        { id: "project7", img: "images/Home/image-coming-soon.jpeg", url: "project7.html", description: "Description of Project 7" },
+        { id: "project8", img: "images/Home/image-coming-soon.jpeg", url: "project8.html", description: "Description of Project 8" },
+        // Add more projects as needed
+    ];
+
+    let projectsPerPage = getProjectsPerPage();
+    let currentPage = 0;
+
+    const projectGallery = document.querySelector(".projects-gallery");
+    const leftArrow = document.querySelector(".left-arrow");
+    const rightArrow = document.querySelector(".right-arrow");
+    const projectDescription = document.getElementById("projectDescription");
+
+    function getProjectsPerPage() {
+        if(window.innerWidth < 700){
+            return 1;
+        } else if (window.innerWidth < 1500){
+            return 2;
+        } else{
+            return 4;
+        }
+    }
+
+    function displayProjects(page) {
+        projectsPerPage = getProjectsPerPage(); // Update the number of projects per page based on screen size
+        projectGallery.innerHTML = "";
+        const start = page * projectsPerPage;
+        const end = start + projectsPerPage;
+        const currentProjects = projects.slice(start, end);
+
+        currentProjects.forEach((project, index) => {
+            const projectDiv = document.createElement("div");
+            projectDiv.className = `project-image ${index === 0 ? "big" : "small"}`;
+            projectDiv.id = project.id;
+            projectDiv.setAttribute("data-url", project.url);
+            projectDiv.setAttribute("data-description", project.description);
+            
+            if(index === 0){
+                projectDescription.textContent = project.description;
+            }
+
+            const img = document.createElement("img");
+            img.src = project.img;
+            img.alt = project.id;
+            projectDiv.appendChild(img);
+
+            projectGallery.appendChild(projectDiv);
+
+            projectDiv.addEventListener("click", function() {
+                if (projectDiv.classList.contains("big")) {
+                    window.location.href = project.url;
+                } else {
+                    const allProjects = document.querySelectorAll(".project-image");
+                    allProjects.forEach(img => {
+                        img.classList.remove("big");
+                        img.classList.add("small");
+                    });
+                    projectDiv.classList.remove("small");
+                    projectDiv.classList.add("big");
+                    projectDescription.textContent = project.description;
+                }
+            });
+        });
+    }
+
+    function animateProjectsOut(direction) {
+        const allProjects = document.querySelectorAll(".project-image");
+        return new Promise((resolve) => {
+            allProjects.forEach(project => {
+                project.classList.add(direction === 1 ? "slide-out-left" : "slide-out-right");
+                project.addEventListener("animationend", function() {
+                    project.classList.remove("slide-out-left", "slide-out-right");
+                    resolve();
+                }, { once: true });
+            });
+        });
+    }
+
+    function animateProjectsIn(direction) {
+        displayProjects(currentPage);
+        const allProjects = document.querySelectorAll(".project-image");
+        allProjects.forEach(project => {
+            project.classList.add(direction === 1 ? "slide-in-right" : "slide-in-left");
+            project.addEventListener("animationend", function() {
+                project.classList.remove("slide-in-right", "slide-in-left");
+            }, { once: true });
+        });
+    }
+
+    async function navigateProjects(direction) {
+        await animateProjectsOut(direction);
+        if (direction === 1) {
+            currentPage++;
+            if (currentPage >= Math.ceil(projects.length / projectsPerPage)) {
+                currentPage = 0;
+            }
+        } else {
+            currentPage--;
+            if (currentPage < 0) {
+                currentPage = Math.ceil(projects.length / projectsPerPage) - 1;
+            }
+        }
+        animateProjectsIn(direction);
+    }
+
+    leftArrow.addEventListener("click", function() {
+        navigateProjects(-1);
+    });
+
+    rightArrow.addEventListener("click", function() {
+        navigateProjects(1);
+    });
+
+    displayProjects(currentPage);
+
+    // Recalculate projectsPerPage and re-display projects on window resize
+    window.addEventListener("resize", function() {
+        const oldProjectsPerPage = projectsPerPage;
+        projectsPerPage = getProjectsPerPage();
+        // Adjust the currentPage if the number of projects per page changes
+        if (oldProjectsPerPage !== projectsPerPage) {
+            currentPage = Math.floor((currentPage * oldProjectsPerPage) / projectsPerPage);
+            if (currentPage >= Math.ceil(projects.length / projectsPerPage)) {
+                currentPage = 0;
+            }
+            displayProjects(currentPage);
+        }
+    });
+
+});
+
+
+// Scroll animation for Education and Workspace sections
+const educationContainer = document.querySelector('.education-container');
+const workspaceContainer = document.querySelector('.workspace-container');
+
+ function checkVisibility() {
+    const educationRect = educationContainer.getBoundingClientRect();
+    const workspaceRect = workspaceContainer.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+     if (educationRect.top <= (windowHeight - (windowHeight/2)) && educationRect.bottom >= 0) {
+        educationContainer.classList.add('visible');
+    } else {
+        educationContainer.classList.remove('visible');
+    }
+
+     if (workspaceRect.top <= (windowHeight - (windowHeight/2)) && workspaceRect.bottom >= 0) {
+        workspaceContainer.classList.add('visible');
+    } else {
+        workspaceContainer.classList.remove('visible');
+    }
+}
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const skillsSection = document.querySelector('.skills-container');
+    const skillSliders = document.querySelectorAll('.skill input[type="range"]');
+
+    // Function to animate slider to a target value
+    function animateSlider(slider, targetValue) {
+        let currentValue = 0;
+        const interval = 10; // Interval in milliseconds
+        const step = 1; // Step size
+
+        const animate = () => {
+            if (currentValue < targetValue) {
+                currentValue += step;
+                slider.value = Math.min(currentValue, targetValue);
+                requestAnimationFrame(animate); // Continue animating
+            }
+        };
+
+        animate();
+    }
+
+    // Intersection Observer callback
+    const observerCallback = (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                skillSliders.forEach(slider => {
+                    const targetValue = parseInt(slider.getAttribute('value'), 10);
+                    slider.value = 0; // Reset value to 0
+                    animateSlider(slider, targetValue); // Animate to the target value
+                });
+            }
+        });
+    };
+
+    // Intersection Observer options
+    const observerOptions = {
+        root: null, // Use the viewport as the root
+        threshold: 0.5 // Trigger when 50% of the section is in view
+    };
+
+    // Create Intersection Observer
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    observer.observe(skillsSection);
+});
+
+
+
+
+
+
+// Event listeners
+window.addEventListener('DOMContentLoaded', () => {
+    createMatrixBackground();
+    checkVisibility();
+});
+
+window.addEventListener('scroll', () => {
+    handleScroll();
+    checkVisibility();
+});
+
+// Show the scroll-to-top button when the user scrolls down
+window.onscroll = function () {
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = 'block';
+        footer.style.display = 'block';
+    } else {
+        scrollToTopBtn.style.display = 'none';
+        footer.style.display = 'none';
+    }
+};
+
+
+// Scroll to the top of the page when the button is clicked
+document.getElementById('scrollToTopBtn').addEventListener('click', function () {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});

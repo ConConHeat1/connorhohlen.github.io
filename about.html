@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Connor Hohlen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet">
+    <link rel="icon" type="png" href="images/Logo/favicon.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<style>
+/* Variable name*/
+:root{
+    --hue: 172;
+    --darkhue: 12%;
+    --color: hsl(var(--hue), 100%, 50%);
+    --darkColor: hsl(var(--hue), 100%, 25%);
+    --backgroundColor: hsl(0, 0%, var(--darkhue));
+}
+
+
+
+/* Loading Screen Styles */
+#loading-screen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: var(--backgroundColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+/* Spinner Styles */
+.spinner {
+  border: 16px solid var(--darkColor); /* Light grey */
+  border-top: 16px solid var(--color); /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--backgroundColor);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    text-align: center; /* Center text */
+}
+/* This is the top navigation bar */
+.navbar {
+    overflow: visible;
+    background-color: var(--backgroundColor);
+    position: relative;
+    top: 1px;
+    width: 100%;
+    z-index: 3;
+    left: 1px;
+
+}
+.navbar a {
+    float: left;
+
+    color: var(--color);
+    text-align: center;
+    padding: 16px 20px;
+    text-decoration: none;
+
+}
+.navbar a:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+/* Style for the home button */
+.home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 51px;
+    background-color: var(--color); /* Start with the theme color */
+    outline: 1px solid var(--color); /* Maintain the outline */
+}
+
+/* Ensure the icon fits within the button */
+.home-button .home-icon {
+    width: 50px;
+    height: 50px;
+    margin-top: -10px;
+}
+/* Style changes on hover for home button */
+.home-button:hover {
+    background-color: var(--darkColor);
+    color: var(--darkColor);
+}
+.home-button:hover img{
+    transform: scale(1.1); /* Slightly enlarge image on hover */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+/* Dropdown container */
+.dropdown {
+    float: left;
+    overflow: hidden;
+    outline: 1px solid var(--color);
+
+}
+
+.dropdown .dropbtn {
+    color: var(--color);
+    text-align: center;
+    padding: 16px 4vw;
+    text-decoration: none;
+    outline: 1px solid var(--color);
+}
+
+.dropdown .dropbtn:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--backgroundColor);
+    min-width: 270px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 3;
+    margin-top: 50px; /* Add a small margin to avoid overlap */
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    float: none;
+    color: var(--color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    outline: 1px solid var(--color);
+}
+
+.dropdown-content a:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+@media (max-width: 500px) {
+    .color-slider {
+        position: absolute;
+
+        width: 80%;
+        left: 4%;
+        height: 8px;
+        top: 130px;
+    }
+    .dropdown .dropbtn {
+        color: var(--color);
+        text-align: center;
+        padding: 16px 11vw;
+        text-decoration: none;
+        outline: 1px solid var(--color);
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: var(--backgroundColor);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 3;
+        margin-top: 50px; /* Add a small margin to avoid overlap */
+    }
+    .color-slider[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 30px;
+        height: 30px;
+
+    }
+    .color-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: absolute;
+        top: 10px;
+        right: 3%;
+    }
+    .navbar .dropdown:nth-child(6) { /* Adjust this if Skills is not the fourth child */
+        display: none;
+    }
+}
+
+/* Container for the About Me section and main content */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 70vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* About Me section in the top right */
+
+.about-me-section h1 {
+    position: relative;
+    color: var(--color);
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+}
+
+/*Pic-collage*/
+.pic-collage{
+    position: absolute;
+    top: 20%; 
+    width: 100vw;
+    height: 50vh;
+
+}
+@media (max-height: 900px){
+    .pic-collage{
+    top: 15%; 
+}
+    .about-me-section {
+    top: 5px;
+}
+}
+@media (max-height: 700px){
+    .pic-collage{
+    top: 15%; 
+}
+    .about-me-section {
+    top: 0px;
+}
+}
+@media (max-height: 600px){
+    .pic-collage{
+    top: 20%; 
+}
+    .about-me-section {
+    top: -5px;
+}
+}
+
+/* Center picture */
+.center-picture {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20vw;
+    height: auto;
+    border-radius: 5%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+}
+@media screen and (max-width: 768px) {
+    .picture1{
+    object-position: 50% 10%;
+}
+}
+.picture1{
+    position: absolute;
+    top: 0%;
+    left: 1%;
+    width: 25%;
+    height: 20%;
+    border: 2px solid var(--color);
+    object-position: 50% 32%;
+    object-fit: cover;
+}
+.picture2{
+    position: absolute;
+    top: 0%;
+    left: 28%;
+    width: 10%;
+    height: 20%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 45% 50%;
+}
+
+.picture3{
+    position: absolute;
+    top: 25%;
+    left: 1%;
+    width: 20%;
+    height: 75%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 50% 30%;
+}
+.picture4{
+    position: absolute;
+    top: 25%;
+    left: 23%;
+    width: 15%;
+    height: 40%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+.picture5{
+    position: absolute;
+    top: 70%;
+    left: 23%;
+    width: 5%;
+    height: 30%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+}
+.picture6{
+    position: absolute;
+    top: 70%;
+    left: 30%;
+    width: 8%;
+    height: 30%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+}
+.picture7{
+    position: absolute;
+    top: 0%;
+    left: 62%;
+    width: 6%;
+    height: 26%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+}
+.picture8{
+    position: absolute;
+    top: 30%;
+    left: 62%;
+    width: 6%;
+    height: 70%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 63% 50%;
+}
+.picture9{
+    position: absolute;
+    top: 0%;
+    left: 70%;
+    width: 20%;
+    height: 75%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+}
+.picture10{
+    position: absolute;
+    top: 0%;
+    left: 92%;
+    width: 7%;
+    height: 75%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+}
+.picture11{
+    position: absolute;
+    top: 80%;
+    left: 70%;
+    width: 29%;
+    height: 20%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 50% 12%;
+}
+@media (max-width: 700px){
+.picture1{
+    position: absolute;
+    top: 0%;
+    left: 3%;
+    width: 34%;
+    height: calc(20% + 2px);
+    border: 2px solid var(--color);
+    object-position: 50% 32%;
+    object-fit: cover;
+}
+.picture2{
+    position: absolute;
+    top: 0%;
+    left: 39%;
+    width: calc(21% + 1px);
+    height: 26%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 50% 30%;
+}
+.picture3{
+    position: absolute;
+    top: 23%;
+    left: 3%;
+    width: 34%;
+    height: 77%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 50% 30%;
+}
+.picture4{
+    position: absolute;
+    top: 72%;
+    left: 39%;
+    width: calc(21% + 1px);
+    height: 28%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+.picture5{
+        display: none;
+}
+.picture6{
+        display: none;
+}
+.picture7{
+        display: none;
+}
+.picture8{
+    position: absolute;
+    top: 0%;
+    left: 62%;
+    width: 15%;
+    height: 70%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 63% 50%;
+}
+.picture9{
+        display: none;
+}
+.picture10{
+    position: absolute;
+    top: 0%;
+    left: 79%;
+    width: 15%;
+    height: 70%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+}
+.picture11{
+    position: absolute;
+    top: 72%;
+    left: 62%;
+    width: 32%;
+    height: 28%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    object-position: 50% 12%;
+}
+}
+
+/* Family section */
+.family-section {
+    display: flex;
+    width: 98%;
+    height: 100vh;
+    padding-bottom: 20px;
+    justify-content: center;
+    transform: translateX(40%); /* Initially off-screen */
+    opacity: 0; /* Initially invisible */
+    transition: transform 0.8s ease, opacity 0.8s ease; /* Smooth transition */
+}
+
+.family-section.visible {
+    transform: translateX(0%); /* Bring into view */
+    opacity: 1; /* Make visible */
+}
+
+.family-text {
+    flex: 1;
+    color: var(--color);
+    text-align: left;
+    padding-left: 20px;
+}
+
+.family-text h2 {
+    color: var(--color);
+    text-align: left;
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+}
+
+.family-picture {
+    flex: 1;
+    max-height: 90%;
+    position: relative; /* Added to ensure absolute positioning works correctly */
+}
+
+.family-picture1,
+.family-picture2,
+.family-picture3,
+.family-picture4 {
+    border: 2px solid var(--color);
+    object-fit: cover;
+    position: absolute;
+}
+
+.family-picture1 {
+    top: 0%;
+    left: 0%;
+    width: 47%;
+    height: 47%;
+}
+
+.family-picture2 {
+    top: 17%;
+    left: 49%;
+    width: 30%;
+    height: 30%;
+}
+
+.family-picture3 {
+    top: 50%;
+    left: 17%;
+    width: 30%;
+    height: 30%;
+}
+
+.family-picture4 {
+    top: 50%;
+    left: 49%;
+    width: 47%;
+    height: 47%;
+}
+
+/* Hobby section */
+.hobby-section {
+    display: flex;
+    width: 98%;
+    height: 100vh;
+    padding-bottom: 20px;
+    padding-top: 50px;
+    justify-content: center;
+    transform: translateX(-40%); /* Initially off-screen */
+    opacity: 0; /* Initially invisible */
+    transition: transform 0.8s ease, opacity 0.8s ease; /* Smooth transition */
+}
+
+.hobby-section.visible {
+    transform: translateX(0%); /* Bring into view */
+    opacity: 1; /* Make visible */
+}
+
+.hobby-text {
+    flex: 1;
+    color: var(--color);
+    text-align: left;
+    padding-left: 20px;
+}
+
+.hobby-text h2 {
+    color: var(--color);
+    text-align: left;
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+}
+
+.hobby-picture {
+    flex: 1;
+    max-height: 90%;
+    position: relative; /* Added to ensure absolute positioning works correctly */
+}
+
+.hobby-picture1,
+.hobby-picture2,
+.hobby-picture3,
+.hobby-picture4 {
+    border: 2px solid var(--color);
+    object-fit: cover;
+    position: absolute;
+}
+
+.hobby-picture1 {
+    top: 0%;
+    left: 0%;
+    width: 47%;
+    height: 47%;
+}
+
+.hobby-picture2 {
+    top: 17%;
+    left: 49%;
+    width: 30%;
+    height: 30%;
+}
+
+.hobby-picture3 {
+    top: 50%;
+    left: 17%;
+    width: 30%;
+    height: 30%;
+}
+
+.hobby-picture4 {
+    top: 50%;
+    left: 49%;
+    width: 47%;
+    height: 47%;
+}
+
+
+/* Vacation section*/
+.vacation-section {
+    display: flex;
+    width: 98%;
+    height: 100vh;
+    justify-content: center;
+    transform: translateX(40%); /* Initially off-screen */
+    opacity: 0; /* Initially invisible */
+    transition: transform 0.8s ease, opacity 0.8s ease; /* Smooth transition */
+}
+.vacation-section.visible {
+    transform: translateX(0%); /* Bring into view */
+    opacity: 1; /* Make visible */
+}
+.vacation-text {
+    flex: 1;
+    color: var(--color);
+    text-align: left;
+    padding-left: 20px;
+
+}
+
+.vacation-text h2 {
+    color: var(--color);
+    text-align: left;
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+}
+.vacation-picture {
+    flex: 1;
+    max-height: 90%;
+    position: relative; /* Added to ensure absolute positioning works correctly */
+}
+
+.vacation-picture1 {
+    top: 0%;
+    left: 0%;
+    width: 47%;
+    height: 47%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    position: absolute;
+}
+
+.vacation-picture2 {
+    top: 17%;
+    left: 49%; /* Adjusted to avoid overlap with hobby-picture1 */
+    width: 30%;
+    height: 30%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    position: absolute;
+}
+
+.vacation-picture3 {
+    top: 50%; /* Adjusted to avoid overlap with hobby-picture1 and hobby-picture2 */
+    left: 17%;
+    width: 30%;
+    height: 30%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    position: absolute;
+}
+
+.vacation-picture4 {
+    top: 50%; /* Adjusted to avoid overlap with hobby-picture3 */
+    left: 49%; /* Adjusted to avoid overlap with hobby-picture3 */
+    width: 47%;
+    height: 47%;
+    border: 2px solid var(--color);
+    object-fit: cover;
+    position: absolute;
+}
+/* Vacation section*/
+.vacation-section-map {
+    display: flex;
+    flex-direction: column; /* Stack text and map vertically */
+    align-items: center; /* Center content horizontally */
+    width: 98%;
+    height: 100vh;
+    justify-content: center;
+    transform: translateX(-40%); /* Initially off-screen */
+    opacity: 0; /* Initially invisible */
+    transition: transform 0.8s ease, opacity 0.8s ease; /* Smooth transition */
+}
+.vacation-section-map.visible {
+    transform: translateX(0%); /* Bring into view */
+    opacity: 1; /* Make visible */
+}
+.vacation-text-map {
+    color: var(--color);
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+    margin-bottom: 20px; /* Add some space between text and map */
+    text-align: center; /* Center text */
+}
+/* This creates a map of the USA */
+.vacation-map{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    justify-content: center; /* Center horizontally */
+}
+
+.vacation-map p{
+    color: var(--color);
+    text-align: center;
+}
+#map {
+    height: 90%; /* Adjust the height as needed */
+    width: 90vw;
+    margin: 0 auto; /* Center the map container */
+    border: 7px solid var(--darkColor); /* Optional: add a border to see the container */
+}
+
+
+
+/* Books Section Title */
+.books-section h2 {
+    color: var(--color);
+    text-align: center;
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+    margin-bottom: 20px;
+}
+
+/* Book Container and Items */
+.book-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: hidden;
+}
+
+.book-item {
+    flex: 1 1 calc(25% - 30px); /* Four items per row by default */
+    max-width: calc(25% - 30px);
+    margin: 15px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.book-item:hover {
+    transform: scale(1.05);
+}
+
+.book-info h3, .book-info p {
+    color: var(--color);
+    margin: 5px 0;
+    font-family: inherit;
+    text-align: center;
+}
+
+/* Book Image Styling */
+.book-item img {
+    width: 150px;
+    height: auto; /* Maintain aspect ratio */
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Remove Underline from Links */
+.book-item a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.book-item a:hover .book-info {
+    text-decoration: none;
+}
+
+/* Media Queries to Adjust Books per Row */
+@media (max-width: 768px) {
+    .book-item {
+        flex: 1 1 calc(50% - 30px); /* Two items per row on small screens */
+        max-width: calc(50% - 30px);
+    }
+}
+
+@media (max-width: 576px) {
+    .book-item {
+        flex: 1 1 calc(50% - 20px); /* Two items per row */
+        max-width: calc(50% - 20px); /* Adjust max-width accordingly */
+        margin: 10px;
+    }
+}
+
+
+
+
+
+/* Songs Section Title */
+.songs-section h2 {
+  color: var(--color);
+  text-align: center;
+  font-size: clamp(2.5rem, 3vw, 100vw);
+  text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+  margin-bottom: 20px;
+}
+
+/* Vinyl Container and Items */
+.vinyl-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: hidden; /* Ensure no vertical scroll bar appears */
+}
+
+.vinyl-item {
+  flex: 1 1 calc(25% - 30px); /* Four items per row by default */
+  max-width: calc(25% - 30px); /* Adjust max-width accordingly */
+  margin: 15px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Media Queries to Adjust Vinyls per Row */
+@media (max-width: 1200px) {
+  .vinyl-item {
+    flex: 1 1 calc(20% - 30px); /* Five items per row on larger screens */
+    max-width: calc(20% - 30px);
+  }
+}
+
+@media (max-width: 992px) {
+  .vinyl-item {
+    flex: 1 1 calc(33.33% - 30px); /* Three items per row on medium screens */
+    max-width: calc(33.33% - 30px);
+  }
+}
+
+@media (max-width: 768px) {
+  .vinyl-item {
+    flex: 1 1 calc(50% - 30px); /* Two items per row on small screens */
+    max-width: calc(50% - 30px);
+  }
+}
+
+@media (max-width: 576px) {
+  .vinyl-item {
+    flex: 1 1 calc(50% - 20px); /* Two items per row */
+    max-width: calc(50% - 20px); /* Adjust max-width accordingly */
+    margin: 10px;
+  }
+}
+
+.vinyl-item:hover {
+  transform: scale(1.05);
+}
+
+.vinyl-info h3, .vinyl-info p {
+  color: var(--color);
+  margin: 5px 0;
+  font-family: inherit; /* Ensures the text inherits the font used in your theme */
+  text-align: center;
+}
+
+/* Vinyl Image Styling */
+.vinyl-item img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease-in-out; /* Smooth transition for spinning */
+}
+
+/* Remove Underline from Links */
+.vinyl-item a {
+  text-decoration: none;
+  color: inherit; /* Ensures the text color is inherited */
+}
+
+.vinyl-item a:hover .vinyl-info {
+  text-decoration: none; /* Ensures no underline appears on hover */
+}
+/* Spin Animation */
+.vinyl-item:hover img {
+  animation: spin 2s linear infinite; /* Spin continuously when hovered */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+/* Resume Section Styling */
+.resume-section {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.resume-section h2 {
+    color: var(--color);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    font-family: inherit;
+    margin-bottom: 20px;
+}
+
+.resume-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.resume-image {
+    width: 200px; /* Adjust this size to make the image not too big */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out, width 0.5s ease-in-out;
+    cursor: pointer; /* Indicate it's clickable */
+}
+
+.resume-image:hover {
+    transform: scale(1.05);
+}
+
+/* Enlarged image styling */
+.resume-image.enlarged {
+    width: 500px; /* Adjust this size to make it larger when clicked */
+    transform: scale(1.05);
+}
+.download-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid var(--color);
+    border-radius: 5px;
+    background-color: var(--backgroundColor);
+    color: var(--color);
+    text-decoration: none;
+    font-family: inherit;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.download-button:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+    transform: scale(1.1);
+}
+
+
+
+
+/* Container for social buttons */
+.social-media-container h2{
+    position: relative;
+    text-align: center;
+    color: var(--color);
+    
+}
+.social-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center; /* Center align the buttons */
+    margin-top: 20px; /* Add some spacing from other content */
+    padding-bottom: 20px;
+}
+
+/* General button styles */
+.social-button {
+    width: 60px; /* Width of the button */
+    height: 60px; /* Height of the button */
+    border: 2px solid var(--color); /* Border color */
+    border-radius: 50%; /* Rounded corners for circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--backgroundColor); /* Background color */
+    cursor: pointer;
+    position: relative; /* For positioning pseudo-elements */
+    transition: box-shadow 0.3s;
+    text-decoration: none; /* Remove underline */
+    color: var(--color); /* Default icon color */
+    font-size: 24px; /* Default icon size */
+    z-index: 1; /* Ensure button is above other elements */
+    overflow: hidden; /* Ensure inner elements don't overflow */
+}
+
+/* Email button styles */
+.email-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.email_icon {
+    margin-top: 5px; /* Adjust margin to fit within the button */
+    width: 0px; /* Width of the main part of the envelope */
+    height: 10px; /* Height of the main part of the envelope - scaled down */
+    border-top: 14px solid var(--backgroundColor); /* Top border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    background-color: var(--color); /* Envelope color */
+    transition: .3s; /* Transition duration for smooth animation */
+    padding: 0; /* No padding */
+    margin: 0; /* No margin */
+    position: relative; /* For positioning pseudo-elements */
+}
+
+.email_icon:before {
+    padding: 0; /* No padding */
+    margin: 0; /* No margin */
+    content: ""; /* Empty content for pseudo-element */
+    position: absolute; /* Absolute positioning */
+    top: -15px; /* Positioning above the main icon - scaled down */
+    left: -20px; /* Positioning to the left - scaled down */
+    border-top: 14px solid var(--color); /* Top border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    transition: .1s; /* Transition duration for smooth animation */
+}
+
+.social-button:hover .email_icon {
+    background-color: var(--color); /* Background color on hover */
+}
+.social-button:hover{
+    box-shadow: 0 0 15px var(--color);
+    transform: scale(1.2);
+}
+.social-button:hover .email_icon:before {
+    position: absolute; /* Absolute positioning */
+    top: -30px; /* Positioning further above */
+    left: -20px; /* Positioning slightly left */
+    border-bottom: 15px solid var(--color); /* Bottom border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    border-top: 0px; /* No top border */
+    transition: .1s; /* Transition duration for smooth animation */
+}
+
+/* Phone button animation */
+.call-button {
+    position: relative; /* Needed for the lines animation */
+}
+
+.call-button:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px var(--color);
+}
+
+.phone-arcs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1; /* Ensure arcs appear behind the button */
+}
+
+.arc {
+    position: absolute;
+    border: 2px solid var(--color);
+    border-top-left-radius: 60px; /* Should be half of the width */
+    border-top-right-radius: 60px; /* Should be half of the width */
+    border-bottom: none; /* Remove bottom border for arc effect */
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.arc1 {
+    top: -8px; /* Adjust vertical position */
+    left: 0px; /* Adjust horizontal position */
+    width: 11px; /* Adjust to change the length */
+    height: 5px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: 0s;
+
+}
+
+.arc2 {
+    top: -14px; /* Further adjust vertical position */
+    left: 0px; /* Further adjust horizontal position */
+    width: 20px; /* Adjust to change the length */
+    height: 9px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: 0.3s;
+}
+
+.arc3 {
+    top: -20px; /* Further adjust vertical position */
+    left: -3px; /* Further adjust horizontal position */
+    width: 32px; /* Adjust to change the length */
+    height: 15px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: .6s;
+}
+
+
+.call-button:hover .arc1 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+.call-button:hover .arc2 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+.call-button:hover .arc3 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+/* Adjust LinkedIn button styling */
+.indeed-button {
+    position: relative; /* Needed to position the bouncing ball */
+    background-color: var(--backgroundColor); /* Set background color to match */
+}
+.fa-linkedin{
+    transform: scale(1.7);
+}
+
+/* Styling for the stationary ball */
+.indeed-button .stationary-ball {
+    position: absolute;
+    top: 16px; /* Position to cover the ball of the 'i' */
+    left: calc(35% - 1px);
+    transform: translateX(-50%);
+    width: 9px; /* Size of the stationary ball */
+    height: 9px;
+    background-color: var(--color); /* Match the background color */
+    border-radius: 50%; /* Make it circular */
+    z-index: 2; /* Ensure it stays above the LinkedIn logo */
+}
+
+/* Styling for the bouncing ball */
+.indeed-button .bouncing-ball {
+    position: absolute;
+    top: 17px; /* Same initial position as the stationary ball */
+    left: calc(35% - 1px);
+    transform: translateX(-50%);
+    width: 6px; /* Size of the bouncing ball */
+    height: 6px;
+    background-color: var(--backgroundColor); /* Color to match the LinkedIn logo */
+    border-radius: 50%; /* Make it circular */
+    z-index: 3; /* Ensure it stays above the stationary ball */
+    transition: transform 0.3s;
+}
+
+/* Keyframes for forward hop effect */
+@keyframes rainbow-hop-forward {
+    0% {
+        transform: translate(-150%, 0); /* Start further to the left */
+    }
+    25% {
+        transform: translate(-75%, -10px); /* Hop to a further middle-left */
+    }
+    50% {
+        transform: translate(0%, 0); /* Reach the middle */
+    }
+    75% {
+        transform: translate(75%, -10px); /* Hop to a further middle-right */
+    }
+    100% {
+        transform: translate(150%, 0); /* Reach further to the right */
+    }
+}
+
+/* Keyframes for bouncing effect */
+@keyframes bounce {
+    0%, 100% {
+        transform: translate(-50%, 0); /* Start and end at the same position */
+    }
+    50% {
+        transform: translate(-50%, -6px); /* Move the ball up by 10px */
+    }
+}
+
+/* Trigger bouncing on hover */
+.indeed-button:hover .bouncing-ball {
+    animation: bounce 0.6s ease-in-out infinite; /* Apply the bouncing animation */
+}
+
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Changed from left: 20px */
+    width: 50px;
+    height: 50px;
+    background-color: var(--color);
+    color: #000;
+    text-align: center;
+    line-height: 50px;
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: none; /* Initially hidden */
+    z-index: 1000; /* Ensure it's on top */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.scroll-to-top-btn:hover {
+    background-color: var(--darkColor);
+    transform: scale(1.1);
+}
+
+
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--color);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 45%;
+    display: none; /* Initially hidden */
+}
+@media (max-width: 2200px) {
+    footer {
+        left: 43%;
+    }
+}
+@media (max-width: 1800px) {
+    footer {
+        left: 40%;
+    }
+}
+@media (max-width: 1200px) {
+    footer {
+        left: 35%;
+    }
+}
+@media (max-width: 800px) {
+    footer {
+        left: 30%;
+    }
+}
+@media (max-width: 600px) {
+    footer {
+        left: 25%;
+    }
+}
+@media (max-width: 500px) {
+    footer {
+        left: -45%;
+        position: absolute;
+    }
+}
+</style>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+      <div class="spinner"></div>
+    </div>
+    
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="dropdown home-button">
+            <a href="index.html" class="dropbtn home-button"><img src="images/Home/Home_Icon.png" alt="Home" class="home-icon"></a>
+        </div>
+        <div class="dropdown">
+            <a href="#about" class="dropbtn">About Me</a>
+            <div class="dropdown-content">
+                <a href="about.html">Connor Hohlen</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#projects" class="dropbtn">Projects</a>
+            <div class="dropdown-content">
+                <a href="project1.html">This Website</a>
+                <a href="project2.html">FPV Drone</a>
+                <a href="project3.html">LED Lights</a>
+                <a href="project4.html">Plant Monitor</a>
+                <a href="project5.html">Company SQL and Java Coding</a>
+                <a href="project6.html">Rocket System</a>
+                <a href="project7.html">Project 7</a>
+                <a href="project8.html">Project 8</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#education-workspace" class="dropbtn">Education</a>
+            <div class="dropdown-content">
+                <a href="college.html">College</a>
+                <a href="highschool.html">Highschool</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#workspace" class="dropbtn">Workspace</a>
+            <div class="dropdown-content">
+                <a href="workspace1.html">Amur Equipment Finance</a>
+                <a href="workspace2.html">Menards</a>
+            </div>
+        </div>
+    </div>
+    <div class="main-container">
+        <!-- About Me Section -->
+        <div class="about-me-section">
+            <h1 class="slide-in">About Me</h1>
+        </div>
+        <!-- Center Picture -->
+        <div class="pic-collage">
+            <img src="images/AboutMe/Connor_Hohlen.JPG" alt="Your Picture" class="center-picture slide-in">
+            <img src="images/AboutMe/Senior.jpg"  class="picture1 slide-in">
+            <img src="images/AboutMe/Branson.jpeg" class="picture2 slide-in">
+            <img src="images/AboutMe/Grad.jpeg"  class="picture3 slide-in">
+            <img src="images/AboutMe/Sibling.jpeg"  class="picture4 slide-in">
+            <img src="images/AboutMe/Husker.JPG"  class="picture5 slide-in">
+            <img src="images/AboutMe/New_year.jpeg"  class="picture6 slide-in">
+            <img src="images/AboutMe/Sunset.jpeg"  class="picture7 slide-in">
+            <img src="images/AboutMe/Fish.jpeg"  class="picture8 slide-in">
+            <img src="images/AboutMe/Tarzan.jpeg"  class="picture9 slide-in">
+            <img src="images/AboutMe/Wedding.jpeg"  class="picture10 slide-in">
+            <img src="images/AboutMe/Colorado.jpeg"  class="picture11 slide-in">
+        </div>
+    </div>
+    <!-- Family Section -->
+    <div class="family-section">
+        <div class="family-text ">
+            <h2>Family and Loved Ones</h2>
+            <p> 
+                This section is all about the people who matter most to me—my family, 
+                friends, and loved ones. They’ve been there for me through everything, 
+                sharing laughs, memories, and support. Whether it’s a fun trip, a family 
+                gathering, or just hanging out, these moments mean a lot to me. Check out 
+                some of my favorite photos and memories with the people I care about most!</p>
+        </div>
+        <div class="family-picture">
+            <img src="images/AboutMe/Family.jpeg" class="family-picture1 ">
+            <img src="images/AboutMe/Friend1.JPG" class="family-picture2 ">
+            <img src="images/AboutMe/Friend2.JPG" class="family-picture3 ">
+            <img src="images/AboutMe/Prom.jpeg" class="family-picture4 ">
+        </div>
+    </div>
+    <!-- Hobby Section -->
+    <div class="hobby-section">
+        <div class="hobby-picture">
+            <img src="images/AboutMe/Fish2.jpeg" class="hobby-picture1 ">
+            <img src="images/AboutMe/Drone.JPG" class="hobby-picture2 ">
+            <img src="images/AboutMe/Gym.jpg" class="hobby-picture3 ">
+            <img src="images/AboutMe/Disc_golf.JPG" class="hobby-picture4 ">
+        </div>
+        <div class="hobby-text ">
+            <h2>Hobbies</h2>
+            <p>
+                In my free time, I love diving into tech projects, like building gadgets 
+                with microchips, sensors, and other cool components. The picture to the 
+                left shows my FPV drone, which I made completely from scratch! I also enjoy 
+                staying active—going to the gym and playing disc golf with my girlfriend and
+                 friends is always a good time. Sports like basketball and golf (even though
+                  I’m not the best at it) are fun too. In the summer, I love heading out to 
+                  the lake to fish with friends or family. Bass fishing is my favorite—they 
+                  put up a great fight and make it extra exciting!</p>
+        </div>
+    </div>
+    <!-- Vacation Section -->
+    <div class="vacation-section">
+        <div class="vacation-text ">
+            <h2>Vacations</h2>
+            <p> 
+                I always look forward to going on vacation and have been lucky to travel 
+                to many places across the United States. As a kid, one of my favorite trips 
+                was to Disney World, where we also visited Cocoa Beach in Florida. Watching 
+                the sunsets and relaxing on the beach made it unforgettable. Later, we 
+                returned to Florida to visit Universal Studios, which was just as exciting.  
+                
+                    As I got older, my family started traveling to Colorado. My first trip 
+                there was to Estes Park, where the views were absolutely breathtaking. 
+                Another time, we visited Colorado Springs and took a train to the top of a 
+                mountain—the view from up there was incredible, something I think everyone 
+                should see at least once in their life.  
+                
+                Most recently, I took a trip to Kansas City, where I spent a few nights 
+                relaxing and enjoying the city’s vibe. Every trip brings new memories and 
+                experiences that I’ll always remember!</p>
+        </div>
+        <div class="vacation-picture">
+            <img src="images/AboutMe/KC.jpeg" class="vacation-picture1">
+            <img src="images/AboutMe/Universal.JPG" class="vacation-picture2">
+            <img src="images/AboutMe/Beach.JPG" class="vacation-picture3">
+            <img src="images/AboutMe/ColoradoMountain.jpeg" class="vacation-picture4">
+        </div>
+    </div>
+    <div class="vacation-section-map">
+        <div class="vacation-text-map">
+            <h2>Vacation Map</h2> 
+        </div>
+        <div class="vacation-map">
+            <section id="vacation">
+                <div id="map"></div>
+                <p>This map highlights notable places I've visited, with a special marker for my hometown, Grand Island, NE.</p>
+            </section>
+        </div>
+    </div>
+
+
+    <div class="books-section">
+        <h2>Book Recommendations</h2>
+        <div class="book-container">
+            <div class="book-item">
+                <a href="https://www.amazon.com/s?k=rich+dad+poor+dad&gad_source=1&hvadid=695542906478&hvdev=c&hvexpln=67&hvlocphy=1021667&hvnetw=g&hvocijid=5467263867239828091--&hvqmt=e&hvrand=5467263867239828091&hvtargid=kwd-27597396&hydadcr=24658_13611734&tag=googhydr-20&ref=pd_sl_2k9pn0ghev_e_p67" target="_blank">
+                    <div class="book-info">
+                        <h3>Rich Dad Poor Dad</h3>
+                        <p>Robert Kiyosaki and Sharon Lechter</p>
+                    </div>
+                    <img src="images/AboutMe/RichDadBook.jpg" alt="Book 1 Cover">
+                </a>
+            </div>
+            <div class="book-item">
+                <a href="https://www.amazon.com/Brief-History-Time-Stephen-Hawking/dp/0553380168" target="_blank">
+                    <div class="book-info">
+                        <h3>A Brief History Time</h3>
+                        <p>Stephen Hawking</p>
+                        <br>  <!-- This adds a new line to the text above -->
+                    </div>
+                    <img src="images/AboutMe/StevenBook.jpg" alt="Book 2 Cover">
+                </a>
+            </div>
+            <div class="book-item">
+                <a href="https://www.amazon.com/Electric-War-Edison-Tesla-Westinghouse/dp/1250120160" target="_blank">
+                    <div class="book-info">
+                        <h3>The Eletric War</h3>
+                        <p>Mike Winchell</p>
+                        <br>  <!-- This adds a new line to the text above -->
+                    </div>
+                    <img src="images/AboutMe/EletricWar.jpg" alt="Book 3 Cover">
+                </a>
+            </div>
+            <div class="book-item">
+                <a href="https://www.amazon.com/Think-Grow-Rich-Landmark-Bestseller/dp/1585424331" target="_blank">
+                    <div class="book-info">
+                        <h3>Think and Grow Rich</h3>
+                        <p>Napoleon Hill</p>
+                        <br>  <!-- This adds a new line to the text above -->
+                    </div>
+                    <img src="images/AboutMe/ThinkandGrowRich.jpg" alt="Book 4 Cover">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="songs-section">
+        <h2>Album Recommendations</h2>
+        <div class="vinyl-container">
+        <div class="vinyl-item">
+            <a href="https://songwhip.com/nf/hope" target="_blank">
+              <div class="vinyl-info">
+                <h3>Hope</h3>
+                <p>NF</p>
+              </div>
+              <img src="images/AboutMe/Hope_NF_Vinyl.png" alt="Vinyl Image">
+            </a>
+        </div>
+        <div class="vinyl-item">
+            <a href="https://songwhip.com/labrinth/ends-and-begins" target="_blank">
+              <div class="vinyl-info">
+                <h3>Ends and Begins</h3>
+                <p>Labrinth</p>
+              </div>
+              <img src="images/AboutMe/EndsAndBegins_Labrinth_Vinyl.png" alt="Vinyl Image">
+            </a>
+        </div>
+        <div class="vinyl-item">
+            <a href="https://songwhip.com/billieeilish/hit-me-hard-and-soft" target="_blank">
+              <div class="vinyl-info">
+                <h3>Hit Me Hard and Soft</h3>
+                <p>Billie Eilish</p>
+              </div>
+              <img src="images/AboutMe/HitMeHardSoft_Billie_Vinyl.png" alt="Vinyl Image">
+            </a>
+        </div>
+        <div class="vinyl-item">
+            <a href="https://songwhip.com/arctic-monkeys/am" target="_blank">
+              <div class="vinyl-info">
+                <h3>AM</h3>
+                <p>Arctic Monkey</p>
+              </div>
+              <img src="images/AboutMe/AM_ArcticMonkey_Vinyl.png" alt="Vinyl Image">
+            </a>
+        </div>
+        <div class="vinyl-item">
+            <a href="https://songwhip.com/hozier/eat-your-young-2" target="_blank">
+              <div class="vinyl-info">
+                <h3>Eat Your Young</h3>
+                <p>Hozier</p>
+              </div>
+              <img src="images/AboutMe/EatYourYoung_Hozier_Vinyl.png" alt="Vinyl Image">
+            </a>
+        </div>
+        <div class="vinyl-item">
+            <a href="https://songwhip-web.songwhip.com/khalid/american-teen" target="_blank">
+              <div class="vinyl-info">
+                <h3>American Teen</h3>
+                <p>Khalid</p>
+              </div>
+              <img src="images/AboutMe/AmericanTeen_Kahlid_Vinyl.png" alt="Vinyl Image">
+            </a>
+        </div>
+        <div class="vinyl-item">
+            <a href="https://songwhip-web.songwhip.com/frank-ocean/blonde" target="_blank">
+              <div class="vinyl-info">
+                <h3>Blonde</h3>
+                <p>Frank Ocean</p>
+              </div>
+              <img src="images/AboutMe/Blonde_FrankOcean_Vinyl.png" alt="Vinyl Image">
+            </a>
+        </div>
+        <div class="vinyl-item">
+            <a href="https://songwhip.com/harry-styles/harrys-house" target="_blank">
+              <div class="vinyl-info">
+                <h3>Harry's House</h3>
+                <p>Harry Styles</p>
+              </div>
+              <img src="images/AboutMe/Harry'sHouse_Harry_Vinyl.png" alt="Vinyl Image">
+            </a>
+        </div>
+          <!-- Repeat vinyl-item for more vinyls -->
+        </div>
+    </div>      
+    
+    
+    <!-- Resume Section -->
+    <div class="resume-section">
+        <h2>Resume</h2>
+        <div class="resume-content">
+            <img src="images/AboutMe/resume.png" alt="Resume Image" class="resume-image" id="resumeImage">
+            <a href="images/AboutMe/resume.pdf" download="Connor's Resume.pdf" class="download-button">Download Resume</a>
+        </div>
+    </div>
+    
+
+
+    <!-- Social Media Section -->
+    <section class="social-media-container" id="contact">
+        <h2>Contact Info</h2>
+        <div class="social-buttons">
+            <!-- Email Icon -->
+            <a href="mailto:connorhohlen@gmail.com" class="social-button email-icon-container">
+                <div class="email_icon"></div>
+            </a>
+            <!-- Phone Icon -->
+            <a href="tel:3083891407" class="social-button call-button">
+                <i class="fas fa-phone-alt"></i>
+                <div class="phone-arcs">
+                    <div class="arc arc1"></div>
+                    <div class="arc arc2"></div>
+                    <div class="arc arc3"></div>
+                </div>
+            </a>
+            <!-- LinkedIn Icon -->
+            <a href="https://www.linkedin.com/in/connor-hohlen/" class="social-button indeed-button">
+                <i class="fab fa-linkedin"></i>
+                <!-- Stationary ball to cover the original ball of the 'i' -->
+                <div class="stationary-ball"></div>
+                <!-- Bouncing ball -->
+                <div class="bouncing-ball"></div>
+            </a>
+        </div>
+    </section>
+    <footer id="footer">
+        <p>&copy; <span id="year"></span>.</p>
+    </footer>
+    <div id="scrollToTopBtn" class="scroll-to-top-btn">
+        &#9650;
+    </div>
+</body>
+
+<script>
+
+// script.js
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const mainContent = document.getElementById('main-content');
+    
+    // Hide loading screen and show main content
+    loadingScreen.style.display = 'none';
+});
+
+
+
+
+// Function to update the background color based on stored hue and theme colors
+function updateBackgroundColor(darkHue) {
+    document.documentElement.style.setProperty('--darkhue', darkHue);
+}
+function getStoredHueValue() {
+    return localStorage.getItem('darkhue');
+}
+const storedDarkHue = getStoredHueValue();
+if (storedDarkHue) {
+    updateBackgroundColor(storedDarkHue);
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const savedHue = localStorage.getItem('hue');
+    if (savedHue !== null) {
+        const hueColor = `hsl(${savedHue}, 100%, 50%)`;
+        document.documentElement.style.setProperty('--color', hueColor);
+        const darkColor = `hsl(${savedHue}, 100%, 25%)`;
+        document.documentElement.style.setProperty('--darkColor', darkColor);
+    }
+});
+
+// JavaScript for handling dropdown menus
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    // Close dropdown when clicking/touching outside of it
+    document.addEventListener('click', function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            closeDropdowns();
+        }
+    });
+
+    // Toggle dropdown when clicking/touching the button
+    dropdowns.forEach(function (dropdown) {
+        const dropbtn = dropdown.querySelector('.dropbtn');
+        dropbtn.addEventListener('click', function (event) {
+            closeDropdowns(); // Close all other dropdowns
+            dropdown.classList.toggle('active');
+        });
+    });
+
+    // Function to close all dropdowns
+    function closeDropdowns() {
+        dropdowns.forEach(function (dropdown) {
+            dropdown.classList.remove('active');
+        });
+    }
+});
+
+
+const familySection = document.querySelector('.family-section');
+const hobbySection = document.querySelector('.hobby-section');
+const vacationSection = document.querySelector('.vacation-section');
+const vacationSectionMap = document.querySelector('.vacation-section-map');
+
+function checkVisibility() {
+    const familyRect = familySection.getBoundingClientRect();
+    const hobbyRect = hobbySection.getBoundingClientRect();
+    const vacationRect = vacationSection.getBoundingClientRect();
+    const vacationMapRect = vacationSectionMap.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (familyRect.top <= (windowHeight - (windowHeight / 2)) && familyRect.bottom >= 0) {
+        familySection.classList.add('visible');
+    } else {
+        familySection.classList.remove('visible');
+    }
+
+    if (hobbyRect.top <= (windowHeight - (windowHeight / 2)) && hobbyRect.bottom >= 0) {
+        hobbySection.classList.add('visible');
+    } else {
+        hobbySection.classList.remove('visible');
+    }
+
+    if (vacationRect.top <= (windowHeight - (windowHeight / 2)) && vacationRect.bottom >= 0) {
+        vacationSection.classList.add('visible');
+    } else {
+        vacationSection.classList.remove('visible');
+    }
+    if (vacationMapRect.top <= (windowHeight - (windowHeight / 2)) && vacationMapRect.bottom >= 0) {
+        vacationSectionMap.classList.add('visible');
+    } else {
+        vacationSectionMap.classList.remove('visible');
+    }
+}
+
+// Event listeners
+window.addEventListener('DOMContentLoaded', () => {
+    checkVisibility();
+});
+
+window.addEventListener('scroll', () => {
+    checkVisibility();
+});
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Initialize the map
+    const map = L.map('map', {
+        zoomControl: true // Enable the zoom controls
+    }).setView([37.8, -96], 5); // Centered on the US
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map)
+    // Disable various zoom features
+    map.scrollWheelZoom.disable(); // Disable scroll zoom
+    map.doubleClickZoom.disable(); // Disable double-click zoom
+    map.touchZoom.disable(); // Disable touch zoom on mobile
+    map.boxZoom.disable(); // Disable box zoom (if applicable
+    // Define custom icon for Grand Island
+    const grandIslandIcon = L.icon({
+        iconUrl: 'images/AboutMe/Google-Star-Marker.webp', // Path to your custom icon image
+        iconSize: [64, 64], // Size of the icon [width, height]
+        iconAnchor: [16, 32], // Anchor point of the icon [horizontal, vertical]
+        popupAnchor: [0, -32] // Point from which the popup should open relative to the iconAnchor
+    })
+    // Define default icon for other markers
+    const defaultIcon = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png', // Path to the default icon
+        iconSize: [25, 41], // Size of the default icon [width, height]
+        iconAnchor: [12, 41], // Anchor point of the icon [horizontal, vertical]
+        popupAnchor: [1, -34] // Point from which the popup should open relative to the iconAnchor
+    })
+    // List of locations with latitude and longitude
+    const locations = [
+        { name: "Grand Island, NE", coords: [40.9265661491839, -98.34236782307471], icon: grandIslandIcon, zIndexOffset: 1000 },
+        { name: "Time Square, Manhattan, NY", coords: [40.75921840702715, -73.98555644451216], icon: defaultIcon },
+        { name: "Disney Land, Anaheim, CA", coords: [33.81253302680572, -117.9191029483257], icon: defaultIcon },
+        { name: "Disney World, Orlando, FL", coords: [28.422115031959592, -81.5822854346539], icon: defaultIcon },
+        { name: "Kansas City, MO", coords: [39.097132121729544, -94.59907426256387], icon: defaultIcon },
+        { name: "Colorado Springs, CO", coords: [38.757227314280414, -104.80622727747975], icon: defaultIcon },
+        { name: "Washington DC", coords: [38.914811832271404, -77.07911470481687], icon: defaultIcon },
+        { name: "Lincoln, NE", coords: [40.81345506168844, -96.70208134795408], icon: defaultIcon },
+        { name: "Omaha, NE", coords: [41.451073434812194, -96.02445383116398], icon: defaultIcon },
+        { name: "Lake McConaughy, NE", coords: [41.244617548072206, -101.8098520124583], icon: defaultIcon },
+        { name: "Cheyenne, WY", coords: [41.139712560372075, -104.82279074937125], icon: defaultIcon },
+        { name: "Harlan Lake, NE", coords: [40.052937277779556, -99.30884174374718], icon: defaultIcon },
+        { name: "Melbourne, FL", coords: [28.05111713913334, -80.59466275942317], icon: defaultIcon },
+        { name: "Cocoa Beach, FL", coords: [28.315574296324467, -80.60569337192784], icon: defaultIcon },
+        { name: "Des Moines, IA", coords: [41.58083535851765, -93.622571860428], icon: defaultIcon },
+        { name: "Madison, WI", coords: [43.243307486887176, -89.41264194353677], icon: defaultIcon },
+        { name: "Branson MO", coords: [36.64810752197188, -93.20938029878565], icon: defaultIcon },
+        { name: "Lake of the Ozarks, MO", coords: [38.1401606288298, -92.80636583636245], icon: defaultIcon },
+        { name: "Mount Rushmore, SD", coords: [43.90281485664937, -103.40306922065795], icon: defaultIcon },
+        { name: "Hot Springs, SD", coords: [43.429371523596494, -103.47881216373203], icon: defaultIcon },
+        //{ name: "Text", coords: [], icon: defaultIcon },
+    ]
+    // Add markers to the map
+    locations.forEach(location => {
+        if (location.coords.length === 2) {
+            L.marker(location.coords, { 
+                icon: location.icon || defaultIcon,
+                zIndexOffset: location.zIndexOffset || 0 // Use zIndexOffset for stacking
+            }).addTo(map)
+            .bindPopup(location.name);
+        }
+    });
+});
+
+function toggleMap() {
+    const mapDiv = document.getElementById('map');
+    if (mapDiv.style.display === 'none') {
+        mapDiv.style.display = 'block';
+    } else {
+        mapDiv.style.display = 'none';
+    }
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const vinylContainer = document.querySelector('.vinyl-container');
+  const vinylItems = Array.from(vinylContainer.querySelectorAll('.vinyl-item'));
+  const vinylWidth = 100; // Width of a vinyl item in pixels
+  const margin = 0; // Total margin (left + right) of a vinyl item in pixels
+  function updateVisibleVinyls() {
+    const containerWidth = vinylContainer.offsetWidth;
+    const maxVinyls = Math.floor((containerWidth + margin) / (vinylWidth + margin));
+    vinylItems.forEach((item, index) => {
+      item.style.display = (index < maxVinyls) ? 'block' : 'none';
+    });
+  }
+  // Initial update
+  updateVisibleVinyls();
+  // Update on window resize
+  window.addEventListener('resize', updateVisibleVinyls);
+});
+
+// JavaScript to toggle image size on click
+document.getElementById('resumeImage').addEventListener('click', function() {
+    this.classList.toggle('enlarged');
+});
+
+
+// Show the scroll-to-top button when the user scrolls down
+window.onscroll = function () {
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    const footer = document.getElementById('footer');
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = 'block';
+        footer.style.display = 'block';
+    } else {
+        footer.style.display = 'none';
+        scrollToTopBtn.style.display = 'none';
+    }
+};
+// This code updates the year in the footer automatically
+document.addEventListener('DOMContentLoaded', () => {
+    const yearElement = document.getElementById('year');
+    const currentYear = new Date().getFullYear();
+    yearElement.textContent = currentYear;
+});
+
+
+// Scroll to the top of the page when the button is clicked
+document.getElementById('scrollToTopBtn').addEventListener('click', function () {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+
+</script>
+
+</body>
+</html>

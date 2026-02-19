@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="png" href="images/Logo/favicon.png">
+
+<style>
+
+
+/* Variable name*/
+:root {
+    --hue: 172;
+    --darkhue: 12%;
+    --color: hsl(var(--hue), 100%, 50%);
+    --darkColor: hsl(var(--hue), 100%, 25%);
+    --backgroundColor: hsl(0, 0%, var(--darkhue));
+}
+
+/* Loading Screen Styles */
+#loading-screen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: var(--backgroundColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Spinner Styles */
+.spinner {
+  border: 16px solid var(--darkColor); /* Light grey */
+  border-top: 16px solid var(--color); /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* This is the Main screen*/
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--backgroundColor);
+    overflow-x: hidden;
+}
+
+
+/* This is the Welcome Screen */
+.welcome-container {
+    top: 0; /* Ensure the container starts at the top */
+    left: 0; /* Ensure the container starts at the left */
+    position: fixed;
+    height: 200%;
+    aspect-ratio: 16/9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9000;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--color), var(--darkColor), #000000, var(--color), var(--darkColor), #000000);
+    background-size: 400% 400%;
+    animation: animateGradient 4s linear infinite;
+    clip-path: circle(100%);
+    -webkit-clip-path: circle(100%);
+    transition: clip-path 0.8s ease-out, -webkit-clip-path 0.8s ease-out;
+}
+@keyframes animateGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 95%;
+    }
+}
+.welcome-message h1{
+    position: fixed; /* Position the element fixed within the viewport */
+    top: 40%; /* Position it at the vertical center */
+    left: 50%; /* Position it at the horizontal center */
+    transform: translate(-50%, -50%); /* Offset it by half its own size to truly center it */
+    text-align: center; /* Center the text within the element */
+    font-size: 5.5em;
+    color: #e6e6e6;
+    z-index: 1;
+    padding: 20px; /* Optional: add some padding for better visual appearance */
+    border-radius: 10px; /* Optional: add border-radius for a rounded effect */
+    width: 80%;
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: var(--darkColor);
+}
+.welcome-message p{
+    position: fixed; /* Position the element fixed within the viewport */
+    top: 75%; /* Position it at the vertical center */
+    left: 50%; /* Position it at the horizontal center */
+    transform: translate(-50%, -50%); /* Offset it by half its own size to truly center it */
+    text-align: center; /* Center the text within the element */
+    font-size: 2.5em;
+    color: #e6e6e6;
+    z-index: 1;
+    padding: 20px; /* Optional: add some padding for better visual appearance */
+    border-radius: 10px; /* Optional: add border-radius for a rounded effect */
+    width: 85%;
+    -webkit-text-stroke-width: 1px; /* Outline the text */
+    -webkit-text-stroke-color: var(--darkColor);
+}
+@media (max-width: 1800px) {
+.welcome-message h1 {
+    font-size: 4.0em;
+    -webkit-text-stroke-width: 2px; /* Outline the text */
+    -webkit-text-stroke-color: var(--darkColor);
+}
+.welcome-message p {
+    font-size: 2.4em;
+    -webkit-text-stroke-width: 2px; /* Outline the text */
+    -webkit-text-stroke-color: var(--darkColor);
+    top: 75%;
+}
+}
+@media (max-width: 1000px) {
+.welcome-message h1 {
+    font-size: 2.0em;
+    -webkit-text-stroke-width: 1px; /* Outline the text */
+    -webkit-text-stroke-color: var(--darkColor);
+}
+.welcome-message p {
+    font-size: 1.4em;
+    -webkit-text-stroke-width: 1px; /* Outline the text */
+    -webkit-text-stroke-color: var(--darkColor);
+    top: 75%;
+}
+}
+
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+/* This is the top navigation bar */
+.navbar {
+    overflow: visible;
+    background-color: var(--backgroundColor);
+    position: relative;
+    width: 100%;
+    z-index: 3;
+    outline: 1px solid var(--color);
+
+}
+.navbar a {
+    float: left;
+    color: var(--color);
+    text-align: center;
+    padding: 18px 20px;
+    text-decoration: none;
+
+}
+.navbar a:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+/* Style for the home button */
+.home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 51px;
+    background-color: var(--color); /* Start with the theme color */
+    outline: 1px solid var(--color); /* Maintain the outline */
+}
+
+/* Ensure the icon fits within the button */
+.home-button .home-icon {
+    width: 50px;
+    height: 50px;
+    margin-top: -10px;
+}
+/* Style changes on hover for home button */
+.home-button:hover {
+    background-color: var(--darkColor);
+    color: var(--darkColor);
+}
+.home-button:hover img{
+    transform: scale(1.1); /* Slightly enlarge image on hover */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+/* Dropdown container */
+.dropdown {
+    float: left;
+    overflow: hidden;
+    outline: 1px solid var(--color);
+
+}
+
+.dropdown .dropbtn {
+    color: var(--color);
+    text-align: center;
+    padding: 16px 4vw;
+    text-decoration: none;
+    outline: 1px solid var(--color);
+}
+
+.dropdown .dropbtn:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--backgroundColor);
+    min-width: 270px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 3;
+    margin-top: 50px; /* Add a small margin to avoid overlap */
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    float: none;
+    color: var(--color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    outline: 1px solid var(--color);
+}
+
+.dropdown-content a:hover {
+    background-color: var(--color);
+    color: var(--backgroundColor);
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Background color buttons */
+.color-buttons {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: 10px;
+    right: 12%;
+}
+
+.color-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    background-color: #646464;
+    outline: 1px solid var(--color);
+}
+
+.color-buttons img {
+    width: 30px;
+    height: 30px;
+}
+
+.color-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    width: 200px;
+    height: 8px;
+    left: 90%;
+    top: 25px;
+    background: linear-gradient(to right, hsl(0, 100%, 50%), hsl(30, 100%, 50%), hsl(60, 100%, 50%), hsl(90, 100%, 50%), hsl(120, 100%, 50%), hsl(150, 100%, 50%), hsl(180, 100%, 50%), hsl(210, 100%, 50%), hsl(240, 100%, 50%), hsl(270, 100%, 50%), hsl(300, 100%, 50%), hsl(330, 100%, 50%), hsl(360, 100%, 50%));
+    border-radius: 5px;
+    cursor: pointer;
+}
+@media (max-width: 2100px) {
+    .color-slider {
+        position: absolute;
+        left: 87%;
+    }
+    .color-buttons {
+        position: absolute;
+        right: 15%;
+    }
+}
+@media (max-width: 1600px) {
+    .color-slider {
+        position: absolute;
+        left: 85%;
+    }
+    .color-buttons {
+        position: absolute;
+        right: 20%;
+    }
+}
+@media (max-width: 1400px) {
+    .color-slider {
+        position: absolute;
+        left: 83%;
+    }
+}
+@media (max-width: 1300px) {
+    .color-buttons {
+        position: absolute;
+        top: 60px;
+        right: 50%;
+    }
+    .color-slider {
+
+        left: 20%;
+        height: 8px;
+        top: 75px;
+    }
+}
+@media (max-width: 1200px) {
+    .color-buttons {
+        position: absolute;
+        top: 60px;
+        right: 35%;
+    }
+}
+@media (max-width: 800px) {
+    .color-buttons {
+        position: absolute;
+        top: 60px;
+        right: 20%;
+    }
+}
+@media (max-width: 700px) {
+    .color-buttons {
+        position: absolute;
+        top: 60px;
+        right: 8%;
+    }
+}
+@media (max-width: 500px) {
+    .color-slider {
+        position: absolute;
+
+        width: 80%;
+        left: 4%;
+        height: 8px;
+        top: 130px;
+    }
+    .dropdown .dropbtn {
+        color: var(--color);
+        text-align: center;
+        padding: 16px 11vw;
+        text-decoration: none;
+        outline: 1px solid var(--color);
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: var(--backgroundColor);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 3;
+        margin-top: 50px; /* Add a small margin to avoid overlap */
+    }
+    .color-slider[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 30px;
+        height: 30px;
+
+    }
+    .color-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: absolute;
+        top: 10px;
+        right: 3%;
+    }
+    .navbar .dropdown:nth-child(6) { /* Adjust this if Skills is not the 6th child */
+        display: none;
+    }
+}
+.color-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color);
+    box-shadow: var(--darkColor);
+    cursor: pointer;
+}
+
+.color-slider:hover::-webkit-slider-thumb {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.color-slider:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+}
+
+
+
+
+
+/* Matrix animation styles */
+.matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+
+}
+.matrix-bg span {
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    color: var(--color);
+    opacity: 0;
+    animation: animate 5s linear infinite;
+    white-space: nowrap;
+}
+@keyframes animate {
+    0% {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+/* Overlay text container */
+.overlay-text-container {
+    position: absolute;
+    top: 5%;
+    left: 50vw;
+    transform: translate(-50vw, -10%);
+    z-index: 3; /* Ensure it's above the matrix background */
+    width: 99vw; /* Ensure the container is responsive */
+}
+
+.overlay-text-header {
+    width: 100%;
+    color: transparent;
+    font-size: 7.3vw; /* Use viewport width units for responsive text */
+    white-space: nowrap;
+    -webkit-text-stroke-width: .02em; /* Outline the text */
+    -webkit-text-stroke-color: var(--color);
+    text-align: center; /* Ensure text is centered */
+}
+@media (max-width: 500px) {
+    /* Overlay text container */
+    .overlay-text-container {
+        position: absolute;
+        top: 9%;
+        left: 50vw;
+        transform: translate(-50vw, -10%);
+        z-index: 3; /* Ensure it's above the matrix background */
+        width: 99vw; /* Ensure the container is responsive */
+    }
+
+}
+
+
+
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Changed from left: 20px */
+    width: 50px;
+    height: 50px;
+    background-color: var(--color);
+    color: #000;
+    text-align: center;
+    line-height: 50px;
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: none; /* Initially hidden */
+    z-index: 1000; /* Ensure it's on top */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.scroll-to-top-btn:hover {
+    background-color: var(--darkColor);
+    transform: scale(1.1);
+}
+
+
+
+
+  
+
+/* About Me Section */
+.about-me-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--backgroundColor);
+}
+
+.about-me-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 90vh;
+    padding: 20px;
+}
+
+.Connor-picture {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 50%;
+    height: 100%;
+    z-index: 300;
+}
+.Connor-picture img:hover {
+    transform: scale(1.05); /* Slightly enlarge image on hover */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.Connor-picture img {
+    width: 80%;
+    height: auto;
+    border-radius: 10%;
+    cursor: pointer;
+    background-color: var(--backgroundColor);
+    box-shadow: 0 0 10px 10px var(--color);
+}
+
+.about-text {
+    flex: 1;
+    max-width: 50%;
+    padding-left: 5%;
+    height: auto;
+}
+
+.about-me-heading {
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    color: var(--color);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+    margin-bottom: 20px;
+}
+
+.about-me-text {
+    font-size: clamp(16px, 1.5vw, 2vw);
+    line-height: 1.6;
+    color: var(--color);
+    text-align: left;
+    animation: fade linear both;
+    animation-timeline: view();
+    animation-range: entry 50% cover 50%;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 700px) {
+    .about-me-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .Connor-picture {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .about-text {
+        max-width: 100%;
+        padding-left: 0;
+    }
+}
+
+
+
+
+
+/* This is the content section of the whole page*/
+.content{
+    max-width: 100%; /* Adjust the maximum width of the content area */
+    margin: 0, auto; /* Center the content horizontally */
+    padding: 20px; /* Add padding around the content for spacing */
+    position: relative; /* Ensure content scrolls below matrix background */
+    z-index: 1; /* Ensure content is above matrix background */
+    background-color: var(--backgroundColor); /* Set the background color of the content area */
+    font-family: 'Roboto', sans-serif; /* Set the font family */
+    padding-top: 100vh; /* Ensure content starts below matrix background */
+}
+
+
+/* Projects Section */
+.projects-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    text-align: center;
+    background-color: var(--backgroundColor);
+    color: var(--color);
+    padding: 20px; /* Added padding for spacing */
+}
+
+@media (max-width: 700px) {
+    .projects-container {
+        margin-top: 20px; /* Adjust the margin to reduce spacing */
+    }
+}
+
+.projects-gallery-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    padding: 20px; /* Added padding for spacing */
+}
+
+/* Ensure fixed height for smooth sliding */
+.projects-gallery {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 60vw;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    height: 80vh; /* Adjust this value as needed */
+}
+
+/* Projects Label */
+.projects-label {
+    color: var(--color);
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+    margin-bottom: 20px; /* Adjust spacing */
+}
+
+/* Project Description */
+.project-description {
+    margin-top: 20px;
+    color: var(--color);
+    font-size: 1.2rem;
+    text-align: center;
+    transition: opacity 0.6s ease;
+    z-index: 1;
+}
+
+/* Arrows */
+.arrow {
+    cursor: pointer;
+    position: absolute;
+    width: 80px; /* Adjusted width */
+    height: 120px; /* Adjusted height */
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.1s;
+}
+
+.arrow::before {
+    content: '';
+    position: absolute;
+    top: -100px; /* Increase as needed */
+    bottom: 20px; /* Increase as needed */
+    left: -20px; /* Increase as needed */
+    right: -20px; /* Increase as needed */
+    background: transparent; /* Ensure this is transparent */
+    cursor: pointer;
+    z-index: 9999;
+}
+
+.arrow-top, .arrow-bottom {
+    background-color: var(--darkColor);
+    height: 4px;
+    position: absolute;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .arrow::before {
+        top: -50px; /* Adjusted */
+        bottom: 10px; /* Adjusted */
+        left: -10px; /* Adjusted */
+        right: -10px; /* Adjusted */
+    }
+    .arrow {
+        width: 40px; /* Reduced width */
+        height: 60px; /* Reduced height */
+    }
+    .arrow-top, .arrow-bottom {
+        height: 2px;
+    }
+    /* Project Description */
+    .project-description {
+        display: none;
+    }
+}
+
+.arrow-top {
+    transform: rotate(45deg);
+    transform-origin: bottom right;
+}
+
+.arrow-bottom {
+    transform: rotate(-45deg);
+    transform-origin: top right;
+}
+
+.arrow-top:after, .arrow-bottom:after {
+    background-color: var(--color);
+    content: '';
+    height: 100%;
+    position: absolute;
+    top: 0;
+    transition: all 0.15s; /* Transition time */
+}
+
+.arrow-top:after {
+    left: 100%;
+    right: 0;
+    transition-delay: 0s;
+}
+
+.arrow-bottom:after {
+    left: 0;
+    right: 100%;
+    transition-delay: 0.15s; /* Match transition-delay for consistency */
+}
+
+.arrow:hover .arrow-top:after {
+    left: 0;
+    transition-delay: 0.15s;
+}
+
+.arrow:hover .arrow-bottom:after {
+    right: 0;
+    transition-delay: 0s;
+}
+
+.arrow:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+/* Positioning Arrows */
+.left-arrow {
+    left: 40px;
+}
+
+.right-arrow {
+    right: 40px;
+}
+
+@media (max-width: 600px) {
+    .left-arrow {
+        left: 5px;
+    }
+    .right-arrow {
+        right: 5px;
+    }
+}
+
+/* Left Arrow Flipping */
+.left-arrow .arrow-top {
+    transform: rotate(-45deg); /* Flip direction */
+    transform-origin: bottom left; /* Adjust origin for flip */
+}
+
+.left-arrow .arrow-bottom {
+    transform: rotate(45deg); /* Flip direction */
+    transform-origin: top left; /* Adjust origin for flip */
+}
+
+.left-arrow .arrow-top:after {
+    left: 0;
+    right: 100%;
+    transition-delay: 0s;
+}
+
+.left-arrow .arrow-bottom:after {
+    left: 100%;
+    right: 0;
+    transition-delay: 0.15s;
+}
+
+.left-arrow:hover .arrow-top:after {
+    right: 0;
+    transition-delay: 0.15s;
+}
+
+.left-arrow:hover .arrow-bottom:after {
+    left: 0;
+    transition-delay: 0s;
+}
+
+/* Project Image Styling */
+.project-image {
+    cursor: pointer;
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+}
+
+.project-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10%;
+    box-shadow: 0 0 20px var(--color);
+}
+
+.project-image.big {
+    flex: 2 2 60%;
+    transition: flex 0.6s ease;
+}
+
+.project-image.small {
+    flex: 1 1 20%;
+    transition: flex 0.6s ease;
+}
+
+.project-image:hover {
+    transform: scale(1.05); /* Slightly enlarge image on hover */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+/* Animation */
+.slide-out-left {
+    animation: slideOutLeft 0.5s forwards;
+}
+
+.slide-out-right {
+    animation: slideOutRight 0.5s forwards;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s forwards;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s forwards;
+}
+
+@keyframes slideOutLeft {
+    100% { transform: translateX(-100%); opacity: 0; }
+}
+
+@keyframes slideOutRight {
+    100% { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes slideInLeft {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    0% { transform: translateX(-100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+
+
+
+
+
+
+
+/* Education and Workspace Section */
+.education-workspace-container {
+    display: flex;
+    flex-direction: column; /* Stack the sections vertically */
+    text-align: center;
+    overflow: hidden; /* Ensure elements do not overflow */
+}
+.education-container,
+.workspace-container {
+    margin: 100px 0; /* Add some margin between sections */
+    opacity: 0; /* Initially invisible */
+    transition: transform 0.8s ease, opacity 0.8s ease; /* Smooth transition */
+    z-index: 1;
+}
+.workspace-container {
+    transform: translateX(40%); /* Initially off-screen for vertical transition */
+}
+.education-container{
+    transform: translateX(-40%); /* Initially off-screen for vertical transition */
+}
+/* Adjust margin for smaller screens */
+@media (max-width: 700px) {
+    .education-container,
+    .workspace-container {
+        margin: 30px 0; /* Reduce margin on smaller screens */
+    }
+}
+.education-container.visible,
+.workspace-container.visible {
+    transform: translateY(0); /* Bring into view from the top */
+    opacity: 1; /* Make visible */
+}
+.education-label,
+.workspace-label {
+    color: var(--color);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    margin-bottom: 40px;
+
+}
+.education-item,
+.workspace-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+
+}
+.education-image,
+.workspace-image {
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 20px var(--color);
+    border-radius: 10px;
+    margin: 0 20px;
+
+}
+.education-image img,
+.workspace-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+
+}
+@media (max-width: 500px) {
+    .education-image,
+    .workspace-image {
+        width: 300px;
+        height: 100px;
+
+    }
+}
+.education-image a,
+.workspace-image a {
+    display: block; /* Ensure the <a> tag is a block element */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 2; /* Ensure it's above other elements */
+}
+
+.education-image a :hover,
+.workspace-image a :hover {
+    transform: scale(1.05); /* Slightly enlarge image on hover */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.education-description,
+.workspace-description {
+    color: var(--color);
+    max-width: 500px; /* Adjust the width as needed */
+    text-align: left;
+}
+.education-description h3,
+.workspace-description h3 {
+    margin-top: 0;
+}
+.education-description p,
+.workspace-description p {
+    margin: 5px 0;
+}
+
+/* Skills Section */
+.skills-container {
+    position: relative; /* Ensure the container is relatively positioned */
+    margin-top: 100px; /* Add margin to the top to create space */
+
+}
+
+.skills-label {
+    position: relative;
+    color: var(--color);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+    font-size: clamp(2.5rem, 3vw, 100vw);
+    z-index: 10; /* Ensure it stays on top */
+    text-align: center;
+}
+
+
+
+.skills-list {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.skills-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.skill {
+    width: 80%;
+    max-width: 600px;
+    text-align: left;
+}
+
+.skill label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--color);
+}
+
+.skill input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--color);
+    height: 5px;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: width 0.3s ease-out; /* Ensure there's a transition */
+}
+
+.skill input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--darkColor);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+
+
+
+
+
+.social-media-container h2{
+    position: relative;
+    text-align: center;
+    color: var(--color);
+    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
+    
+}
+
+
+/* Container for social buttons */
+.social-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center; /* Center align the buttons */
+    margin-top: 20px; /* Add some spacing from other content */
+}
+
+/* General button styles */
+.social-button {
+    width: 60px; /* Width of the button */
+    height: 60px; /* Height of the button */
+    border: 2px solid var(--color); /* Border color */
+    border-radius: 50%; /* Rounded corners for circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--backgroundColor); /* Background color */
+    cursor: pointer;
+    position: relative; /* For positioning pseudo-elements */
+    transition: box-shadow 0.3s;
+    text-decoration: none; /* Remove underline */
+    color: var(--color); /* Default icon color */
+    font-size: 24px; /* Default icon size */
+    z-index: 1; /* Ensure button is above other elements */
+    overflow: hidden; /* Ensure inner elements don't overflow */
+}
+
+/* Email button styles */
+.email-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.email_icon {
+    margin-top: 5px; /* Adjust margin to fit within the button */
+    width: 0px; /* Width of the main part of the envelope */
+    height: 10px; /* Height of the main part of the envelope - scaled down */
+    border-top: 14px solid var(--backgroundColor); /* Top border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    background-color: var(--color); /* Envelope color */
+    transition: .3s; /* Transition duration for smooth animation */
+    padding: 0; /* No padding */
+    margin: 0; /* No margin */
+    position: relative; /* For positioning pseudo-elements */
+}
+
+.email_icon:before {
+    padding: 0; /* No padding */
+    margin: 0; /* No margin */
+    content: ""; /* Empty content for pseudo-element */
+    position: absolute; /* Absolute positioning */
+    top: -15px; /* Positioning above the main icon - scaled down */
+    left: -20px; /* Positioning to the left - scaled down */
+    border-top: 14px solid var(--color); /* Top border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    transition: .1s; /* Transition duration for smooth animation */
+}
+
+.social-button:hover .email_icon {
+    background-color: var(--color); /* Background color on hover */
+}
+.social-button:hover{
+    box-shadow: 0 0 15px var(--color);
+    transform: scale(1.2);
+}
+.social-button:hover .email_icon:before {
+    position: absolute; /* Absolute positioning */
+    top: -30px; /* Positioning further above */
+    left: -20px; /* Positioning slightly left */
+    border-bottom: 15px solid var(--color); /* Bottom border color and thickness - scaled down */
+    border-left: 20px solid transparent; /* Transparent left border - scaled down */
+    border-right: 20px solid transparent; /* Transparent right border - scaled down */
+    border-top: 0px; /* No top border */
+    transition: .1s; /* Transition duration for smooth animation */
+}
+
+/* Phone button animation */
+.call-button {
+    position: relative; /* Needed for the lines animation */
+}
+
+.call-button:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px var(--color);
+}
+
+.phone-arcs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1; /* Ensure arcs appear behind the button */
+}
+
+.arc {
+    position: absolute;
+    border: 2px solid var(--color);
+    border-top-left-radius: 60px; /* Should be half of the width */
+    border-top-right-radius: 60px; /* Should be half of the width */
+    border-bottom: none; /* Remove bottom border for arc effect */
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.arc1 {
+    top: -8px; /* Adjust vertical position */
+    left: 0px; /* Adjust horizontal position */
+    width: 11px; /* Adjust to change the length */
+    height: 5px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: 0s;
+
+}
+
+.arc2 {
+    top: -14px; /* Further adjust vertical position */
+    left: 0px; /* Further adjust horizontal position */
+    width: 20px; /* Adjust to change the length */
+    height: 9px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: 0.3s;
+}
+
+.arc3 {
+    top: -20px; /* Further adjust vertical position */
+    left: -3px; /* Further adjust horizontal position */
+    width: 32px; /* Adjust to change the length */
+    height: 15px; /* Should be half of the width for a semi-circle */
+    transform: rotate(45deg);
+    transition-delay: .6s;
+}
+
+
+.call-button:hover .arc1 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+.call-button:hover .arc2 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+.call-button:hover .arc3 {
+    opacity: 1;
+    transform: scale(1.2);
+    transform: rotate(45deg);
+}
+
+/* Adjust LinkedIn button styling */
+.indeed-button {
+    position: relative; /* Needed to position the bouncing ball */
+    background-color: var(--backgroundColor); /* Set background color to match */
+}
+.fa-linkedin{
+    transform: scale(1.7);
+}
+
+/* Styling for the stationary ball */
+.indeed-button .stationary-ball {
+    position: absolute;
+    top: 16px; /* Position to cover the ball of the 'i' */
+    left: calc(35% - 1px);
+    transform: translateX(-50%);
+    width: 9px; /* Size of the stationary ball */
+    height: 9px;
+    background-color: var(--color); /* Match the background color */
+    border-radius: 50%; /* Make it circular */
+    z-index: 2; /* Ensure it stays above the LinkedIn logo */
+}
+
+/* Styling for the bouncing ball */
+.indeed-button .bouncing-ball {
+    position: absolute;
+    top: 17px; /* Same initial position as the stationary ball */
+    left: calc(35% - 1px);
+    transform: translateX(-50%);
+    width: 6px; /* Size of the bouncing ball */
+    height: 6px;
+    background-color: var(--backgroundColor); /* Color to match the LinkedIn logo */
+    border-radius: 50%; /* Make it circular */
+    z-index: 3; /* Ensure it stays above the stationary ball */
+    transition: transform 0.3s;
+}
+
+/* Keyframes for forward hop effect */
+@keyframes rainbow-hop-forward {
+    0% {
+        transform: translate(-150%, 0); /* Start further to the left */
+    }
+    25% {
+        transform: translate(-75%, -10px); /* Hop to a further middle-left */
+    }
+    50% {
+        transform: translate(0%, 0); /* Reach the middle */
+    }
+    75% {
+        transform: translate(75%, -10px); /* Hop to a further middle-right */
+    }
+    100% {
+        transform: translate(150%, 0); /* Reach further to the right */
+    }
+}
+
+/* Keyframes for bouncing effect */
+@keyframes bounce {
+    0%, 100% {
+        transform: translate(-50%, 0); /* Start and end at the same position */
+    }
+    50% {
+        transform: translate(-50%, -6px); /* Move the ball up by 10px */
+    }
+}
+
+/* Trigger bouncing on hover */
+.indeed-button:hover .bouncing-ball {
+    animation: bounce 0.6s ease-in-out infinite; /* Apply the bouncing animation */
+}
+
+
+
+
+
+
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--color);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 45%;
+    display: none; /* Initially hidden */
+}
+@media (max-width: 2200px) {
+    footer {
+        left: 43%;
+    }
+}
+@media (max-width: 1800px) {
+    footer {
+        left: 40%;
+    }
+}
+@media (max-width: 1200px) {
+    footer {
+        left: 35%;
+    }
+}
+@media (max-width: 800px) {
+    footer {
+        left: 30%;
+    }
+}
+@media (max-width: 600px) {
+    footer {
+        left: 25%;
+    }
+}
+@media (max-width: 500px) {
+    footer {
+        left: -45%;
+        position: absolute;
+    }
+}
+
+</style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Welcome Screen -->
+    <div class="welcome-container" id="welcomeContainer">
+        <div class="welcome-message">
+            <h1 id="welcomeText"></h1>
+            <p>Click anywhere to continue</p>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="dropdown home-button">
+            <a href="index.html" class="dropbtn home-button"><img src="images/Home/Home_Icon.png" alt="Home" class="home-icon"></a>
+        </div>
+        <div class="dropdown">
+            <a href="#about-me" class="dropbtn">About Me</a>
+            <div class="dropdown-content">
+                <a href="about.html">Connor Hohlen</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#projects" class="dropbtn">Projects</a>
+            <div class="dropdown-content">
+                <a href="project1.html">This Website</a>
+                <a href="project2.html">FPV Drone</a>
+                <a href="project3.html">LED Lights</a>
+                <a href="project4.html">Plant Monitor</a>
+                <a href="project5.html">Company SQL and Java Coding</a>
+                <a href="project6.html">Rocket System</a>
+                <a href="project7.html">Project 7</a>
+                <a href="project8.html">Project 8</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#education-workspace" class="dropbtn">Education</a>
+            <div class="dropdown-content">
+                <a href="college.html">College</a>
+                <a href="highschool.html">Highschool</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#workspace" class="dropbtn">Workspace</a>
+            <div class="dropdown-content">
+                <a href="workspace1.html">Amur Equipment Finance</a>
+                <a href="workspace2.html">Menards</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#skills" class="dropbtn">Skills</a>
+        </div>
+        <!-- Background Color Buttons -->
+        <div class="color-buttons">
+            <button id="darkModeBtn"><img src="images/BackgroundButtons/moon_icon.png" alt="Dark Mode"></button>
+            <button id="grayModeBtn"><img src="images/BackgroundButtons/half_sun_icon.png" alt="Gray Mode"></button>
+            <button id="lightModeBtn"><img src="images/BackgroundButtons/sun_icon.png" alt="Light Mode"></button>
+        </div>
+        <!-- Color Picker Slider -->
+        <input type="range" min="0" max="360" value="180" class="color-slider" id="colorSlider">
+    </div>
+    <!-- Main Content -->
+    <div class="content" id="mainContent">
+        <!-- Matrix Background Container -->
+        <div class="matrix-bg" id="matrixBg"></div>
+        <div class="overlay-text-container">
+            <div class='overlay-text-header'>
+              <h2>Connor's Website</h2>
+            </div>
+          </div>
+        <div id="scrollToTopBtn" class="scroll-to-top-btn">
+            &#9650;
+        </div>
+        <!-- About Me Section -->
+        <section id="about-me" class="about-me-container">
+            <div class="about-me-content">
+                <div class="Connor-picture">
+                    <a href="about.html">
+                        <img src="images/Connor_Hohlen.png" alt="About me">
+                    </a>
+                </div>
+                <div class="about-text">
+                    <h2 class="about-me-heading">About Me</h2>
+                    <p class="about-me-text">My name is Connor Hohlen, a Computer Engineer. I love coding, designing, and creating amazing digital experiences. I am passionate about creativity and innovation, constantly exploring new ideas. With a background in Computer Engineering, I thrive on challenges, finding solutions that make a difference. Outside work, I enjoy building ideas and working on embedded systems. Welcome to my page!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects-container" id="projects">
+            <h2 class="projects-label">Projects</h2>
+            <div class="projects-gallery-wrapper">
+                <div class="arrow left-arrow">
+                    <div class="arrow-top"></div>
+                    <div class="arrow-bottom"></div>
+                </div>
+                <div class="projects-gallery">
+                    <!-- Project images will be dynamically inserted here -->
+                </div>
+                <div class="arrow right-arrow">
+                    <div class="arrow-top"></div>
+                    <div class="arrow-bottom"></div>
+                </div>
+            </div>
+            <div class="project-description" id="projectDescription"></div>
+        </section>
+        <!-- Education & Workspace Section -->
+        <div class="education-workspace-container" id="education-workspace">
+            <div class="education-container">
+                <h2 class="education-label">Education</h2>
+                <div class="education-item">
+                    <div class="education-image">
+                        <a href="college.html">
+                            <img src="images/College/College.jpg" alt="University">
+                        </a>
+                    </div>
+                    <div class="education-description">
+                        <h3>University of Nebraska-Lincoln</h3>
+                        <p>Bachelor of Science in Computer Engineering</p>
+                        <p>Expected: May 2027</p>
+                        <p>"I enjoyed learning how to code and creating/building embedded systems throughout the years."</p>
+                    </div>                    
+                </div>
+                <div class="education-item">
+                    <div class="education-image">
+                        <a href="highschool.html">
+                            <img src="images/Highschool/Northwest.jpg" alt="High School">
+                        </a>
+                    </div>
+                    <div class="education-description">
+                        <h3>Northwest Highschool</h3>
+                        <p>Highschool Diploma</p>
+                        <p>August 2019 - May 2023</p>
+                        <p>"Participated in musical and showchoir. Consistently earned Honor roll and the Academic Letter."</p>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="workspace-container" id="workspace">
+                <h2 class="workspace-label">Workspace</h2>
+                <div class="workspace-item">
+                    <div class="workspace-image">
+                        <a href="workspace1.html">
+                            <img src="images/Workspace1/Amur.jpg" alt="Workspace">
+                        </a>
+                    </div>
+                    <div class="workspace-description">
+                        <h3>Amur Equipment Finance</h3>
+                        <p>IT Intern</p>
+                        <p>May 2024 - August 2024</p>
+                        <p>"Developed internal tools using python, and gained experience in problem-solving and technical support."</p>
+                    </div>                    
+                </div>
+                <div class="workspace-item">
+                    <div class="workspace-image">
+                        <a href="workspace2.html">
+                            <img src="images/Workspace2/Menards.jpg" alt="Workspace">
+                        </a>
+                    </div>
+                    <div class="workspace-description">
+                        <h3>Menards</h3>
+                        <p>Sales Accociate</p>
+                        <p>October 2020 - August 2023</p>
+                        <p>"Worked in the plumbing department, While learning great skills like teamwork, customer service, and plenty more."</p>
+                    </div>    
+                </div>
+            </div>
+        </div>
+        <!-- Skills Section -->
+        <div class="skills-container" id="skills">
+            <h2 class="skills-label">Skills</h2>
+            <div class="skills-list">
+                <div class="skills-column">
+                    <div class="skill">
+                        <label for="python">Python</label>
+                        <input type="range" id="python" name="python" min="0" max="100" value="75" disabled>
+                    </div>
+                    <div class="skill">
+                        <label for="javascript">JavaScript</label>
+                        <input type="range" id="javascript" name="javascript" min="0" max="100" value="70" disabled>
+                    </div>
+                    <div class="skill">
+                        <label for="html">HTML</label>
+                        <input type="range" id="html" name="html" min="0" max="100" value="90" disabled>
+                    </div>
+                    <div class="skill">
+                        <label for="java">Java</label>
+                        <input type="range" id="css" name="css" min="0" max="100" value="40" disabled>
+                    </div>
+                    <div class="skill">
+                        <label for="C#">C#</label>
+                        <input type="range" id="java" name="java" min="0" max="100" value="80" disabled>
+                    </div>
+                </div>
+                <div class="skills-column">
+                    <div class="skill">
+                        <label for="Mac OS">Mac OS</label>
+                        <input type="range" id="csharp" name="csharp" min="0" max="100" value="100" disabled>
+                    </div>
+                    <div class="skill">
+                        <label for="Windows OS">Windows OS</label>
+                        <input type="range" id="sql" name="sql" min="0" max="100" value="70" disabled>
+                    </div>
+                    <div class="skill">
+                        <label for="Office 360">Office 360</label>
+                        <input type="range" id="react" name="react" min="0" max="100" value="60" disabled>
+                    </div>
+                    <div class="skill">
+                        <label for="Excel">Excel</label>
+                        <input type="range" id="nodejs" name="nodejs" min="0" max="100" value="80" disabled>
+                    </div>
+                    <div class="skill">
+                        <label for="Fusion 360">Fusion 360</label>
+                        <input type="range" id="git" name="git" min="0" max="100" value="85" disabled>
+                    </div>
+                </div>
+            </div>
+        
+        <!-- Social Media Section -->
+        <section class="social-media-container" id="contact">
+            <h2>Contact Info</h2>
+            <div class="social-buttons">
+                <!-- Email Icon -->
+                <a href="mailto:connorhohlen@gmail.com" class="social-button email-icon-container">
+                    <div class="email_icon"></div>
+                </a>
+                <!-- Phone Icon -->
+                <a href="tel:3083891407" class="social-button call-button">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="phone-arcs">
+                        <div class="arc arc1"></div>
+                        <div class="arc arc2"></div>
+                        <div class="arc arc3"></div>
+                    </div>
+                </a>
+                <!-- LinkedIn Icon -->
+                <a href="https://www.linkedin.com/in/connor-hohlen/" class="social-button indeed-button">
+                    <i class="fab fa-linkedin"></i>
+                    <!-- Stationary ball to cover the original ball of the 'i' -->
+                    <div class="stationary-ball"></div>
+                    <!-- Bouncing ball -->
+                    <div class="bouncing-ball"></div>
+                </a>
+            </div>
+        </section>
+    </div>
+    <footer id="footer">
+        <p>&copy; <span id="year"></span>.</p>
+    </footer>    
+<script>
+
+let slideIndex = 0;
+let startX;
+let startY;
+let isMoving = false;
+
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const mainContent = document.getElementById('main-content');
+    
+    // Hide loading screen and show main content
+    loadingScreen.style.display = 'none';
+
+});
+
+// Welcome Screen
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch and display a random quote
+    fetch("quotes.txt")
+        .then((response) => response.text())
+        .then((data) => {
+            const quotes = data.split("\n").filter((quote) => quote.trim() !== "");
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById("welcomeText").innerText = randomQuote;
+        })
+        .catch((error) => console.error("Error fetching quotes:", error));
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const welcomeContainer = document.getElementById("welcomeContainer");
+
+    const hasVisited = sessionStorage.getItem("hasVisited");
+
+    if (hasVisited) {
+        welcomeContainer.style.display = "none";
+    } else {
+        welcomeContainer.addEventListener("click", function (event) {
+            // Get the click position
+            const x = event.pageX;
+            const y = event.pageY;
+
+            // Apply the circle effect
+            welcomeContainer.style.clipPath = `circle(0% at ${x}px ${y}px)`;
+            welcomeContainer.style.webkitClipPath = `circle(0% at ${x}px ${y}px)`;
+
+            // Save the visit status
+            sessionStorage.setItem("hasVisited", "true");
+
+            // Wait for the animation to complete
+            setTimeout(() => {
+                welcomeContainer.style.display = "none";
+            }, 800); // Match this to the animation duration in CSS
+        });
+    }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const navbarLinks = document.querySelectorAll('.navbar a');
+    navbarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            // Check if the link is an internal link
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+});
+
+
+// JavaScript for handling dropdown menus
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    // Close dropdown when clicking/touching outside of it
+    document.addEventListener('click', function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            closeDropdowns();
+        }
+    });
+
+    // Toggle dropdown when clicking/touching the button
+    dropdowns.forEach(function (dropdown) {
+        const dropbtn = dropdown.querySelector('.dropbtn');
+        dropbtn.addEventListener('click', function (event) {
+            closeDropdowns(); // Close all other dropdowns
+            dropdown.classList.toggle('active');
+        });
+    });
+
+    // Function to close all dropdowns
+    function closeDropdowns() {
+        dropdowns.forEach(function (dropdown) {
+            dropdown.classList.remove('active');
+        });
+    }
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const colorSlider = document.getElementById('colorSlider');
+    const sliderHandle = colorSlider.querySelector('input[type="range"]::-webkit-slider-thumb');
+
+    const updateSliderColor = () => {
+        const hue = colorSlider.value;
+        const hueColor = `hsl(${hue}, 100%, 50%)`;
+        sliderHandle.style.backgroundColor = hueColor;
+    };
+
+    const saveHue = (hue) => {
+        localStorage.setItem('hue', hue);
+    };
+
+    colorSlider.addEventListener('input', updateSliderColor);
+
+    colorSlider.addEventListener('change', function() {
+        const hue = colorSlider.value;
+        const hueColor = `hsl(${hue}, 100%, 50%)`;
+        document.documentElement.style.setProperty('--color', hueColor);
+        const darkColor = `hsl(${hue}, 100%, 25%)`;
+        document.documentElement.style.setProperty('--darkColor', darkColor);
+
+        saveHue(hue);
+    });
+
+    const savedHue = localStorage.getItem('hue');
+    if (savedHue !== null) {
+        colorSlider.value = savedHue;
+        const hueColor = `hsl(${savedHue}, 100%, 50%)`;
+        document.documentElement.style.setProperty('--color', hueColor);
+        const darkColor = `hsl(${savedHue}, 100%, 25%)`;
+        document.documentElement.style.setProperty('--darkColor', darkColor);
+        updateSliderColor();
+    } else {
+        updateSliderColor();
+    }
+});
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const darkModeBtn = document.getElementById("darkModeBtn");
+    const grayModeBtn = document.getElementById("grayModeBtn");
+    const lightModeBtn = document.getElementById("lightModeBtn");
+
+    // Function to update the background color based on stored hue
+    function updateBackgroundColor(darkHue) {
+        document.documentElement.style.setProperty('--darkhue', darkHue);
+    }
+
+    // Function to save the hue value in localStorage
+    function saveHueValue(darkHue) {
+        localStorage.setItem('darkhue', darkHue);
+    }
+
+    // Event listeners for the buttons
+    darkModeBtn.addEventListener("click", () => {
+        const darkHue = '0%'; // Dark hue for black
+        saveHueValue(darkHue);
+        updateBackgroundColor(darkHue);
+    });
+
+    grayModeBtn.addEventListener("click", () => {
+        const darkHue = '12%'; // Dark hue for gray
+        saveHueValue(darkHue);
+        updateBackgroundColor(darkHue);
+    });
+
+    lightModeBtn.addEventListener("click", () => {
+        const darkHue = '80%'; // Dark hue for white
+        saveHueValue(darkHue);
+        updateBackgroundColor(darkHue);
+    });
+
+    // Check for stored hue value on page load
+    const storedDarkHue = localStorage.getItem('darkhue');
+    if (storedDarkHue) {
+        updateBackgroundColor(storedDarkHue);
+    }
+});
+
+
+
+
+
+
+
+
+
+
+// Function to generate random 0s and 1s
+function generateRandomBinary() {
+    const binaryChars = ['0', '1'];
+    return binaryChars[Math.floor(Math.random() * binaryChars.length)];
+}
+
+// Function to create the matrix background
+function createMatrixBackground() {
+    const matrixBg = document.getElementById('matrixBg');
+    const numChars = 150; // Number of characters in the background
+    const matrixWidth = matrixBg.offsetWidth;
+    const matrixHeight = matrixBg.offsetHeight;
+
+    let matrixHtml = '';
+    for (let i = 0; i < numChars; i++) {
+        const x = Math.floor(Math.random() * matrixWidth);
+        const y = Math.floor(Math.random() * matrixHeight);
+        const duration = Math.random() * 5 + 1; // Random duration between 1 to 6 seconds
+        const opacity = Math.random() * 0.5 + 0.1; // Random opacity between 0.1 to 0.6
+        const char = generateRandomBinary();
+        matrixHtml += `<span style="top:${y}px; left:${x}px; animation-duration:${duration}s; opacity:${opacity};">${char}</span>`;
+    }
+    matrixBg.innerHTML = matrixHtml;
+}
+
+// Function to handle scroll events
+function handleScroll() {
+    const matrixBg = document.getElementById('matrixBg');
+    const viewportHeight = window.innerHeight;
+
+    // Check if scrolled past the initial viewport height
+    if (window.scrollY > (viewportHeight - (viewportHeight / 2))) {
+        // Optionally, you can smoothly fade out the matrix background
+        matrixBg.style.opacity = '0';
+        matrixBg.style.transition = 'opacity 0.5s';
+    } else {
+        // Reset opacity and transition if scrolled back up
+        matrixBg.style.opacity = '1';
+        matrixBg.style.transition = 'none';
+    }
+}
+
+// Event listener for window resize to adjust the matrix background
+window.addEventListener('resize', () => {
+    createMatrixBackground();
+});
+
+// Event listener for scroll to handle matrix background visibility
+window.addEventListener('scroll', handleScroll);
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const projects = [
+        { id: "project1", img: "images/Project1/ConnorWebImgPortrait.png", url: "project1.html", description: "Designing and Building a Website" },
+        { id: "project2", img: "images/Project2/Drone.png", url: "project2.html", description: "Designing and Building a FPV Drone from scratch" },
+        { id: "project3", img: "images/Project3/LED.png", url: "project3.html", description: "Designing and Building Individually Addressed LED's Controlled via Wifi" },
+        { id: "project4", img: "images/Project4/Plant.png", url: "project4.html", description: "Designing and Building a Plant Monitor System" },
+        { id: "project5", img: "images/Home/image-coming-soon.jpeg", url: "project5.html", description: "Description of Project 5" },
+        { id: "project6", img: "images/Home/image-coming-soon.jpeg", url: "project6.html", description: "Description of Project 6" },
+        { id: "project7", img: "images/Home/image-coming-soon.jpeg", url: "project7.html", description: "Description of Project 7" },
+        { id: "project8", img: "images/Home/image-coming-soon.jpeg", url: "project8.html", description: "Description of Project 8" },
+        // Add more projects as needed
+    ];
+
+    let projectsPerPage = getProjectsPerPage();
+    let currentPage = 0;
+
+    const projectGallery = document.querySelector(".projects-gallery");
+    const leftArrow = document.querySelector(".left-arrow");
+    const rightArrow = document.querySelector(".right-arrow");
+    const projectDescription = document.getElementById("projectDescription");
+
+    function getProjectsPerPage() {
+        if(window.innerWidth < 700){
+            return 1;
+        } else if (window.innerWidth < 1500){
+            return 2;
+        } else{
+            return 4;
+        }
+    }
+
+    function displayProjects(page) {
+        projectsPerPage = getProjectsPerPage(); // Update the number of projects per page based on screen size
+        projectGallery.innerHTML = "";
+        const start = page * projectsPerPage;
+        const end = start + projectsPerPage;
+        const currentProjects = projects.slice(start, end);
+
+        currentProjects.forEach((project, index) => {
+            const projectDiv = document.createElement("div");
+            projectDiv.className = `project-image ${index === 0 ? "big" : "small"}`;
+            projectDiv.id = project.id;
+            projectDiv.setAttribute("data-url", project.url);
+            projectDiv.setAttribute("data-description", project.description);
+            
+            if(index === 0){
+                projectDescription.textContent = project.description;
+            }
+
+            const img = document.createElement("img");
+            img.src = project.img;
+            img.alt = project.id;
+            projectDiv.appendChild(img);
+
+            projectGallery.appendChild(projectDiv);
+
+            projectDiv.addEventListener("click", function() {
+                if (projectDiv.classList.contains("big")) {
+                    window.location.href = project.url;
+                } else {
+                    const allProjects = document.querySelectorAll(".project-image");
+                    allProjects.forEach(img => {
+                        img.classList.remove("big");
+                        img.classList.add("small");
+                    });
+                    projectDiv.classList.remove("small");
+                    projectDiv.classList.add("big");
+                    projectDescription.textContent = project.description;
+                }
+            });
+        });
+    }
+
+    function animateProjectsOut(direction) {
+        const allProjects = document.querySelectorAll(".project-image");
+        return new Promise((resolve) => {
+            allProjects.forEach(project => {
+                project.classList.add(direction === 1 ? "slide-out-left" : "slide-out-right");
+                project.addEventListener("animationend", function() {
+                    project.classList.remove("slide-out-left", "slide-out-right");
+                    resolve();
+                }, { once: true });
+            });
+        });
+    }
+
+    function animateProjectsIn(direction) {
+        displayProjects(currentPage);
+        const allProjects = document.querySelectorAll(".project-image");
+        allProjects.forEach(project => {
+            project.classList.add(direction === 1 ? "slide-in-right" : "slide-in-left");
+            project.addEventListener("animationend", function() {
+                project.classList.remove("slide-in-right", "slide-in-left");
+            }, { once: true });
+        });
+    }
+
+    async function navigateProjects(direction) {
+        await animateProjectsOut(direction);
+        if (direction === 1) {
+            currentPage++;
+            if (currentPage >= Math.ceil(projects.length / projectsPerPage)) {
+                currentPage = 0;
+            }
+        } else {
+            currentPage--;
+            if (currentPage < 0) {
+                currentPage = Math.ceil(projects.length / projectsPerPage) - 1;
+            }
+        }
+        animateProjectsIn(direction);
+    }
+
+    leftArrow.addEventListener("click", function() {
+        navigateProjects(-1);
+    });
+
+    rightArrow.addEventListener("click", function() {
+        navigateProjects(1);
+    });
+
+    displayProjects(currentPage);
+
+    // Recalculate projectsPerPage and re-display projects on window resize
+    window.addEventListener("resize", function() {
+        const oldProjectsPerPage = projectsPerPage;
+        projectsPerPage = getProjectsPerPage();
+        // Adjust the currentPage if the number of projects per page changes
+        if (oldProjectsPerPage !== projectsPerPage) {
+            currentPage = Math.floor((currentPage * oldProjectsPerPage) / projectsPerPage);
+            if (currentPage >= Math.ceil(projects.length / projectsPerPage)) {
+                currentPage = 0;
+            }
+            displayProjects(currentPage);
+        }
+    });
+
+});
+
+
+// Scroll animation for Education and Workspace sections
+const educationContainer = document.querySelector('.education-container');
+const workspaceContainer = document.querySelector('.workspace-container');
+
+ function checkVisibility() {
+    const educationRect = educationContainer.getBoundingClientRect();
+    const workspaceRect = workspaceContainer.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+     if (educationRect.top <= (windowHeight - (windowHeight/2)) && educationRect.bottom >= 0) {
+        educationContainer.classList.add('visible');
+    } else {
+        educationContainer.classList.remove('visible');
+    }
+
+     if (workspaceRect.top <= (windowHeight - (windowHeight/2)) && workspaceRect.bottom >= 0) {
+        workspaceContainer.classList.add('visible');
+    } else {
+        workspaceContainer.classList.remove('visible');
+    }
+}
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const skillsSection = document.querySelector('.skills-container');
+    const skillSliders = document.querySelectorAll('.skill input[type="range"]');
+
+    // Function to animate slider to a target value
+    function animateSlider(slider, targetValue) {
+        let currentValue = 0;
+        const interval = 10; // Interval in milliseconds
+        const step = 1; // Step size
+
+        const animate = () => {
+            if (currentValue < targetValue) {
+                currentValue += step;
+                slider.value = Math.min(currentValue, targetValue);
+                requestAnimationFrame(animate); // Continue animating
+            }
+        };
+
+        animate();
+    }
+
+    // Intersection Observer callback
+    const observerCallback = (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                skillSliders.forEach(slider => {
+                    const targetValue = parseInt(slider.getAttribute('value'), 10);
+                    slider.value = 0; // Reset value to 0
+                    animateSlider(slider, targetValue); // Animate to the target value
+                });
+            }
+        });
+    };
+
+    // Intersection Observer options
+    const observerOptions = {
+        root: null, // Use the viewport as the root
+        threshold: 0.5 // Trigger when 50% of the section is in view
+    };
+
+    // Create Intersection Observer
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    observer.observe(skillsSection);
+});
+
+
+
+
+
+
+// Event listeners
+window.addEventListener('DOMContentLoaded', () => {
+    createMatrixBackground();
+    checkVisibility();
+});
+
+window.addEventListener('scroll', () => {
+    handleScroll();
+    checkVisibility();
+});
+
+// Show the scroll-to-top button when the user scrolls down
+window.onscroll = function () {
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    const footer = document.getElementById('footer');
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = 'block';
+        footer.style.display = 'block';
+    } else {
+        footer.style.display = 'none';
+        scrollToTopBtn.style.display = 'none';
+    }
+};
+// This code updates the year in the footer automatically
+document.addEventListener('DOMContentLoaded', () => {
+    const yearElement = document.getElementById('year');
+    const currentYear = new Date().getFullYear();
+    yearElement.textContent = currentYear;
+});
+
+// Scroll to the top of the page when the button is clicked
+document.getElementById('scrollToTopBtn').addEventListener('click', function () {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+</script>
+</body>
+</html>
