@@ -1,2134 +1,578 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="slate">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="png" href="images/Logo/favicon.png">
-
-<style>
-
-
-/* Variable name*/
-:root {
-    --hue: 172;
-    --darkhue: 12%;
-    --color: hsl(var(--hue), 100%, 50%);
-    --darkColor: hsl(var(--hue), 100%, 25%);
-    --backgroundColor: hsl(0, 0%, var(--darkhue));
-}
-
-/* Loading Screen Styles */
-#loading-screen {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: var(--backgroundColor);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* Spinner Styles */
-.spinner {
-  border: 16px solid var(--darkColor); /* Light grey */
-  border-top: 16px solid var(--color); /* Blue */
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* This is the Main screen*/
-body {
-    font-family: 'Open Sans', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--backgroundColor);
-    overflow-x: hidden;
-}
-
-
-/* This is the Welcome Screen */
-.welcome-container {
-    top: 0; /* Ensure the container starts at the top */
-    left: 0; /* Ensure the container starts at the left */
-    position: fixed;
-    height: 200%;
-    aspect-ratio: 16/9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9000;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--color), var(--darkColor), #000000, var(--color), var(--darkColor), #000000);
-    background-size: 400% 400%;
-    animation: animateGradient 4s linear infinite;
-    clip-path: circle(100%);
-    -webkit-clip-path: circle(100%);
-    transition: clip-path 0.8s ease-out, -webkit-clip-path 0.8s ease-out;
-}
-@keyframes animateGradient {
-    0% {
-        background-position: 0% 50%;
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connor Hohlen | Computer Engineering Portfolio</title>
+  <meta name="description" content="Portfolio of Connor Hohlen, a University of Nebraska–Lincoln Computer Engineering student building embedded systems, software, electronics, and mobile applications.">
+  <meta name="theme-color" content="#242a30">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://connorhohlen.com/">
+  <link rel="icon" href="/assets/images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Connor Hohlen">
+  <meta property="og:title" content="Connor Hohlen | Computer Engineering Portfolio">
+  <meta property="og:description" content="Computer Engineering student building practical software, embedded systems, electronics, and connected products.">
+  <meta property="og:url" content="https://connorhohlen.com/">
+  <meta property="og:image" content="https://connorhohlen.com/assets/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Connor Hohlen Computer Engineering portfolio">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Connor Hohlen | Computer Engineering Portfolio">
+  <meta name="twitter:description" content="Software, embedded systems, electronics, and connected products.">
+  <meta name="twitter:image" content="https://connorhohlen.com/assets/images/og-card.png">
+  <meta name="twitter:image:alt" content="Connor Hohlen computer engineering portfolio social preview">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("portfolio-theme");
+        const theme = ["dark", "slate", "light"].includes(saved) ? saved : "slate";
+        document.documentElement.dataset.theme = theme;
+      } catch {
+        document.documentElement.dataset.theme = "slate";
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/seasonal.css">
+  <script src="/assets/js/site.js" defer></script>
+  <script type="module" src="/assets/js/seasonal/index.mjs"></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "name": "Connor Hohlen | Computer Engineering Portfolio",
+      "url": "https://connorhohlen.com/",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Connor Hohlen",
+        "url": "https://connorhohlen.com/",
+        "email": "mailto:connorhohlen@gmail.com",
+        "jobTitle": "Computer Engineering Student",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "University of Nebraska–Lincoln"
+        },
+        "sameAs": [
+          "https://github.com/ConConHeat1",
+          "https://www.linkedin.com/in/connor-hohlen/"
+        ],
+        "knowsAbout": [
+          "Embedded systems",
+          "Firmware",
+          "Mobile development",
+          "Electronics",
+          "Systems integration",
+          "Software development"
+        ]
+      }
     }
-    100% {
-        background-position: 100% 95%;
-    }
-}
-.welcome-message h1{
-    position: fixed; /* Position the element fixed within the viewport */
-    top: 40%; /* Position it at the vertical center */
-    left: 50%; /* Position it at the horizontal center */
-    transform: translate(-50%, -50%); /* Offset it by half its own size to truly center it */
-    text-align: center; /* Center the text within the element */
-    font-size: 5.5em;
-    color: #e6e6e6;
-    z-index: 1;
-    padding: 20px; /* Optional: add some padding for better visual appearance */
-    border-radius: 10px; /* Optional: add border-radius for a rounded effect */
-    width: 80%;
-    -webkit-text-stroke-width: 3px;
-    -webkit-text-stroke-color: var(--darkColor);
-}
-.welcome-message p{
-    position: fixed; /* Position the element fixed within the viewport */
-    top: 75%; /* Position it at the vertical center */
-    left: 50%; /* Position it at the horizontal center */
-    transform: translate(-50%, -50%); /* Offset it by half its own size to truly center it */
-    text-align: center; /* Center the text within the element */
-    font-size: 2.5em;
-    color: #e6e6e6;
-    z-index: 1;
-    padding: 20px; /* Optional: add some padding for better visual appearance */
-    border-radius: 10px; /* Optional: add border-radius for a rounded effect */
-    width: 85%;
-    -webkit-text-stroke-width: 1px; /* Outline the text */
-    -webkit-text-stroke-color: var(--darkColor);
-}
-@media (max-width: 1800px) {
-.welcome-message h1 {
-    font-size: 4.0em;
-    -webkit-text-stroke-width: 2px; /* Outline the text */
-    -webkit-text-stroke-color: var(--darkColor);
-}
-.welcome-message p {
-    font-size: 2.4em;
-    -webkit-text-stroke-width: 2px; /* Outline the text */
-    -webkit-text-stroke-color: var(--darkColor);
-    top: 75%;
-}
-}
-@media (max-width: 1000px) {
-.welcome-message h1 {
-    font-size: 2.0em;
-    -webkit-text-stroke-width: 1px; /* Outline the text */
-    -webkit-text-stroke-color: var(--darkColor);
-}
-.welcome-message p {
-    font-size: 1.4em;
-    -webkit-text-stroke-width: 1px; /* Outline the text */
-    -webkit-text-stroke-color: var(--darkColor);
-    top: 75%;
-}
-}
-
-
-@keyframes zoomIn {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-
-
-/* This is the top navigation bar */
-.navbar {
-    overflow: visible;
-    background-color: var(--backgroundColor);
-    position: relative;
-    width: 100%;
-    z-index: 3;
-    outline: 1px solid var(--color);
-
-}
-.navbar a {
-    float: left;
-    color: var(--color);
-    text-align: center;
-    padding: 18px 20px;
-    text-decoration: none;
-
-}
-.navbar a:hover {
-    background-color: var(--color);
-    color: var(--backgroundColor);
-}
-/* Style for the home button */
-.home-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 51px;
-    background-color: var(--color); /* Start with the theme color */
-    outline: 1px solid var(--color); /* Maintain the outline */
-}
-
-/* Ensure the icon fits within the button */
-.home-button .home-icon {
-    width: 50px;
-    height: 50px;
-    margin-top: -10px;
-}
-/* Style changes on hover for home button */
-.home-button:hover {
-    background-color: var(--darkColor);
-    color: var(--darkColor);
-}
-.home-button:hover img{
-    transform: scale(1.1); /* Slightly enlarge image on hover */
-    transition: transform 0.3s ease; /* Smooth transition */
-}
-/* Dropdown container */
-.dropdown {
-    float: left;
-    overflow: hidden;
-    outline: 1px solid var(--color);
-
-}
-
-.dropdown .dropbtn {
-    color: var(--color);
-    text-align: center;
-    padding: 16px 4vw;
-    text-decoration: none;
-    outline: 1px solid var(--color);
-}
-
-.dropdown .dropbtn:hover {
-    background-color: var(--color);
-    color: var(--backgroundColor);
-}
-
-/* Dropdown content (hidden by default) */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: var(--backgroundColor);
-    min-width: 270px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 3;
-    margin-top: 50px; /* Add a small margin to avoid overlap */
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-    float: none;
-    color: var(--color);
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-    outline: 1px solid var(--color);
-}
-
-.dropdown-content a:hover {
-    background-color: var(--color);
-    color: var(--backgroundColor);
-}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-/* Background color buttons */
-.color-buttons {
-    display: flex;
-    gap: 10px;
-    position: absolute;
-    top: 10px;
-    right: 12%;
-}
-
-.color-buttons button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    background-color: #646464;
-    outline: 1px solid var(--color);
-}
-
-.color-buttons img {
-    width: 30px;
-    height: 30px;
-}
-
-.color-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    position: absolute;
-    width: 200px;
-    height: 8px;
-    left: 90%;
-    top: 25px;
-    background: linear-gradient(to right, hsl(0, 100%, 50%), hsl(30, 100%, 50%), hsl(60, 100%, 50%), hsl(90, 100%, 50%), hsl(120, 100%, 50%), hsl(150, 100%, 50%), hsl(180, 100%, 50%), hsl(210, 100%, 50%), hsl(240, 100%, 50%), hsl(270, 100%, 50%), hsl(300, 100%, 50%), hsl(330, 100%, 50%), hsl(360, 100%, 50%));
-    border-radius: 5px;
-    cursor: pointer;
-}
-@media (max-width: 2100px) {
-    .color-slider {
-        position: absolute;
-        left: 87%;
-    }
-    .color-buttons {
-        position: absolute;
-        right: 15%;
-    }
-}
-@media (max-width: 1600px) {
-    .color-slider {
-        position: absolute;
-        left: 85%;
-    }
-    .color-buttons {
-        position: absolute;
-        right: 20%;
-    }
-}
-@media (max-width: 1400px) {
-    .color-slider {
-        position: absolute;
-        left: 83%;
-    }
-}
-@media (max-width: 1300px) {
-    .color-buttons {
-        position: absolute;
-        top: 60px;
-        right: 50%;
-    }
-    .color-slider {
-
-        left: 20%;
-        height: 8px;
-        top: 75px;
-    }
-}
-@media (max-width: 1200px) {
-    .color-buttons {
-        position: absolute;
-        top: 60px;
-        right: 35%;
-    }
-}
-@media (max-width: 800px) {
-    .color-buttons {
-        position: absolute;
-        top: 60px;
-        right: 20%;
-    }
-}
-@media (max-width: 700px) {
-    .color-buttons {
-        position: absolute;
-        top: 60px;
-        right: 8%;
-    }
-}
-@media (max-width: 500px) {
-    .color-slider {
-        position: absolute;
-
-        width: 80%;
-        left: 4%;
-        height: 8px;
-        top: 130px;
-    }
-    .dropdown .dropbtn {
-        color: var(--color);
-        text-align: center;
-        padding: 16px 11vw;
-        text-decoration: none;
-        outline: 1px solid var(--color);
-    }
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: var(--backgroundColor);
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 3;
-        margin-top: 50px; /* Add a small margin to avoid overlap */
-    }
-    .color-slider[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 30px;
-        height: 30px;
-
-    }
-    .color-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        position: absolute;
-        top: 10px;
-        right: 3%;
-    }
-    .navbar .dropdown:nth-child(6) { /* Adjust this if Skills is not the 6th child */
-        display: none;
-    }
-}
-.color-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--color);
-    box-shadow: var(--darkColor);
-    cursor: pointer;
-}
-
-.color-slider:hover::-webkit-slider-thumb {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-}
-
-.color-slider:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
-}
-
-
-
-
-
-/* Matrix animation styles */
-.matrix-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-
-}
-.matrix-bg span {
-    position: absolute;
-    display: block;
-    width: 10px;
-    height: 10px;
-    color: var(--color);
-    opacity: 0;
-    animation: animate 5s linear infinite;
-    white-space: nowrap;
-}
-@keyframes animate {
-    0% {
-        transform: translateY(-100%);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh);
-        opacity: 0;
-    }
-}
-/* Overlay text container */
-.overlay-text-container {
-    position: absolute;
-    top: 5%;
-    left: 50vw;
-    transform: translate(-50vw, -10%);
-    z-index: 3; /* Ensure it's above the matrix background */
-    width: 99vw; /* Ensure the container is responsive */
-}
-
-.overlay-text-header {
-    width: 100%;
-    color: transparent;
-    font-size: 7.3vw; /* Use viewport width units for responsive text */
-    white-space: nowrap;
-    -webkit-text-stroke-width: .02em; /* Outline the text */
-    -webkit-text-stroke-color: var(--color);
-    text-align: center; /* Ensure text is centered */
-}
-@media (max-width: 500px) {
-    /* Overlay text container */
-    .overlay-text-container {
-        position: absolute;
-        top: 9%;
-        left: 50vw;
-        transform: translate(-50vw, -10%);
-        z-index: 3; /* Ensure it's above the matrix background */
-        width: 99vw; /* Ensure the container is responsive */
-    }
-
-}
-
-
-
-.scroll-to-top-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px; /* Changed from left: 20px */
-    width: 50px;
-    height: 50px;
-    background-color: var(--color);
-    color: #000;
-    text-align: center;
-    line-height: 50px;
-    font-size: 30px;
-    cursor: pointer;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    display: none; /* Initially hidden */
-    z-index: 1000; /* Ensure it's on top */
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.scroll-to-top-btn:hover {
-    background-color: var(--darkColor);
-    transform: scale(1.1);
-}
-
-
-
-
-  
-
-/* About Me Section */
-.about-me-container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--backgroundColor);
-}
-
-.about-me-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 90vh;
-    padding: 20px;
-}
-
-.Connor-picture {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 50%;
-    height: 100%;
-    z-index: 300;
-}
-.Connor-picture img:hover {
-    transform: scale(1.05); /* Slightly enlarge image on hover */
-    transition: transform 0.3s ease; /* Smooth transition */
-}
-
-.Connor-picture img {
-    width: 80%;
-    height: auto;
-    border-radius: 10%;
-    cursor: pointer;
-    background-color: var(--backgroundColor);
-    box-shadow: 0 0 10px 10px var(--color);
-}
-
-.about-text {
-    flex: 1;
-    max-width: 50%;
-    padding-left: 5%;
-    height: auto;
-}
-
-.about-me-heading {
-    font-size: clamp(2.5rem, 3vw, 100vw);
-    color: var(--color);
-    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
-    margin-bottom: 20px;
-}
-
-.about-me-text {
-    font-size: clamp(16px, 1.5vw, 2vw);
-    line-height: 1.6;
-    color: var(--color);
-    text-align: left;
-    animation: fade linear both;
-    animation-timeline: view();
-    animation-range: entry 50% cover 50%;
-}
-
-@keyframes fade {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@media (max-width: 700px) {
-    .about-me-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .Connor-picture {
-        max-width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .about-text {
-        max-width: 100%;
-        padding-left: 0;
-    }
-}
-
-
-
-
-
-/* This is the content section of the whole page*/
-.content{
-    max-width: 100%; /* Adjust the maximum width of the content area */
-    margin: 0, auto; /* Center the content horizontally */
-    padding: 20px; /* Add padding around the content for spacing */
-    position: relative; /* Ensure content scrolls below matrix background */
-    z-index: 1; /* Ensure content is above matrix background */
-    background-color: var(--backgroundColor); /* Set the background color of the content area */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
-    padding-top: 100vh; /* Ensure content starts below matrix background */
-}
-
-
-/* Projects Section */
-.projects-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    text-align: center;
-    background-color: var(--backgroundColor);
-    color: var(--color);
-    padding: 20px; /* Added padding for spacing */
-}
-
-@media (max-width: 700px) {
-    .projects-container {
-        margin-top: 20px; /* Adjust the margin to reduce spacing */
-    }
-}
-
-.projects-gallery-wrapper {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: center;
-    position: relative;
-    padding: 20px; /* Added padding for spacing */
-}
-
-/* Ensure fixed height for smooth sliding */
-.projects-gallery {
-    display: flex;
-    gap: 20px;
-    width: 100%;
-    max-width: 60vw;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
-    height: 80vh; /* Adjust this value as needed */
-}
-
-/* Projects Label */
-.projects-label {
-    color: var(--color);
-    font-size: clamp(2.5rem, 3vw, 100vw);
-    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
-    margin-bottom: 20px; /* Adjust spacing */
-}
-
-/* Project Description */
-.project-description {
-    margin-top: 20px;
-    color: var(--color);
-    font-size: 1.2rem;
-    text-align: center;
-    transition: opacity 0.6s ease;
-    z-index: 1;
-}
-
-/* Arrows */
-.arrow {
-    cursor: pointer;
-    position: absolute;
-    width: 80px; /* Adjusted width */
-    height: 120px; /* Adjusted height */
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.1s;
-}
-
-.arrow::before {
-    content: '';
-    position: absolute;
-    top: -100px; /* Increase as needed */
-    bottom: 20px; /* Increase as needed */
-    left: -20px; /* Increase as needed */
-    right: -20px; /* Increase as needed */
-    background: transparent; /* Ensure this is transparent */
-    cursor: pointer;
-    z-index: 9999;
-}
-
-.arrow-top, .arrow-bottom {
-    background-color: var(--darkColor);
-    height: 4px;
-    position: absolute;
-    width: 100%;
-}
-
-@media (max-width: 600px) {
-    .arrow::before {
-        top: -50px; /* Adjusted */
-        bottom: 10px; /* Adjusted */
-        left: -10px; /* Adjusted */
-        right: -10px; /* Adjusted */
-    }
-    .arrow {
-        width: 40px; /* Reduced width */
-        height: 60px; /* Reduced height */
-    }
-    .arrow-top, .arrow-bottom {
-        height: 2px;
-    }
-    /* Project Description */
-    .project-description {
-        display: none;
-    }
-}
-
-.arrow-top {
-    transform: rotate(45deg);
-    transform-origin: bottom right;
-}
-
-.arrow-bottom {
-    transform: rotate(-45deg);
-    transform-origin: top right;
-}
-
-.arrow-top:after, .arrow-bottom:after {
-    background-color: var(--color);
-    content: '';
-    height: 100%;
-    position: absolute;
-    top: 0;
-    transition: all 0.15s; /* Transition time */
-}
-
-.arrow-top:after {
-    left: 100%;
-    right: 0;
-    transition-delay: 0s;
-}
-
-.arrow-bottom:after {
-    left: 0;
-    right: 100%;
-    transition-delay: 0.15s; /* Match transition-delay for consistency */
-}
-
-.arrow:hover .arrow-top:after {
-    left: 0;
-    transition-delay: 0.15s;
-}
-
-.arrow:hover .arrow-bottom:after {
-    right: 0;
-    transition-delay: 0s;
-}
-
-.arrow:active {
-    transform: translateY(-50%) scale(0.9);
-}
-
-/* Positioning Arrows */
-.left-arrow {
-    left: 40px;
-}
-
-.right-arrow {
-    right: 40px;
-}
-
-@media (max-width: 600px) {
-    .left-arrow {
-        left: 5px;
-    }
-    .right-arrow {
-        right: 5px;
-    }
-}
-
-/* Left Arrow Flipping */
-.left-arrow .arrow-top {
-    transform: rotate(-45deg); /* Flip direction */
-    transform-origin: bottom left; /* Adjust origin for flip */
-}
-
-.left-arrow .arrow-bottom {
-    transform: rotate(45deg); /* Flip direction */
-    transform-origin: top left; /* Adjust origin for flip */
-}
-
-.left-arrow .arrow-top:after {
-    left: 0;
-    right: 100%;
-    transition-delay: 0s;
-}
-
-.left-arrow .arrow-bottom:after {
-    left: 100%;
-    right: 0;
-    transition-delay: 0.15s;
-}
-
-.left-arrow:hover .arrow-top:after {
-    right: 0;
-    transition-delay: 0.15s;
-}
-
-.left-arrow:hover .arrow-bottom:after {
-    left: 0;
-    transition-delay: 0s;
-}
-
-/* Project Image Styling */
-.project-image {
-    cursor: pointer;
-    transition: transform 0.6s ease, box-shadow 0.6s ease;
-    overflow: hidden;
-    position: relative;
-    z-index: 2;
-    padding: 30px;
-}
-
-.project-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10%;
-    box-shadow: 0 0 20px var(--color);
-}
-
-.project-image.big {
-    flex: 2 2 60%;
-    transition: flex 0.6s ease;
-}
-
-.project-image.small {
-    flex: 1 1 20%;
-    transition: flex 0.6s ease;
-}
-
-.project-image:hover {
-    transform: scale(1.05); /* Slightly enlarge image on hover */
-    transition: transform 0.3s ease; /* Smooth transition */
-}
-
-/* Animation */
-.slide-out-left {
-    animation: slideOutLeft 0.5s forwards;
-}
-
-.slide-out-right {
-    animation: slideOutRight 0.5s forwards;
-}
-
-.slide-in-left {
-    animation: slideInLeft 0.5s forwards;
-}
-
-.slide-in-right {
-    animation: slideInRight 0.5s forwards;
-}
-
-@keyframes slideOutLeft {
-    100% { transform: translateX(-100%); opacity: 0; }
-}
-
-@keyframes slideOutRight {
-    100% { transform: translateX(100%); opacity: 0; }
-}
-
-@keyframes slideInLeft {
-    0% { transform: translateX(100%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slideInRight {
-    0% { transform: translateX(-100%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-}
-
-
-
-
-
-
-
-
-/* Education and Workspace Section */
-.education-workspace-container {
-    display: flex;
-    flex-direction: column; /* Stack the sections vertically */
-    text-align: center;
-    overflow: hidden; /* Ensure elements do not overflow */
-}
-.education-container,
-.workspace-container {
-    margin: 100px 0; /* Add some margin between sections */
-    opacity: 0; /* Initially invisible */
-    transition: transform 0.8s ease, opacity 0.8s ease; /* Smooth transition */
-    z-index: 1;
-}
-.workspace-container {
-    transform: translateX(40%); /* Initially off-screen for vertical transition */
-}
-.education-container{
-    transform: translateX(-40%); /* Initially off-screen for vertical transition */
-}
-/* Adjust margin for smaller screens */
-@media (max-width: 700px) {
-    .education-container,
-    .workspace-container {
-        margin: 30px 0; /* Reduce margin on smaller screens */
-    }
-}
-.education-container.visible,
-.workspace-container.visible {
-    transform: translateY(0); /* Bring into view from the top */
-    opacity: 1; /* Make visible */
-}
-.education-label,
-.workspace-label {
-    color: var(--color);
-    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
-    font-size: clamp(2.5rem, 3vw, 100vw);
-    margin-bottom: 40px;
-
-}
-.education-item,
-.workspace-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 40px;
-
-}
-.education-image,
-.workspace-image {
-    width: 600px;
-    height: 400px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 0 20px var(--color);
-    border-radius: 10px;
-    margin: 0 20px;
-
-}
-.education-image img,
-.workspace-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-
-}
-@media (max-width: 500px) {
-    .education-image,
-    .workspace-image {
-        width: 300px;
-        height: 100px;
-
-    }
-}
-.education-image a,
-.workspace-image a {
-    display: block; /* Ensure the <a> tag is a block element */
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    z-index: 2; /* Ensure it's above other elements */
-}
-
-.education-image a :hover,
-.workspace-image a :hover {
-    transform: scale(1.05); /* Slightly enlarge image on hover */
-    transition: transform 0.3s ease; /* Smooth transition */
-}
-
-.education-description,
-.workspace-description {
-    color: var(--color);
-    max-width: 500px; /* Adjust the width as needed */
-    text-align: left;
-}
-.education-description h3,
-.workspace-description h3 {
-    margin-top: 0;
-}
-.education-description p,
-.workspace-description p {
-    margin: 5px 0;
-}
-
-/* Skills Section */
-.skills-container {
-    position: relative; /* Ensure the container is relatively positioned */
-    margin-top: 100px; /* Add margin to the top to create space */
-
-}
-
-.skills-label {
-    position: relative;
-    color: var(--color);
-    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
-    font-size: clamp(2.5rem, 3vw, 100vw);
-    z-index: 10; /* Ensure it stays on top */
-    text-align: center;
-}
-
-
-
-.skills-list {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.skills-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.skill {
-    width: 80%;
-    max-width: 600px;
-    text-align: left;
-}
-
-.skill label {
-    display: block;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: var(--color);
-}
-
-.skill input[type="range"] {
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-    background: var(--color);
-    height: 5px;
-    border-radius: 5px;
-    outline: none;
-    opacity: 0.7;
-    transition: width 0.3s ease-out; /* Ensure there's a transition */
-}
-
-.skill input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--darkColor);
-    cursor: pointer;
-    border-radius: 50%;
-}
-
-
-
-
-
-
-.social-media-container h2{
-    position: relative;
-    text-align: center;
-    color: var(--color);
-    text-shadow: 0 0 5px var(--color), 0 0 15px var(--darkColor);
-    
-}
-
-
-/* Container for social buttons */
-.social-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center; /* Center align the buttons */
-    margin-top: 20px; /* Add some spacing from other content */
-}
-
-/* General button styles */
-.social-button {
-    width: 60px; /* Width of the button */
-    height: 60px; /* Height of the button */
-    border: 2px solid var(--color); /* Border color */
-    border-radius: 50%; /* Rounded corners for circular shape */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--backgroundColor); /* Background color */
-    cursor: pointer;
-    position: relative; /* For positioning pseudo-elements */
-    transition: box-shadow 0.3s;
-    text-decoration: none; /* Remove underline */
-    color: var(--color); /* Default icon color */
-    font-size: 24px; /* Default icon size */
-    z-index: 1; /* Ensure button is above other elements */
-    overflow: hidden; /* Ensure inner elements don't overflow */
-}
-
-/* Email button styles */
-.email-icon-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.email_icon {
-    margin-top: 5px; /* Adjust margin to fit within the button */
-    width: 0px; /* Width of the main part of the envelope */
-    height: 10px; /* Height of the main part of the envelope - scaled down */
-    border-top: 14px solid var(--backgroundColor); /* Top border color and thickness - scaled down */
-    border-left: 20px solid transparent; /* Transparent left border - scaled down */
-    border-right: 20px solid transparent; /* Transparent right border - scaled down */
-    background-color: var(--color); /* Envelope color */
-    transition: .3s; /* Transition duration for smooth animation */
-    padding: 0; /* No padding */
-    margin: 0; /* No margin */
-    position: relative; /* For positioning pseudo-elements */
-}
-
-.email_icon:before {
-    padding: 0; /* No padding */
-    margin: 0; /* No margin */
-    content: ""; /* Empty content for pseudo-element */
-    position: absolute; /* Absolute positioning */
-    top: -15px; /* Positioning above the main icon - scaled down */
-    left: -20px; /* Positioning to the left - scaled down */
-    border-top: 14px solid var(--color); /* Top border color and thickness - scaled down */
-    border-left: 20px solid transparent; /* Transparent left border - scaled down */
-    border-right: 20px solid transparent; /* Transparent right border - scaled down */
-    transition: .1s; /* Transition duration for smooth animation */
-}
-
-.social-button:hover .email_icon {
-    background-color: var(--color); /* Background color on hover */
-}
-.social-button:hover{
-    box-shadow: 0 0 15px var(--color);
-    transform: scale(1.2);
-}
-.social-button:hover .email_icon:before {
-    position: absolute; /* Absolute positioning */
-    top: -30px; /* Positioning further above */
-    left: -20px; /* Positioning slightly left */
-    border-bottom: 15px solid var(--color); /* Bottom border color and thickness - scaled down */
-    border-left: 20px solid transparent; /* Transparent left border - scaled down */
-    border-right: 20px solid transparent; /* Transparent right border - scaled down */
-    border-top: 0px; /* No top border */
-    transition: .1s; /* Transition duration for smooth animation */
-}
-
-/* Phone button animation */
-.call-button {
-    position: relative; /* Needed for the lines animation */
-}
-
-.call-button:hover {
-    transform: scale(1.2);
-    box-shadow: 0 0 15px var(--color);
-}
-
-.phone-arcs {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1; /* Ensure arcs appear behind the button */
-}
-
-.arc {
-    position: absolute;
-    border: 2px solid var(--color);
-    border-top-left-radius: 60px; /* Should be half of the width */
-    border-top-right-radius: 60px; /* Should be half of the width */
-    border-bottom: none; /* Remove bottom border for arc effect */
-    opacity: 0;
-    transition: opacity 0.5s, transform 0.5s;
-}
-
-.arc1 {
-    top: -8px; /* Adjust vertical position */
-    left: 0px; /* Adjust horizontal position */
-    width: 11px; /* Adjust to change the length */
-    height: 5px; /* Should be half of the width for a semi-circle */
-    transform: rotate(45deg);
-    transition-delay: 0s;
-
-}
-
-.arc2 {
-    top: -14px; /* Further adjust vertical position */
-    left: 0px; /* Further adjust horizontal position */
-    width: 20px; /* Adjust to change the length */
-    height: 9px; /* Should be half of the width for a semi-circle */
-    transform: rotate(45deg);
-    transition-delay: 0.3s;
-}
-
-.arc3 {
-    top: -20px; /* Further adjust vertical position */
-    left: -3px; /* Further adjust horizontal position */
-    width: 32px; /* Adjust to change the length */
-    height: 15px; /* Should be half of the width for a semi-circle */
-    transform: rotate(45deg);
-    transition-delay: .6s;
-}
-
-
-.call-button:hover .arc1 {
-    opacity: 1;
-    transform: scale(1.2);
-    transform: rotate(45deg);
-}
-
-.call-button:hover .arc2 {
-    opacity: 1;
-    transform: scale(1.2);
-    transform: rotate(45deg);
-}
-
-.call-button:hover .arc3 {
-    opacity: 1;
-    transform: scale(1.2);
-    transform: rotate(45deg);
-}
-
-/* Adjust LinkedIn button styling */
-.indeed-button {
-    position: relative; /* Needed to position the bouncing ball */
-    background-color: var(--backgroundColor); /* Set background color to match */
-}
-.fa-linkedin{
-    transform: scale(1.7);
-}
-
-/* Styling for the stationary ball */
-.indeed-button .stationary-ball {
-    position: absolute;
-    top: 16px; /* Position to cover the ball of the 'i' */
-    left: calc(35% - 1px);
-    transform: translateX(-50%);
-    width: 9px; /* Size of the stationary ball */
-    height: 9px;
-    background-color: var(--color); /* Match the background color */
-    border-radius: 50%; /* Make it circular */
-    z-index: 2; /* Ensure it stays above the LinkedIn logo */
-}
-
-/* Styling for the bouncing ball */
-.indeed-button .bouncing-ball {
-    position: absolute;
-    top: 17px; /* Same initial position as the stationary ball */
-    left: calc(35% - 1px);
-    transform: translateX(-50%);
-    width: 6px; /* Size of the bouncing ball */
-    height: 6px;
-    background-color: var(--backgroundColor); /* Color to match the LinkedIn logo */
-    border-radius: 50%; /* Make it circular */
-    z-index: 3; /* Ensure it stays above the stationary ball */
-    transition: transform 0.3s;
-}
-
-/* Keyframes for forward hop effect */
-@keyframes rainbow-hop-forward {
-    0% {
-        transform: translate(-150%, 0); /* Start further to the left */
-    }
-    25% {
-        transform: translate(-75%, -10px); /* Hop to a further middle-left */
-    }
-    50% {
-        transform: translate(0%, 0); /* Reach the middle */
-    }
-    75% {
-        transform: translate(75%, -10px); /* Hop to a further middle-right */
-    }
-    100% {
-        transform: translate(150%, 0); /* Reach further to the right */
-    }
-}
-
-/* Keyframes for bouncing effect */
-@keyframes bounce {
-    0%, 100% {
-        transform: translate(-50%, 0); /* Start and end at the same position */
-    }
-    50% {
-        transform: translate(-50%, -6px); /* Move the ball up by 10px */
-    }
-}
-
-/* Trigger bouncing on hover */
-.indeed-button:hover .bouncing-ball {
-    animation: bounce 0.6s ease-in-out infinite; /* Apply the bouncing animation */
-}
-
-
-
-
-
-
-/* Footer styles */
-footer {
-    text-align: center;
-    padding: 20px;
-    color: var(--color);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    left: 45%;
-    display: none; /* Initially hidden */
-}
-@media (max-width: 2200px) {
-    footer {
-        left: 43%;
-    }
-}
-@media (max-width: 1800px) {
-    footer {
-        left: 40%;
-    }
-}
-@media (max-width: 1200px) {
-    footer {
-        left: 35%;
-    }
-}
-@media (max-width: 800px) {
-    footer {
-        left: 30%;
-    }
-}
-@media (max-width: 600px) {
-    footer {
-        left: 25%;
-    }
-}
-@media (max-width: 500px) {
-    footer {
-        left: -45%;
-        position: absolute;
-    }
-}
-
-</style>
+  </script>
 </head>
-<body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="spinner"></div>
-    </div>
-    
-    <!-- Welcome Screen -->
-    <div class="welcome-container" id="welcomeContainer">
-        <div class="welcome-message">
-            <h1 id="welcomeText"></h1>
-            <p>Click anywhere to continue</p>
-        </div>
-    </div>
+<body data-page="home">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <!-- Navigation Bar -->
-    <div class="navbar">
-        <div class="dropdown home-button">
-            <a href="index.html" class="dropbtn home-button"><img src="images/Home/Home_Icon.png" alt="Home" class="home-icon"></a>
+  <div class="seasonal-stage" data-seasonal-stage hidden aria-hidden="true">
+    <canvas class="seasonal-canvas" data-seasonal-canvas></canvas>
+    <div class="seasonal-props" data-seasonal-props></div>
+    <div class="seasonal-veil" data-seasonal-veil></div>
+  </div>
+
+  <header class="site-header" data-site-header>
+    <div class="nav-shell">
+      <a class="brand" href="/#top" aria-label="Connor Hohlen, home">
+        <span class="brand-mark" aria-hidden="true">CH</span>
+        <span class="brand-name">Connor Hohlen</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation" data-menu-toggle>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation" data-primary-nav>
+        <a class="nav-link" href="/#top" data-section-link="top">Home</a>
+        <a class="nav-link" href="/#projects" data-section-link="projects">Projects</a>
+        <a class="nav-link" href="/#experience" data-section-link="experience">Experience</a>
+        <a class="nav-link" href="/#education" data-section-link="education">Education</a>
+        <a class="nav-link" href="/about.html">About</a>
+        <a class="nav-link" href="/#contact" data-section-link="contact">Contact</a>
+        <div class="theme-switcher" role="group" aria-label="Color theme">
+          <button class="theme-button" type="button" data-theme-value="dark" aria-pressed="false">Dark</button>
+          <button class="theme-button" type="button" data-theme-value="slate" aria-pressed="true">Slate</button>
+          <button class="theme-button" type="button" data-theme-value="light" aria-pressed="false">Light</button>
         </div>
-        <div class="dropdown">
-            <a href="#about-me" class="dropbtn">About Me</a>
-            <div class="dropdown-content">
-                <a href="about.html">Connor Hohlen</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <a href="#projects" class="dropbtn">Projects</a>
-            <div class="dropdown-content">
-                <a href="project1.html">This Website</a>
-                <a href="project2.html">FPV Drone</a>
-                <a href="project3.html">LED Lights</a>
-                <a href="project4.html">Plant Monitor</a>
-                <a href="project5.html">Company SQL and Java Coding</a>
-                <a href="project6.html">Rocket System</a>
-                <a href="project7.html">Project 7</a>
-                <a href="project8.html">Project 8</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <a href="#education-workspace" class="dropbtn">Education</a>
-            <div class="dropdown-content">
-                <a href="college.html">College</a>
-                <a href="highschool.html">Highschool</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <a href="#workspace" class="dropbtn">Workspace</a>
-            <div class="dropdown-content">
-                <a href="workspace1.html">Amur Equipment Finance</a>
-                <a href="workspace2.html">Menards</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <a href="#skills" class="dropbtn">Skills</a>
-        </div>
-        <!-- Background Color Buttons -->
-        <div class="color-buttons">
-            <button id="darkModeBtn"><img src="images/BackgroundButtons/moon_icon.png" alt="Dark Mode"></button>
-            <button id="grayModeBtn"><img src="images/BackgroundButtons/half_sun_icon.png" alt="Gray Mode"></button>
-            <button id="lightModeBtn"><img src="images/BackgroundButtons/sun_icon.png" alt="Light Mode"></button>
-        </div>
-        <!-- Color Picker Slider -->
-        <input type="range" min="0" max="360" value="180" class="color-slider" id="colorSlider">
+        <button class="seasonal-toggle" type="button" data-seasonal-toggle hidden aria-pressed="false">Turn off animation</button>
+      </nav>
     </div>
-    <!-- Main Content -->
-    <div class="content" id="mainContent">
-        <!-- Matrix Background Container -->
-        <div class="matrix-bg" id="matrixBg"></div>
-        <div class="overlay-text-container">
-            <div class='overlay-text-header'>
-              <h2>Connor's Website</h2>
+  </header>
+
+  <button
+    class="event-preview-launcher"
+    type="button"
+    data-event-preview-launcher
+    aria-controls="event-preview-panel"
+    aria-expanded="false"
+    hidden
+  >Scene tester</button>
+
+  <aside class="event-preview" id="event-preview-panel" data-event-preview hidden aria-labelledby="event-preview-title">
+    <header class="event-preview-header">
+      <div>
+        <h2 id="event-preview-title">Season preview</h2>
+        <p class="event-preview-note">Private testing controls</p>
+      </div>
+      <button
+        class="event-preview-minimize"
+        type="button"
+        data-event-preview-minimize
+        aria-controls="event-preview-panel"
+        aria-label="Minimize scene tester"
+        title="Minimize scene tester"
+      >−</button>
+    </header>
+    <label>
+      Occasion
+      <select data-event-preview-select aria-label="Preview a seasonal occasion"></select>
+    </label>
+    <div class="event-preview-actions">
+      <button type="button" data-event-preview-auto>Use today’s date</button>
+      <button type="button" data-event-preview-close>Exit preview</button>
+    </div>
+  </aside>
+
+  <main id="main-content">
+    <section class="container home-intro" id="top" data-nav-section>
+      <aside class="quote-card" aria-labelledby="daily-quote-label">
+        <span class="quote-mark" data-quote-mark aria-hidden="true">“</span>
+        <div>
+          <span class="eyebrow" id="daily-quote-label" data-daily-quote-label>Quote of the day</span>
+          <blockquote class="quote-copy" data-daily-quote>“The way to get started is to quit talking and begin doing.” — Walt Disney</blockquote>
+          <p class="quote-copy special-greeting" data-special-greeting hidden aria-live="polite"></p>
+        </div>
+        <div class="quote-meta">
+          <span data-quote-meta-label>Fresh perspective</span>
+          <time data-quote-date></time>
+        </div>
+      </aside>
+
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Computer Engineering Student · University of Nebraska–Lincoln</span>
+          <h1>Building practical software, embedded systems, and connected products.</h1>
+          <p class="hero-summary">I’m Connor Hohlen, a Computer Engineering student at the University of Nebraska–Lincoln graduating in May 2027. I enjoy turning ideas into working systems through software development, electronics, embedded hardware, automation, and hands-on problem solving.</p>
+          <p class="availability"><span class="availability-dot" aria-hidden="true"></span><span>I’m seeking entry-level engineering opportunities beginning in May or June 2027.</span></p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#projects">View my projects</a>
+          </div>
+          <nav class="inline-links" aria-label="Professional links">
+            <a class="inline-link" href="https://github.com/ConConHeat1" rel="me">GitHub</a>
+            <a class="inline-link" href="https://www.linkedin.com/in/connor-hohlen/" rel="me">LinkedIn</a>
+            <a class="inline-link" href="mailto:connorhohlen@gmail.com">Email</a>
+          </nav>
+          <dl class="stats-grid">
+            <div class="stat">
+              <dt>Graduation</dt>
+              <dd>May 2027</dd>
+            </div>
+            <div class="stat">
+              <dt>Focus</dt>
+              <dd>Hardware + software</dd>
+            </div>
+            <div class="stat">
+              <dt>Location</dt>
+              <dd>Lincoln, Nebraska</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-code" aria-hidden="true"></div>
+          <a class="portrait-frame" href="/about.html" aria-label="Learn more about Connor Hohlen">
+            <picture>
+              <source srcset="/assets/images/connor-hohlen.avif" type="image/avif">
+              <img src="/assets/images/connor-hohlen.jpg" alt="Connor Hohlen" width="968" height="1200" fetchpriority="high">
+            </picture>
+            <div class="portrait-label">
+              <strong>Connor Hohlen</strong>
+              <span>Computer Engineering · UNL</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="projects" data-nav-section>
+      <div class="section-heading reveal">
+        <span class="eyebrow">Featured work</span>
+        <h2>Projects built to work in the real world.</h2>
+        <p>Browse software, electronics, embedded systems, and class projects. Every card opens the full project.</p>
+      </div>
+      <div class="project-carousel reveal" data-project-carousel>
+        <div class="project-browse">
+          <p class="project-position" aria-live="polite" data-project-position>Showing projects 1–3 of 7</p>
+        </div>
+
+        <div class="project-carousel-frame">
+          <button class="project-arrow" type="button" aria-label="Show previous project" data-project-previous>←</button>
+          <div class="project-track" data-project-track>
+            <a class="project-card" href="/projects/flexin.html" data-project-card data-project-id="flexin">
+              <div class="project-visual project-visual-flexin">
+                <img src="/assets/images/flexin-icon.png" alt="Flexin app icon" width="1024" height="1024" loading="lazy">
+              </div>
+              <div class="project-card-body">
+                <span class="project-kicker">Mobile + cloud</span>
+                <h3>Flexin</h3>
+                <p>Social workout Check-Ins, health data, friend feeds, and privacy-aware sharing.</p>
+                <ul class="tag-list"><li>Flutter</li><li>Firebase</li><li>iOS</li></ul>
+                <div class="project-card-actions"><span class="card-link">View case study</span><span class="status">In development</span></div>
+              </div>
+            </a>
+
+            <a class="project-card" href="/projects/fpv-drone.html" data-project-card data-project-id="fpv-drone">
+              <div class="project-visual project-visual-contain">
+                <picture>
+                  <source srcset="/assets/images/fpv-drone-build.avif" type="image/avif">
+                  <img src="/assets/images/fpv-drone-build.jpg" alt="Custom FPV drone with its flight controller and wiring exposed" width="1181" height="1200" loading="lazy">
+                </picture>
+              </div>
+              <div class="project-card-body">
+                <span class="project-kicker">Embedded hardware</span>
+                <h3>Custom FPV Drone</h3>
+                <p>A ground-up quadcopter built through soldering, configuration, and flight validation.</p>
+                <ul class="tag-list"><li>Electronics</li><li>Betaflight</li><li>SBUS</li></ul>
+                <div class="project-card-actions"><span class="card-link">View case study</span><span class="status">Completed</span></div>
+              </div>
+            </a>
+
+            <a class="project-card" href="/projects/portfolio.html" data-project-card data-project-id="portfolio">
+              <div class="project-visual project-visual-contain project-visual-screenshot">
+                <picture>
+                  <source srcset="/assets/images/portfolio-before.avif" type="image/avif">
+                  <img src="/assets/images/portfolio-before.jpg" alt="Earlier version of Connor Hohlen’s portfolio website" width="1600" height="763" loading="lazy">
+                </picture>
+              </div>
+              <div class="project-card-body">
+                <span class="project-kicker">Web engineering</span>
+                <h3>Portfolio Website</h3>
+                <p>A responsive static portfolio focused on visual storytelling, accessibility, and speed.</p>
+                <ul class="tag-list"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+                <div class="project-card-actions"><span class="card-link">View case study</span><span class="status">Live</span></div>
+              </div>
+            </a>
+
+            <a class="project-card" href="/projects/led-lighting.html" data-project-card data-project-id="led-lighting">
+              <div class="project-visual project-visual-led">
+                <img src="/assets/images/projects/led-lighting.jpg" alt="Individually addressable LED strips glowing red, white, and blue" width="1353" height="1400" loading="lazy">
+              </div>
+              <div class="project-card-body">
+                <span class="project-kicker">Connected lighting</span>
+                <h3>Wi-Fi LED Lighting</h3>
+                <p>An individually addressable lighting build created to explore connected control and color patterns.</p>
+                <ul class="tag-list"><li>LEDs</li><li>Wi-Fi</li><li>Electronics</li></ul>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Prototype</span></div>
+              </div>
+            </a>
+
+            <a class="project-card" href="/projects/plant-monitor.html" data-project-card data-project-id="plant-monitor">
+              <div class="project-visual project-visual-plant project-visual-contain">
+                <img src="/assets/images/projects/plant-monitor.jpg" alt="Breadboard plant monitor displaying temperature and humidity on an LCD" width="1400" height="1161" loading="lazy">
+              </div>
+              <div class="project-card-body">
+                <span class="project-kicker">Sensors + display</span>
+                <h3>Plant Monitor</h3>
+                <p>A breadboard monitor that reads environmental sensors and reports conditions on an LCD.</p>
+                <ul class="tag-list"><li>Arduino</li><li>Sensors</li><li>LCD</li></ul>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Class build</span></div>
+              </div>
+            </a>
+
+            <a class="project-card" href="/projects/sql-java-data-system.html" data-project-card data-project-id="sql-java">
+              <div class="project-visual project-visual-sql project-visual-contain">
+                <img src="/assets/images/projects/sql-java-code.jpg" alt="Java data conversion code open in Eclipse" width="1200" height="1600" loading="lazy">
+              </div>
+              <div class="project-card-body">
+                <span class="project-kicker">College project</span>
+                <h3>SQL + Java Data System</h3>
+                <p>A class project for modeling company data, converting records, and producing organized outputs.</p>
+                <ul class="tag-list"><li>Java</li><li>SQL</li><li>Data modeling</li></ul>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Coursework</span></div>
+              </div>
+            </a>
+
+            <a class="project-card" href="/projects/rocket-computer.html" data-project-card data-project-id="rocket-computer">
+              <div class="project-visual project-visual-rocket" aria-hidden="true">
+                <span class="rocket-card-visual"></span>
+              </div>
+              <div class="project-card-body">
+                <span class="project-kicker">Embedded sensors</span>
+                <h3>Rocket Computer</h3>
+                <p>An Arduino sensor system that combines motion, temperature, and pressure readings.</p>
+                <ul class="tag-list"><li>Arduino</li><li>I²C</li><li>MPU-6050</li></ul>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Prototype</span></div>
+              </div>
+            </a>
+          </div>
+          <button class="project-arrow" type="button" aria-label="Show next project" data-project-next>→</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="skills" data-nav-section>
+      <div class="section-heading reveal">
+        <span class="eyebrow">Capabilities</span>
+        <h2>Tools I use to move from idea to working system.</h2>
+        <p>Grouped by where I have applied them—in coursework, personal builds, professional support work, and active product development.</p>
+      </div>
+      <div class="skills-grid">
+        <article class="skill-card reveal">
+          <h3>Programming</h3>
+          <ul class="skill-list">
+            <li>Python</li>
+            <li>Dart</li>
+            <li>Java</li>
+            <li>JavaScript</li>
+            <li>C#</li>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>SQL</li>
+          </ul>
+        </article>
+        <article class="skill-card reveal">
+          <h3>Mobile + cloud</h3>
+          <ul class="skill-list">
+            <li>Flutter</li>
+            <li>Firebase Auth</li>
+            <li>Cloud Firestore</li>
+            <li>Cloud Storage</li>
+            <li>Cloud Functions</li>
+            <li>iOS</li>
+            <li>TestFlight</li>
+          </ul>
+        </article>
+        <article class="skill-card reveal">
+          <h3>Hardware + embedded</h3>
+          <ul class="skill-list">
+            <li>Electronics</li>
+            <li>Soldering</li>
+            <li>Systems integration</li>
+            <li>Flight controllers</li>
+            <li>Betaflight</li>
+            <li>Sensor integration</li>
+          </ul>
+        </article>
+        <article class="skill-card reveal">
+          <h3>Development tools</h3>
+          <ul class="skill-list">
+            <li>Git</li>
+            <li>GitHub</li>
+            <li>Xcode</li>
+            <li>Visual Studio Code</li>
+            <li>Fusion 360</li>
+            <li>Excel</li>
+            <li>Microsoft 365</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container" id="experience" data-nav-section>
+      <div class="section-heading reveal">
+        <span class="eyebrow">Professional experience</span>
+        <h2>Technical support backed by practical problem solving.</h2>
+        <p>Experience working with users, hardware, software, internal workflows, and day-to-day operational priorities.</p>
+      </div>
+      <div class="visual-card-grid">
+        <a class="visual-link-card reveal" href="/workspace1.html">
+          <div class="visual-link-card-image">
+            <img src="/assets/images/work/amur-AmurFront.jpg" alt="Front entrance of Amur Equipment Finance" width="1600" height="900" loading="lazy">
+          </div>
+          <div class="visual-link-card-body">
+            <div>
+              <span class="project-kicker">IT Internship · 2024</span>
+              <h3>Amur Equipment Finance</h3>
+              <p>Technical support, laptop deployment, automation, and practical troubleshooting.</p>
+            </div>
+            <span class="visual-link-card-arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+        <a class="visual-link-card reveal" href="/workspace2.html">
+          <div class="visual-link-card-image">
+            <img src="/assets/images/work/menards-Menardspic2.jpg" alt="Menards storefront with company signage" width="1600" height="1200" loading="lazy">
+          </div>
+          <div class="visual-link-card-body">
+            <div>
+              <span class="project-kicker">Customer service + operations</span>
+              <h3>Menards</h3>
+              <p>Product problem solving, department organization, teamwork, and training.</p>
+            </div>
+            <span class="visual-link-card-arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section container" id="education" data-nav-section>
+      <div class="section-heading reveal">
+        <span class="eyebrow">Education</span>
+        <h2>Computer Engineering at Nebraska.</h2>
+      </div>
+      <div class="visual-card-grid">
+        <a class="visual-link-card reveal" href="/college.html">
+          <div class="visual-link-card-image">
+            <img src="/assets/images/education/college-College.jpg" alt="University of Nebraska–Lincoln campus building and lawn" width="1600" height="900" loading="lazy">
+          </div>
+          <div class="visual-link-card-body">
+            <div>
+              <span class="project-kicker">College · Expected May 2027</span>
+              <h3>University of Nebraska–Lincoln</h3>
+              <p>Computer Engineering coursework, projects, electronics, and software.</p>
+            </div>
+            <span class="visual-link-card-arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+        <a class="visual-link-card reveal" href="/highschool.html">
+          <div class="visual-link-card-image">
+            <img src="/assets/images/education/highschool-Northwest.jpg" alt="Northwest High School building" width="1600" height="900" loading="lazy">
+          </div>
+          <div class="visual-link-card-body">
+            <div>
+              <span class="project-kicker">High school · Class of 2023</span>
+              <h3>Northwest High School</h3>
+              <p>Academics, show choir, musical performance, leadership, and service.</p>
+            </div>
+            <span class="visual-link-card-arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section container" id="about" data-nav-section>
+      <div class="about-grid">
+        <div class="section-heading reveal">
+          <span class="eyebrow">About my approach</span>
+          <h2>I learn best by building, testing, and improving real things.</h2>
+          <p>I enjoy systems that combine software and hardware. My interests include embedded systems, firmware, mobile development, electronics, automation, and practical problem solving.</p>
+          <div>
+            <a class="button button-secondary" href="/about.html">More about me</a>
+          </div>
+        </div>
+        <div class="content-card reveal">
+          <dl class="principles">
+            <div>
+              <dt>01</dt>
+              <dd>Understand the system before changing it.</dd>
+            </div>
+            <div>
+              <dt>02</dt>
+              <dd>Test assumptions with real hardware, data, or users.</dd>
+            </div>
+            <div>
+              <dt>03</dt>
+              <dd>Keep the final experience clear and dependable.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="contact" data-nav-section>
+      <div class="contact-card reveal" data-contact-card>
+        <span class="eyebrow">Contact</span>
+        <h2>Let’s build something useful.</h2>
+        <p>I’m interested in entry-level computer engineering, embedded systems, firmware, hardware, validation, systems, and software opportunities beginning in May or June 2027.</p>
+        <div class="contact-actions">
+          <a class="button button-primary contact-button contact-button-email" href="mailto:connorhohlen@gmail.com" data-contact-action>
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"></path>
+                <path d="m3 7 9 6 9-6"></path>
+              </svg>
+            </span>
+            <span>Email Connor</span>
+          </a>
+          <a class="button button-secondary contact-button contact-button-linkedin" href="https://www.linkedin.com/in/connor-hohlen/" data-contact-action>
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false">
+                <path fill="currentColor" d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708C16 15.487 15.474 16 14.825 16H1.175C.526 16 0 15.487 0 14.854V1.146Zm4.943 12.248V6.169H2.542v7.225h2.401Zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.521-1.248-1.342-1.248-.821 0-1.358.54-1.358 1.248 0 .694.521 1.248 1.327 1.248h.015Zm2.529 8.212h2.4V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.251c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.17h-2.4c.03.678 0 7.225 0 7.225Z"></path>
+              </svg>
+            </span>
+            <span>LinkedIn</span>
+          </a>
+          <a class="button button-secondary contact-button contact-button-github" href="https://github.com/ConConHeat1" data-contact-action>
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false">
+                <path fill="currentColor" d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.51-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.21-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.42 7.42 0 0 1 8 3.9c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.95.08 2.16.51.57.82 1.29.82 2.19 0 3.12-1.87 3.81-3.65 4.02.29.25.54.74.54 1.51 0 1.09-.01 1.97-.01 2.24 0 .21.15.47.55.39A8.12 8.12 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"></path>
+              </svg>
+            </span>
+            <span>GitHub</span>
+          </a>
+          <button class="button button-quiet contact-button contact-button-resume" id="resume" type="button" aria-expanded="false" aria-controls="resume-panel" data-resume-toggle>
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path>
+                <path d="M14 2v6h6M8 13h8M8 17h6"></path>
+              </svg>
+            </span>
+            <span>Résumé</span>
+          </button>
+        </div>
+
+        <dialog class="resume-dialog" id="resume-panel" aria-labelledby="resume-panel-title" data-resume-dialog>
+          <div class="resume-drawer-inner">
+            <div class="resume-drawer-header">
+              <div>
+                <span class="eyebrow">Résumé preview</span>
+                <h3 id="resume-panel-title">Experience and projects at a glance.</h3>
+                <p>This public résumé contains professional contact details without a street address or phone number.</p>
+              </div>
+              <button class="resume-drawer-close" type="button" data-resume-close>
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="m6 6 12 12M18 6 6 18"></path>
+                </svg>
+                <span class="sr-only">Close résumé preview</span>
+              </button>
+            </div>
+            <div class="resume-drawer-body">
+              <div class="resume-preview-shell">
+                <img src="/assets/images/resume-preview.png" alt="Preview of Connor Hohlen’s résumé" width="1275" height="1650" loading="lazy">
+              </div>
+              <div class="resume-drawer-copy">
+                <span class="resume-drawer-kicker">PDF résumé</span>
+                <h4>Choose how you want to view it.</h4>
+                <p>Download a copy for later, or open the full PDF in your browser.</p>
+                <div class="resume-preview-controls">
+                  <a class="button button-primary button-with-icon" href="/output/pdf/connor-hohlen-resume.pdf" download data-resume-action>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"></path>
+                    </svg>
+                    <span>Download PDF</span>
+                  </a>
+                  <a class="button button-quiet button-with-icon" href="/output/pdf/connor-hohlen-resume.pdf" data-resume-action>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M14 5h5v5M19 5l-8 8"></path>
+                      <path d="M19 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"></path>
+                    </svg>
+                    <span>Open PDF</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-        <div id="scrollToTopBtn" class="scroll-to-top-btn">
-            &#9650;
-        </div>
-        <!-- About Me Section -->
-        <section id="about-me" class="about-me-container">
-            <div class="about-me-content">
-                <div class="Connor-picture">
-                    <a href="about.html">
-                        <img src="images/Connor_Hohlen.png" alt="About me">
-                    </a>
-                </div>
-                <div class="about-text">
-                    <h2 class="about-me-heading">About Me</h2>
-                    <p class="about-me-text">My name is Connor Hohlen, a Computer Engineer. I love coding, designing, and creating amazing digital experiences. I am passionate about creativity and innovation, constantly exploring new ideas. With a background in Computer Engineering, I thrive on challenges, finding solutions that make a difference. Outside work, I enjoy building ideas and working on embedded systems. Welcome to my page!</p>
-                </div>
-            </div>
-        </section>
+        </dialog>
+      </div>
+    </section>
+  </main>
 
-        <!-- Projects Section -->
-        <section class="projects-container" id="projects">
-            <h2 class="projects-label">Projects</h2>
-            <div class="projects-gallery-wrapper">
-                <div class="arrow left-arrow">
-                    <div class="arrow-top"></div>
-                    <div class="arrow-bottom"></div>
-                </div>
-                <div class="projects-gallery">
-                    <!-- Project images will be dynamically inserted here -->
-                </div>
-                <div class="arrow right-arrow">
-                    <div class="arrow-top"></div>
-                    <div class="arrow-bottom"></div>
-                </div>
-            </div>
-            <div class="project-description" id="projectDescription"></div>
-        </section>
-        <!-- Education & Workspace Section -->
-        <div class="education-workspace-container" id="education-workspace">
-            <div class="education-container">
-                <h2 class="education-label">Education</h2>
-                <div class="education-item">
-                    <div class="education-image">
-                        <a href="college.html">
-                            <img src="images/College/College.jpg" alt="University">
-                        </a>
-                    </div>
-                    <div class="education-description">
-                        <h3>University of Nebraska-Lincoln</h3>
-                        <p>Bachelor of Science in Computer Engineering</p>
-                        <p>Expected: May 2027</p>
-                        <p>"I enjoyed learning how to code and creating/building embedded systems throughout the years."</p>
-                    </div>                    
-                </div>
-                <div class="education-item">
-                    <div class="education-image">
-                        <a href="highschool.html">
-                            <img src="images/Highschool/Northwest.jpg" alt="High School">
-                        </a>
-                    </div>
-                    <div class="education-description">
-                        <h3>Northwest Highschool</h3>
-                        <p>Highschool Diploma</p>
-                        <p>August 2019 - May 2023</p>
-                        <p>"Participated in musical and showchoir. Consistently earned Honor roll and the Academic Letter."</p>
-                    </div>
-                </div>
-            </div>
-        
-            <div class="workspace-container" id="workspace">
-                <h2 class="workspace-label">Workspace</h2>
-                <div class="workspace-item">
-                    <div class="workspace-image">
-                        <a href="workspace1.html">
-                            <img src="images/Workspace1/Amur.jpg" alt="Workspace">
-                        </a>
-                    </div>
-                    <div class="workspace-description">
-                        <h3>Amur Equipment Finance</h3>
-                        <p>IT Intern</p>
-                        <p>May 2024 - August 2024</p>
-                        <p>"Developed internal tools using python, and gained experience in problem-solving and technical support."</p>
-                    </div>                    
-                </div>
-                <div class="workspace-item">
-                    <div class="workspace-image">
-                        <a href="workspace2.html">
-                            <img src="images/Workspace2/Menards.jpg" alt="Workspace">
-                        </a>
-                    </div>
-                    <div class="workspace-description">
-                        <h3>Menards</h3>
-                        <p>Sales Accociate</p>
-                        <p>October 2020 - August 2023</p>
-                        <p>"Worked in the plumbing department, While learning great skills like teamwork, customer service, and plenty more."</p>
-                    </div>    
-                </div>
-            </div>
-        </div>
-        <!-- Skills Section -->
-        <div class="skills-container" id="skills">
-            <h2 class="skills-label">Skills</h2>
-            <div class="skills-list">
-                <div class="skills-column">
-                    <div class="skill">
-                        <label for="python">Python</label>
-                        <input type="range" id="python" name="python" min="0" max="100" value="75" disabled>
-                    </div>
-                    <div class="skill">
-                        <label for="javascript">JavaScript</label>
-                        <input type="range" id="javascript" name="javascript" min="0" max="100" value="70" disabled>
-                    </div>
-                    <div class="skill">
-                        <label for="html">HTML</label>
-                        <input type="range" id="html" name="html" min="0" max="100" value="90" disabled>
-                    </div>
-                    <div class="skill">
-                        <label for="java">Java</label>
-                        <input type="range" id="css" name="css" min="0" max="100" value="40" disabled>
-                    </div>
-                    <div class="skill">
-                        <label for="C#">C#</label>
-                        <input type="range" id="java" name="java" min="0" max="100" value="80" disabled>
-                    </div>
-                </div>
-                <div class="skills-column">
-                    <div class="skill">
-                        <label for="Mac OS">Mac OS</label>
-                        <input type="range" id="csharp" name="csharp" min="0" max="100" value="100" disabled>
-                    </div>
-                    <div class="skill">
-                        <label for="Windows OS">Windows OS</label>
-                        <input type="range" id="sql" name="sql" min="0" max="100" value="70" disabled>
-                    </div>
-                    <div class="skill">
-                        <label for="Office 360">Office 360</label>
-                        <input type="range" id="react" name="react" min="0" max="100" value="60" disabled>
-                    </div>
-                    <div class="skill">
-                        <label for="Excel">Excel</label>
-                        <input type="range" id="nodejs" name="nodejs" min="0" max="100" value="80" disabled>
-                    </div>
-                    <div class="skill">
-                        <label for="Fusion 360">Fusion 360</label>
-                        <input type="range" id="git" name="git" min="0" max="100" value="85" disabled>
-                    </div>
-                </div>
-            </div>
-        
-        <!-- Social Media Section -->
-        <section class="social-media-container" id="contact">
-            <h2>Contact Info</h2>
-            <div class="social-buttons">
-                <!-- Email Icon -->
-                <a href="mailto:connorhohlen@gmail.com" class="social-button email-icon-container">
-                    <div class="email_icon"></div>
-                </a>
-                <!-- Phone Icon -->
-                <a href="tel:3083891407" class="social-button call-button">
-                    <i class="fas fa-phone-alt"></i>
-                    <div class="phone-arcs">
-                        <div class="arc arc1"></div>
-                        <div class="arc arc2"></div>
-                        <div class="arc arc3"></div>
-                    </div>
-                </a>
-                <!-- LinkedIn Icon -->
-                <a href="https://www.linkedin.com/in/connor-hohlen/" class="social-button indeed-button">
-                    <i class="fab fa-linkedin"></i>
-                    <!-- Stationary ball to cover the original ball of the 'i' -->
-                    <div class="stationary-ball"></div>
-                    <!-- Bouncing ball -->
-                    <div class="bouncing-ball"></div>
-                </a>
-            </div>
-        </section>
+  <footer class="site-footer">
+    <div class="container footer-shell">
+      <p>© <span data-current-year></span> Connor Hohlen. Built with HTML, CSS, and JavaScript.</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="mailto:connorhohlen@gmail.com">Email</a>
+        <a href="https://github.com/ConConHeat1">GitHub</a>
+        <a href="https://www.linkedin.com/in/connor-hohlen/">LinkedIn</a>
+      </nav>
     </div>
-    <footer id="footer">
-        <p>&copy; <span id="year"></span>.</p>
-    </footer>    
-<script>
-
-let slideIndex = 0;
-let startX;
-let startY;
-let isMoving = false;
-
-window.addEventListener('load', () => {
-    const loadingScreen = document.getElementById('loading-screen');
-    const mainContent = document.getElementById('main-content');
-    
-    // Hide loading screen and show main content
-    loadingScreen.style.display = 'none';
-
-});
-
-// Welcome Screen
-document.addEventListener("DOMContentLoaded", function () {
-    // Fetch and display a random quote
-    fetch("quotes.txt")
-        .then((response) => response.text())
-        .then((data) => {
-            const quotes = data.split("\n").filter((quote) => quote.trim() !== "");
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById("welcomeText").innerText = randomQuote;
-        })
-        .catch((error) => console.error("Error fetching quotes:", error));
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const welcomeContainer = document.getElementById("welcomeContainer");
-
-    const hasVisited = sessionStorage.getItem("hasVisited");
-
-    if (hasVisited) {
-        welcomeContainer.style.display = "none";
-    } else {
-        welcomeContainer.addEventListener("click", function (event) {
-            // Get the click position
-            const x = event.pageX;
-            const y = event.pageY;
-
-            // Apply the circle effect
-            welcomeContainer.style.clipPath = `circle(0% at ${x}px ${y}px)`;
-            welcomeContainer.style.webkitClipPath = `circle(0% at ${x}px ${y}px)`;
-
-            // Save the visit status
-            sessionStorage.setItem("hasVisited", "true");
-
-            // Wait for the animation to complete
-            setTimeout(() => {
-                welcomeContainer.style.display = "none";
-            }, 800); // Match this to the animation duration in CSS
-        });
-    }
-});
-
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const navbarLinks = document.querySelectorAll('.navbar a');
-    navbarLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            // Check if the link is an internal link
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                const targetId = href.substring(1);
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    window.scrollTo({
-                        top: targetSection.offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        });
-    });
-});
-
-
-// JavaScript for handling dropdown menus
-document.addEventListener('DOMContentLoaded', function () {
-    const dropdowns = document.querySelectorAll('.dropdown');
-
-    // Close dropdown when clicking/touching outside of it
-    document.addEventListener('click', function (event) {
-        if (!event.target.matches('.dropbtn')) {
-            closeDropdowns();
-        }
-    });
-
-    // Toggle dropdown when clicking/touching the button
-    dropdowns.forEach(function (dropdown) {
-        const dropbtn = dropdown.querySelector('.dropbtn');
-        dropbtn.addEventListener('click', function (event) {
-            closeDropdowns(); // Close all other dropdowns
-            dropdown.classList.toggle('active');
-        });
-    });
-
-    // Function to close all dropdowns
-    function closeDropdowns() {
-        dropdowns.forEach(function (dropdown) {
-            dropdown.classList.remove('active');
-        });
-    }
-});
-
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    const colorSlider = document.getElementById('colorSlider');
-    const sliderHandle = colorSlider.querySelector('input[type="range"]::-webkit-slider-thumb');
-
-    const updateSliderColor = () => {
-        const hue = colorSlider.value;
-        const hueColor = `hsl(${hue}, 100%, 50%)`;
-        sliderHandle.style.backgroundColor = hueColor;
-    };
-
-    const saveHue = (hue) => {
-        localStorage.setItem('hue', hue);
-    };
-
-    colorSlider.addEventListener('input', updateSliderColor);
-
-    colorSlider.addEventListener('change', function() {
-        const hue = colorSlider.value;
-        const hueColor = `hsl(${hue}, 100%, 50%)`;
-        document.documentElement.style.setProperty('--color', hueColor);
-        const darkColor = `hsl(${hue}, 100%, 25%)`;
-        document.documentElement.style.setProperty('--darkColor', darkColor);
-
-        saveHue(hue);
-    });
-
-    const savedHue = localStorage.getItem('hue');
-    if (savedHue !== null) {
-        colorSlider.value = savedHue;
-        const hueColor = `hsl(${savedHue}, 100%, 50%)`;
-        document.documentElement.style.setProperty('--color', hueColor);
-        const darkColor = `hsl(${savedHue}, 100%, 25%)`;
-        document.documentElement.style.setProperty('--darkColor', darkColor);
-        updateSliderColor();
-    } else {
-        updateSliderColor();
-    }
-});
-
-
-
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const darkModeBtn = document.getElementById("darkModeBtn");
-    const grayModeBtn = document.getElementById("grayModeBtn");
-    const lightModeBtn = document.getElementById("lightModeBtn");
-
-    // Function to update the background color based on stored hue
-    function updateBackgroundColor(darkHue) {
-        document.documentElement.style.setProperty('--darkhue', darkHue);
-    }
-
-    // Function to save the hue value in localStorage
-    function saveHueValue(darkHue) {
-        localStorage.setItem('darkhue', darkHue);
-    }
-
-    // Event listeners for the buttons
-    darkModeBtn.addEventListener("click", () => {
-        const darkHue = '0%'; // Dark hue for black
-        saveHueValue(darkHue);
-        updateBackgroundColor(darkHue);
-    });
-
-    grayModeBtn.addEventListener("click", () => {
-        const darkHue = '12%'; // Dark hue for gray
-        saveHueValue(darkHue);
-        updateBackgroundColor(darkHue);
-    });
-
-    lightModeBtn.addEventListener("click", () => {
-        const darkHue = '80%'; // Dark hue for white
-        saveHueValue(darkHue);
-        updateBackgroundColor(darkHue);
-    });
-
-    // Check for stored hue value on page load
-    const storedDarkHue = localStorage.getItem('darkhue');
-    if (storedDarkHue) {
-        updateBackgroundColor(storedDarkHue);
-    }
-});
-
-
-
-
-
-
-
-
-
-
-// Function to generate random 0s and 1s
-function generateRandomBinary() {
-    const binaryChars = ['0', '1'];
-    return binaryChars[Math.floor(Math.random() * binaryChars.length)];
-}
-
-// Function to create the matrix background
-function createMatrixBackground() {
-    const matrixBg = document.getElementById('matrixBg');
-    const numChars = 150; // Number of characters in the background
-    const matrixWidth = matrixBg.offsetWidth;
-    const matrixHeight = matrixBg.offsetHeight;
-
-    let matrixHtml = '';
-    for (let i = 0; i < numChars; i++) {
-        const x = Math.floor(Math.random() * matrixWidth);
-        const y = Math.floor(Math.random() * matrixHeight);
-        const duration = Math.random() * 5 + 1; // Random duration between 1 to 6 seconds
-        const opacity = Math.random() * 0.5 + 0.1; // Random opacity between 0.1 to 0.6
-        const char = generateRandomBinary();
-        matrixHtml += `<span style="top:${y}px; left:${x}px; animation-duration:${duration}s; opacity:${opacity};">${char}</span>`;
-    }
-    matrixBg.innerHTML = matrixHtml;
-}
-
-// Function to handle scroll events
-function handleScroll() {
-    const matrixBg = document.getElementById('matrixBg');
-    const viewportHeight = window.innerHeight;
-
-    // Check if scrolled past the initial viewport height
-    if (window.scrollY > (viewportHeight - (viewportHeight / 2))) {
-        // Optionally, you can smoothly fade out the matrix background
-        matrixBg.style.opacity = '0';
-        matrixBg.style.transition = 'opacity 0.5s';
-    } else {
-        // Reset opacity and transition if scrolled back up
-        matrixBg.style.opacity = '1';
-        matrixBg.style.transition = 'none';
-    }
-}
-
-// Event listener for window resize to adjust the matrix background
-window.addEventListener('resize', () => {
-    createMatrixBackground();
-});
-
-// Event listener for scroll to handle matrix background visibility
-window.addEventListener('scroll', handleScroll);
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    const projects = [
-        { id: "project1", img: "images/Project1/ConnorWebImgPortrait.png", url: "project1.html", description: "Designing and Building a Website" },
-        { id: "project2", img: "images/Project2/Drone.png", url: "project2.html", description: "Designing and Building a FPV Drone from scratch" },
-        { id: "project3", img: "images/Project3/LED.png", url: "project3.html", description: "Designing and Building Individually Addressed LED's Controlled via Wifi" },
-        { id: "project4", img: "images/Project4/Plant.png", url: "project4.html", description: "Designing and Building a Plant Monitor System" },
-        { id: "project5", img: "images/Home/image-coming-soon.jpeg", url: "project5.html", description: "Description of Project 5" },
-        { id: "project6", img: "images/Home/image-coming-soon.jpeg", url: "project6.html", description: "Description of Project 6" },
-        { id: "project7", img: "images/Home/image-coming-soon.jpeg", url: "project7.html", description: "Description of Project 7" },
-        { id: "project8", img: "images/Home/image-coming-soon.jpeg", url: "project8.html", description: "Description of Project 8" },
-        // Add more projects as needed
-    ];
-
-    let projectsPerPage = getProjectsPerPage();
-    let currentPage = 0;
-
-    const projectGallery = document.querySelector(".projects-gallery");
-    const leftArrow = document.querySelector(".left-arrow");
-    const rightArrow = document.querySelector(".right-arrow");
-    const projectDescription = document.getElementById("projectDescription");
-
-    function getProjectsPerPage() {
-        if(window.innerWidth < 700){
-            return 1;
-        } else if (window.innerWidth < 1500){
-            return 2;
-        } else{
-            return 4;
-        }
-    }
-
-    function displayProjects(page) {
-        projectsPerPage = getProjectsPerPage(); // Update the number of projects per page based on screen size
-        projectGallery.innerHTML = "";
-        const start = page * projectsPerPage;
-        const end = start + projectsPerPage;
-        const currentProjects = projects.slice(start, end);
-
-        currentProjects.forEach((project, index) => {
-            const projectDiv = document.createElement("div");
-            projectDiv.className = `project-image ${index === 0 ? "big" : "small"}`;
-            projectDiv.id = project.id;
-            projectDiv.setAttribute("data-url", project.url);
-            projectDiv.setAttribute("data-description", project.description);
-            
-            if(index === 0){
-                projectDescription.textContent = project.description;
-            }
-
-            const img = document.createElement("img");
-            img.src = project.img;
-            img.alt = project.id;
-            projectDiv.appendChild(img);
-
-            projectGallery.appendChild(projectDiv);
-
-            projectDiv.addEventListener("click", function() {
-                if (projectDiv.classList.contains("big")) {
-                    window.location.href = project.url;
-                } else {
-                    const allProjects = document.querySelectorAll(".project-image");
-                    allProjects.forEach(img => {
-                        img.classList.remove("big");
-                        img.classList.add("small");
-                    });
-                    projectDiv.classList.remove("small");
-                    projectDiv.classList.add("big");
-                    projectDescription.textContent = project.description;
-                }
-            });
-        });
-    }
-
-    function animateProjectsOut(direction) {
-        const allProjects = document.querySelectorAll(".project-image");
-        return new Promise((resolve) => {
-            allProjects.forEach(project => {
-                project.classList.add(direction === 1 ? "slide-out-left" : "slide-out-right");
-                project.addEventListener("animationend", function() {
-                    project.classList.remove("slide-out-left", "slide-out-right");
-                    resolve();
-                }, { once: true });
-            });
-        });
-    }
-
-    function animateProjectsIn(direction) {
-        displayProjects(currentPage);
-        const allProjects = document.querySelectorAll(".project-image");
-        allProjects.forEach(project => {
-            project.classList.add(direction === 1 ? "slide-in-right" : "slide-in-left");
-            project.addEventListener("animationend", function() {
-                project.classList.remove("slide-in-right", "slide-in-left");
-            }, { once: true });
-        });
-    }
-
-    async function navigateProjects(direction) {
-        await animateProjectsOut(direction);
-        if (direction === 1) {
-            currentPage++;
-            if (currentPage >= Math.ceil(projects.length / projectsPerPage)) {
-                currentPage = 0;
-            }
-        } else {
-            currentPage--;
-            if (currentPage < 0) {
-                currentPage = Math.ceil(projects.length / projectsPerPage) - 1;
-            }
-        }
-        animateProjectsIn(direction);
-    }
-
-    leftArrow.addEventListener("click", function() {
-        navigateProjects(-1);
-    });
-
-    rightArrow.addEventListener("click", function() {
-        navigateProjects(1);
-    });
-
-    displayProjects(currentPage);
-
-    // Recalculate projectsPerPage and re-display projects on window resize
-    window.addEventListener("resize", function() {
-        const oldProjectsPerPage = projectsPerPage;
-        projectsPerPage = getProjectsPerPage();
-        // Adjust the currentPage if the number of projects per page changes
-        if (oldProjectsPerPage !== projectsPerPage) {
-            currentPage = Math.floor((currentPage * oldProjectsPerPage) / projectsPerPage);
-            if (currentPage >= Math.ceil(projects.length / projectsPerPage)) {
-                currentPage = 0;
-            }
-            displayProjects(currentPage);
-        }
-    });
-
-});
-
-
-// Scroll animation for Education and Workspace sections
-const educationContainer = document.querySelector('.education-container');
-const workspaceContainer = document.querySelector('.workspace-container');
-
- function checkVisibility() {
-    const educationRect = educationContainer.getBoundingClientRect();
-    const workspaceRect = workspaceContainer.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-     if (educationRect.top <= (windowHeight - (windowHeight/2)) && educationRect.bottom >= 0) {
-        educationContainer.classList.add('visible');
-    } else {
-        educationContainer.classList.remove('visible');
-    }
-
-     if (workspaceRect.top <= (windowHeight - (windowHeight/2)) && workspaceRect.bottom >= 0) {
-        workspaceContainer.classList.add('visible');
-    } else {
-        workspaceContainer.classList.remove('visible');
-    }
-}
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const skillsSection = document.querySelector('.skills-container');
-    const skillSliders = document.querySelectorAll('.skill input[type="range"]');
-
-    // Function to animate slider to a target value
-    function animateSlider(slider, targetValue) {
-        let currentValue = 0;
-        const interval = 10; // Interval in milliseconds
-        const step = 1; // Step size
-
-        const animate = () => {
-            if (currentValue < targetValue) {
-                currentValue += step;
-                slider.value = Math.min(currentValue, targetValue);
-                requestAnimationFrame(animate); // Continue animating
-            }
-        };
-
-        animate();
-    }
-
-    // Intersection Observer callback
-    const observerCallback = (entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                skillSliders.forEach(slider => {
-                    const targetValue = parseInt(slider.getAttribute('value'), 10);
-                    slider.value = 0; // Reset value to 0
-                    animateSlider(slider, targetValue); // Animate to the target value
-                });
-            }
-        });
-    };
-
-    // Intersection Observer options
-    const observerOptions = {
-        root: null, // Use the viewport as the root
-        threshold: 0.5 // Trigger when 50% of the section is in view
-    };
-
-    // Create Intersection Observer
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    observer.observe(skillsSection);
-});
-
-
-
-
-
-
-// Event listeners
-window.addEventListener('DOMContentLoaded', () => {
-    createMatrixBackground();
-    checkVisibility();
-});
-
-window.addEventListener('scroll', () => {
-    handleScroll();
-    checkVisibility();
-});
-
-// Show the scroll-to-top button when the user scrolls down
-window.onscroll = function () {
-    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-    const footer = document.getElementById('footer');
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        scrollToTopBtn.style.display = 'block';
-        footer.style.display = 'block';
-    } else {
-        footer.style.display = 'none';
-        scrollToTopBtn.style.display = 'none';
-    }
-};
-// This code updates the year in the footer automatically
-document.addEventListener('DOMContentLoaded', () => {
-    const yearElement = document.getElementById('year');
-    const currentYear = new Date().getFullYear();
-    yearElement.textContent = currentYear;
-});
-
-// Scroll to the top of the page when the button is clicked
-document.getElementById('scrollToTopBtn').addEventListener('click', function () {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-</script>
+  </footer>
 </body>
 </html>

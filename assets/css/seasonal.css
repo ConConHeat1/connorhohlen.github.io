@@ -1,0 +1,2016 @@
+/*
+ * Seasonal home-page presentation
+ *
+ * JavaScript owns the calendar, scene lifecycle, and accessibility state. This
+ * stylesheet owns only presentation and deliberately keeps the stage inert.
+ */
+
+body[data-page="home"] {
+  --seasonal-accent: var(--accent);
+  --seasonal-accent-soft: var(--glow);
+  --seasonal-card-accent: var(--accent);
+  --seasonal-card-glow: var(--glow);
+  --seasonal-veil: rgba(7, 11, 16, 0.52);
+  --seasonal-veil-edge: rgba(7, 11, 16, 0.12);
+  isolation: isolate;
+}
+
+html[data-theme="slate"] body[data-page="home"] {
+  --seasonal-veil: rgba(36, 42, 48, 0.54);
+  --seasonal-veil-edge: rgba(36, 42, 48, 0.14);
+}
+
+html[data-theme="light"] body[data-page="home"] {
+  --seasonal-veil: rgba(245, 248, 250, 0.68);
+  --seasonal-veil-edge: rgba(245, 248, 250, 0.18);
+}
+
+body[data-page="home"] > main,
+body[data-page="home"] > .site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+body[data-page="home"] > .site-header {
+  z-index: 100;
+}
+
+body[data-page="home"] > .skip-link {
+  z-index: 1000;
+}
+
+body[data-page="home"] > .back-to-top {
+  z-index: 40;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Stage and compositing                                                       */
+/* -------------------------------------------------------------------------- */
+
+[data-seasonal-stage] {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  contain: strict;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 360ms ease, visibility 360ms ease;
+  visibility: visible;
+}
+
+[data-seasonal-stage][hidden],
+body[data-special-effects="off"] [data-seasonal-stage],
+body[data-special-event="none"] [data-seasonal-stage],
+body[data-page="home"]:not([data-special-event]) [data-seasonal-stage] {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+}
+
+[data-seasonal-stage][hidden] {
+  display: none;
+}
+
+.seasonal-canvas,
+[data-seasonal-canvas] {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.92;
+}
+
+.seasonal-props,
+[data-seasonal-props] {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.seasonal-veil,
+[data-seasonal-veil] {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 72% 68% at 43% 43%,
+      var(--seasonal-veil) 0%,
+      color-mix(in srgb, var(--seasonal-veil) 76%, transparent) 48%,
+      var(--seasonal-veil-edge) 72%,
+      transparent 100%
+    );
+  opacity: var(--seasonal-veil-opacity, 1);
+  pointer-events: none;
+}
+
+.seasonal-canvas[hidden],
+[data-seasonal-canvas][hidden],
+.seasonal-props[hidden],
+[data-seasonal-props][hidden],
+.seasonal-veil[hidden],
+[data-seasonal-veil][hidden] {
+  display: none !important;
+}
+
+.seasonal-prop,
+[data-seasonal-prop] {
+  position: absolute;
+  display: block;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.seasonal-prop img,
+[data-seasonal-prop] img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* A small, event-tinted wash helps the canvas feel native to every theme. */
+[data-seasonal-stage]::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    radial-gradient(circle at 82% 20%, var(--seasonal-accent-soft), transparent 30rem),
+    linear-gradient(180deg, transparent 45%, color-mix(in srgb, var(--bg) 15%, transparent));
+  content: "";
+  opacity: 0.58;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Event palettes                                                              */
+/* -------------------------------------------------------------------------- */
+
+body[data-special-event="new-year"] {
+  --seasonal-accent: #f4ca64;
+  --seasonal-accent-soft: rgba(69, 210, 231, 0.13);
+  --seasonal-card-accent: #f4ca64;
+  --seasonal-card-glow: rgba(244, 202, 100, 0.18);
+}
+
+body[data-special-event="valentines-day"] {
+  --seasonal-accent: #f16f9e;
+  --seasonal-accent-soft: rgba(241, 111, 158, 0.15);
+  --seasonal-card-accent: #f48bb1;
+  --seasonal-card-glow: rgba(241, 111, 158, 0.2);
+}
+
+body[data-special-event="st-patricks-day"] {
+  --seasonal-accent: #63d98d;
+  --seasonal-accent-soft: rgba(80, 210, 126, 0.14);
+  --seasonal-card-accent: #72df98;
+  --seasonal-card-glow: rgba(80, 210, 126, 0.19);
+}
+
+body[data-special-event="easter"] {
+  --seasonal-accent: #d7a6f4;
+  --seasonal-accent-soft: rgba(143, 205, 247, 0.14);
+  --seasonal-card-accent: #e4b7fb;
+  --seasonal-card-glow: rgba(215, 166, 244, 0.2);
+}
+
+body[data-special-event="earth-day"] {
+  --seasonal-accent: #70dbad;
+  --seasonal-accent-soft: rgba(62, 157, 231, 0.17);
+  --seasonal-card-accent: #75dfb2;
+  --seasonal-card-glow: rgba(62, 157, 231, 0.19);
+}
+
+body[data-special-event="mothers-day"] {
+  --seasonal-accent: #f092b5;
+  --seasonal-accent-soft: rgba(240, 146, 181, 0.14);
+  --seasonal-card-accent: #f5a5c2;
+  --seasonal-card-glow: rgba(240, 146, 181, 0.2);
+}
+
+body[data-special-event="fathers-day"] {
+  --seasonal-accent: #7dbde8;
+  --seasonal-accent-soft: rgba(221, 157, 84, 0.13);
+  --seasonal-card-accent: #85c6ef;
+  --seasonal-card-glow: rgba(125, 189, 232, 0.19);
+}
+
+body[data-special-event="fourth-of-july"],
+body[data-special-event="independence-day"] {
+  --seasonal-accent: #f3d8a1;
+  --seasonal-accent-soft: rgba(83, 132, 224, 0.15);
+  --seasonal-card-accent: #f3d8a1;
+  --seasonal-card-glow: rgba(83, 132, 224, 0.2);
+}
+
+body[data-special-event="halloween"] {
+  --seasonal-accent: #f29a43;
+  --seasonal-accent-soft: rgba(143, 83, 199, 0.17);
+  --seasonal-card-accent: #f4a453;
+  --seasonal-card-glow: rgba(242, 154, 67, 0.2);
+}
+
+body[data-special-event="thanksgiving"] {
+  --seasonal-accent: #d88a49;
+  --seasonal-accent-soft: rgba(216, 138, 73, 0.15);
+  --seasonal-card-accent: #e5a15e;
+  --seasonal-card-glow: rgba(216, 138, 73, 0.2);
+}
+
+body[data-special-event="christmas"] {
+  --seasonal-accent: #e95d62;
+  --seasonal-accent-soft: rgba(89, 177, 139, 0.15);
+  --seasonal-card-accent: #70d2a5;
+  --seasonal-card-glow: rgba(112, 210, 165, 0.2);
+}
+
+html[data-theme="light"] body[data-special-event="valentines-day"],
+html[data-theme="light"] body[data-special-event="mothers-day"] {
+  --seasonal-card-accent: #b72e61;
+}
+
+html[data-theme="light"] body[data-special-event="easter"] {
+  --seasonal-card-accent: #7446a1;
+}
+
+html[data-theme="light"] body[data-special-event="christmas"] {
+  --seasonal-card-accent: #08774e;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Navigation animation control                                                */
+/* -------------------------------------------------------------------------- */
+
+[data-seasonal-toggle] {
+  display: none;
+  min-width: 44px;
+  min-height: 44px;
+  margin-left: 0.45rem;
+  padding: 0.5rem 0.72rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--seasonal-card-accent) 46%, var(--border));
+  border-radius: 0.72rem;
+  background:
+    radial-gradient(circle at 16% 15%, var(--seasonal-card-glow), transparent 58%),
+    color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 740;
+  gap: 0.48rem;
+  line-height: 1.15;
+  white-space: nowrap;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+body[data-page="home"][data-special-event]:not([data-special-event="none"])
+  [data-seasonal-toggle]:not([hidden]) {
+  display: inline-flex;
+}
+
+[data-seasonal-toggle]::before {
+  width: 0.74rem;
+  height: 0.74rem;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--seasonal-card-accent) 72%, transparent);
+  border-radius: 50%;
+  background: var(--seasonal-card-accent);
+  content: "";
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--seasonal-card-accent) 14%, transparent),
+    0 0 1rem color-mix(in srgb, var(--seasonal-card-accent) 52%, transparent);
+}
+
+body[data-special-effects="off"] [data-seasonal-toggle] {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+body[data-special-effects="off"] [data-seasonal-toggle]::before {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--surface);
+}
+
+[data-seasonal-toggle]:hover {
+  border-color: var(--seasonal-card-accent);
+  background:
+    radial-gradient(circle at 16% 15%, var(--seasonal-card-glow), transparent 58%),
+    var(--surface-strong);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+[data-seasonal-toggle]:active {
+  transform: translateY(0);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hidden owner preview tray                                                   */
+/* -------------------------------------------------------------------------- */
+
+[data-event-preview-launcher] {
+  position: fixed;
+  z-index: 150;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  display: none;
+  min-width: 44px;
+  min-height: 44px;
+  max-width: calc(100vw - 2rem);
+  margin: 0;
+  padding: 0.5rem 0.72rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--seasonal-card-accent) 32%, var(--border));
+  border-radius: 0.72rem;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text-soft);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 740;
+  gap: 0.48rem;
+  line-height: 1.15;
+  white-space: nowrap;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+[data-event-preview-launcher]:not([hidden]) {
+  display: inline-flex;
+}
+
+[data-event-preview-launcher]::before {
+  width: 0.32rem;
+  height: 0.32rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--seasonal-card-accent);
+  content: "";
+  box-shadow:
+    0.48rem 0 var(--seasonal-card-accent),
+    0 0.48rem var(--seasonal-card-accent),
+    0.48rem 0.48rem var(--seasonal-card-accent);
+  transform: translate(-0.24rem, -0.24rem);
+}
+
+[data-event-preview-launcher]:hover,
+[data-event-preview-launcher][aria-expanded="true"] {
+  border-color: var(--seasonal-card-accent);
+  background:
+    radial-gradient(circle at 16% 15%, var(--seasonal-card-glow), transparent 58%),
+    var(--surface-strong);
+  color: var(--text);
+}
+
+[data-event-preview-launcher]:active {
+  transform: translateY(1px);
+}
+
+[data-event-preview] {
+  position: fixed;
+  z-index: 160;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  display: grid;
+  width: min(23rem, calc(100vw - 2rem));
+  max-height: min(
+    34rem,
+    calc(100dvh - var(--header-height, 4.5rem) - max(2rem, env(safe-area-inset-top)))
+  );
+  padding: 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--seasonal-card-accent) 42%, var(--border));
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+  color: var(--text);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.28);
+  gap: 0.65rem;
+  backdrop-filter: blur(18px) saturate(135%);
+  scrollbar-gutter: stable;
+}
+
+[data-event-preview][hidden] {
+  display: none;
+}
+
+[data-event-preview]::before {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  left: 1rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--seasonal-card-accent), transparent);
+  content: "";
+  opacity: 0.76;
+}
+
+[data-event-preview] header,
+[data-event-preview] .event-preview-header {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+[data-event-preview] .event-preview-header > div {
+  min-width: 0;
+}
+
+[data-event-preview] h2,
+[data-event-preview] h3,
+[data-event-preview] p {
+  margin: 0;
+}
+
+[data-event-preview] h2,
+[data-event-preview] h3,
+[data-event-preview] .event-preview-title {
+  color: var(--text);
+  font-size: 0.84rem;
+  font-weight: 780;
+}
+
+[data-event-preview] p,
+[data-event-preview] .event-preview-note {
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+[data-event-preview] label {
+  display: grid;
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  font-weight: 720;
+  gap: 0.32rem;
+}
+
+[data-event-preview] select,
+[data-event-preview] button,
+[data-event-preview] [role="button"] {
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+[data-event-preview] select {
+  width: 100%;
+  padding: 0.55rem 2.25rem 0.55rem 0.7rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+[data-event-preview] button,
+[data-event-preview] [role="button"] {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 740;
+}
+
+[data-event-preview] button:hover,
+[data-event-preview] [role="button"]:hover {
+  border-color: var(--seasonal-card-accent);
+  background: var(--surface-strong);
+}
+
+[data-event-preview] [data-event-preview-minimize] {
+  display: inline-grid;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  flex: 0 0 44px;
+  color: var(--seasonal-card-accent);
+  font-size: 1.25rem;
+  line-height: 1;
+  place-items: center;
+}
+
+[data-event-preview] .event-preview-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+/* Also supports a compact <details> implementation. */
+[data-event-preview] > summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 760;
+  gap: 0.75rem;
+  list-style: none;
+}
+
+[data-event-preview] > summary::-webkit-details-marker {
+  display: none;
+}
+
+[data-event-preview] > summary::after {
+  color: var(--seasonal-card-accent);
+  content: "▾";
+  font-size: 0.72rem;
+  transition: transform var(--transition-fast);
+}
+
+[data-event-preview][open] > summary::after {
+  transform: rotate(180deg);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Holiday greeting in the existing quote card                                */
+/* -------------------------------------------------------------------------- */
+
+[data-special-greeting] {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(1rem, 1.7vw, 1.22rem);
+  font-weight: 760;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+[data-special-greeting][hidden] {
+  display: none;
+}
+
+body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quote-card {
+  border-color: color-mix(in srgb, var(--seasonal-card-accent) 58%, var(--border));
+  background:
+    radial-gradient(circle at 88% 12%, var(--seasonal-card-glow), transparent 15rem),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--surface) 94%, var(--seasonal-card-accent) 6%),
+      var(--bg-elevated)
+    );
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 0 0 1px color-mix(in srgb, var(--seasonal-card-accent) 8%, transparent);
+}
+
+body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quote-card::after {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  left: 1rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--seasonal-card-accent), transparent);
+  content: "";
+  opacity: 0.72;
+}
+
+body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quote-mark,
+body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quote-card .eyebrow {
+  color: var(--seasonal-card-accent);
+}
+
+body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quote-mark {
+  text-shadow: 0 0 1.5rem var(--seasonal-card-glow);
+}
+
+body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quote-meta {
+  color: color-mix(in srgb, var(--seasonal-card-accent) 62%, var(--text-faint));
+}
+
+/* -------------------------------------------------------------------------- */
+/* Earth Day                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.seasonal-earth,
+[data-seasonal-prop="earth"] {
+  right: clamp(-22rem, -17vw, -8rem);
+  bottom: clamp(-26rem, -22vw, -10rem);
+  width: clamp(34rem, 58vw, 62rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(130, 205, 255, 0.38);
+  border-radius: 50%;
+  background: #071321;
+  box-shadow:
+    -1.4rem -0.8rem 4rem rgba(69, 172, 242, 0.18),
+    0 0 1.4rem rgba(119, 207, 255, 0.2),
+    inset 1.4rem 0 2.4rem rgba(112, 210, 255, 0.13);
+  filter: saturate(0.94) contrast(1.04);
+  transform: rotate(-8deg);
+}
+
+.seasonal-earth::after,
+[data-seasonal-prop="earth"]::after {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.16), transparent 19%),
+    radial-gradient(circle at 22% 35%, transparent 0 26%, rgba(1, 9, 20, 0.17) 58%, rgba(0, 4, 12, 0.86) 91%),
+    linear-gradient(104deg, rgba(120, 216, 255, 0.1), transparent 36% 68%, rgba(0, 4, 12, 0.72));
+  content: "";
+  box-shadow:
+    inset 0 0 1.2rem rgba(141, 224, 255, 0.42),
+    inset -3rem -1rem 6rem rgba(0, 4, 12, 0.58);
+}
+
+.seasonal-earth-atmosphere,
+.seasonal-earth-shade {
+  position: absolute;
+  z-index: 1;
+  inset: -1.2%;
+  border: 2px solid rgba(127, 216, 255, 0.34);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 31%, rgba(255, 255, 255, 0.08), transparent 20%),
+    linear-gradient(105deg, transparent 38%, rgba(0, 4, 12, 0.14) 58%, rgba(0, 4, 12, 0.68));
+  box-shadow:
+    0 0 1.25rem rgba(82, 185, 244, 0.34),
+    inset 0 0 1.4rem rgba(128, 216, 255, 0.26),
+    inset -2.6rem -0.8rem 4rem rgba(0, 4, 12, 0.42);
+  pointer-events: none;
+}
+
+.seasonal-credit,
+.seasonal-earth-attribution,
+[data-seasonal-credit] {
+  position: absolute;
+  z-index: 4;
+  right: max(0.8rem, env(safe-area-inset-right));
+  bottom: max(0.7rem, env(safe-area-inset-bottom));
+  max-width: min(30rem, calc(100vw - 1.6rem));
+  padding: 0.28rem 0.5rem;
+  border: 1px solid rgba(174, 220, 245, 0.2);
+  border-radius: 0.45rem;
+  background: rgba(3, 12, 21, 0.58);
+  color: rgba(225, 242, 252, 0.8);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.025em;
+  line-height: 1.35;
+  text-align: right;
+  backdrop-filter: blur(8px);
+}
+
+.seasonal-earth-attribution {
+  right: auto;
+  text-align: left;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Christmas                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.seasonal-santa,
+[data-seasonal-prop="santa"] {
+  top: var(--seasonal-santa-y, 16%);
+  left: 0;
+  width: clamp(18rem, 38vw, 39rem);
+  opacity: 0;
+  filter:
+    drop-shadow(0 1rem 1.25rem rgba(0, 0, 0, 0.24))
+    drop-shadow(0 0 1rem rgba(255, 226, 184, 0.12));
+  transform: translate3d(-120%, 0, 0) rotate(var(--seasonal-santa-angle, -3deg));
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.seasonal-santa.is-crossing,
+[data-seasonal-prop="santa"].is-crossing {
+  animation: seasonal-santa-left-to-right var(--seasonal-santa-duration, 13s) cubic-bezier(0.35, 0, 0.62, 1) both;
+}
+
+.seasonal-santa.is-crossing[data-direction="right-to-left"],
+[data-seasonal-prop="santa"].is-crossing[data-direction="right-to-left"] {
+  animation-name: seasonal-santa-right-to-left;
+}
+
+@keyframes seasonal-santa-left-to-right {
+  0% {
+    opacity: 0;
+    transform: translate3d(-120%, 8vh, 0) rotate(var(--seasonal-santa-angle, -3deg));
+  }
+
+  7%,
+  92% {
+    opacity: 0.94;
+  }
+
+  48% {
+    transform: translate3d(48vw, -3vh, 0) rotate(calc(var(--seasonal-santa-angle, -3deg) + 2deg));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(100vw + 30%), -9vh, 0) rotate(calc(var(--seasonal-santa-angle, -3deg) + 4deg));
+  }
+}
+
+@keyframes seasonal-santa-right-to-left {
+  0% {
+    opacity: 0;
+    transform: translate3d(calc(100vw + 30%), -7vh, 0) scaleX(-1) rotate(var(--seasonal-santa-angle, 3deg));
+  }
+
+  7%,
+  92% {
+    opacity: 0.94;
+  }
+
+  48% {
+    transform: translate3d(48vw, 2vh, 0) scaleX(-1) rotate(calc(var(--seasonal-santa-angle, 3deg) - 2deg));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-120%, 9vh, 0) scaleX(-1) rotate(calc(var(--seasonal-santa-angle, 3deg) - 4deg));
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Easter                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.seasonal-bunny,
+[data-seasonal-prop="bunny"] {
+  bottom: clamp(0.5rem, 4vh, 3.5rem);
+  left: clamp(1rem, 6vw, 6rem);
+  width: clamp(8rem, 16vw, 14rem);
+  filter:
+    drop-shadow(0 1rem 1rem rgba(0, 0, 0, 0.18))
+    drop-shadow(0 0 1rem rgba(230, 202, 250, 0.13));
+  transform-origin: 50% 100%;
+  will-change: left, bottom, transform, opacity;
+}
+
+.seasonal-bunny-shadow,
+[data-seasonal-prop="bunny-shadow"] {
+  bottom: 0.75rem;
+  left: 50%;
+  width: 8rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(20, 15, 24, 0.34), transparent 72%);
+  filter: blur(0.2rem);
+  opacity: 0;
+  will-change: left, width, opacity;
+}
+
+.seasonal-egg,
+[data-seasonal-prop="egg"] {
+  width: clamp(1.6rem, 3vw, 2.6rem);
+  aspect-ratio: 0.76;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.3), transparent 36%),
+    var(--egg-color, #c7a2ea);
+  box-shadow: 0 0.7rem 1.2rem rgba(0, 0, 0, 0.12);
+  transform: rotate(var(--egg-angle, 8deg));
+}
+
+.seasonal-egg[data-pattern="stripes"] {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.34), transparent 36%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 19%,
+      rgba(255, 255, 255, 0.5) 20% 31%,
+      transparent 32% 45%
+    ),
+    var(--egg-color, #f4a8c2);
+}
+
+.seasonal-egg[data-pattern="dots"] {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.34), transparent 36%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.62) 0 11%, transparent 13%) 0 0 / 0.72rem 0.72rem,
+    var(--egg-color, #a9d7f5);
+}
+
+.seasonal-egg[data-pattern="chevron"] {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.34), transparent 36%),
+    linear-gradient(135deg, transparent 38%, rgba(255, 255, 255, 0.5) 39% 52%, transparent 53%) 0 0 / 0.8rem 0.8rem,
+    linear-gradient(45deg, transparent 38%, rgba(255, 255, 255, 0.5) 39% 52%, transparent 53%) 0.4rem 0 / 0.8rem 0.8rem,
+    var(--egg-color, #c8b0ef);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Halloween                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.seasonal-moon,
+[data-seasonal-prop="moon"] {
+  top: clamp(0.75rem, 2.5vh, 1.75rem);
+  right: clamp(-1.25rem, 1.5vw, 1.25rem);
+  width: clamp(7rem, 15vw, 13rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 66% 31%, rgba(96, 103, 115, 0.17) 0 7%, transparent 8%),
+    radial-gradient(circle at 35% 65%, rgba(96, 103, 115, 0.12) 0 11%, transparent 12%),
+    radial-gradient(circle at 32% 29%, #fffce4, #e7e0bb 68%, #b1ac92);
+  box-shadow:
+    0 0 2rem rgba(255, 244, 188, 0.25),
+    0 0 7rem rgba(255, 244, 188, 0.15);
+  opacity: 0.84;
+}
+
+.seasonal-fog,
+[data-seasonal-prop="fog"] {
+  right: -14%;
+  bottom: -8%;
+  left: -14%;
+  height: 36%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 24% 45%, rgba(190, 202, 213, 0.2), transparent 28%),
+    radial-gradient(ellipse at 65% 58%, rgba(183, 195, 207, 0.18), transparent 34%),
+    radial-gradient(ellipse at 82% 28%, rgba(203, 210, 219, 0.13), transparent 25%);
+  filter: blur(1.4rem);
+  opacity: 0.78;
+  animation: seasonal-fog-drift 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.seasonal-fog[data-depth="far"],
+[data-seasonal-prop="fog"][data-depth="far"] {
+  bottom: 2%;
+  opacity: 0.45;
+  animation-direction: alternate-reverse;
+  animation-duration: 38s;
+  transform: scale(1.16);
+}
+
+.seasonal-pumpkin,
+[data-seasonal-prop="pumpkin"] {
+  right: clamp(1rem, 4vw, 4rem);
+  bottom: clamp(0.3rem, 2vh, 1.5rem);
+  width: clamp(8rem, 15vw, 13rem);
+  aspect-ratio: 1.18;
+  border: 0;
+  background: transparent;
+  filter:
+    drop-shadow(0 1rem 1.2rem rgba(0, 0, 0, 0.34))
+    drop-shadow(0 0 1.4rem rgba(239, 129, 34, 0.18));
+  isolation: isolate;
+  transform-origin: 50% 100%;
+}
+
+.seasonal-pumpkin::before,
+[data-seasonal-prop="pumpkin"]::before {
+  position: absolute;
+  z-index: -1;
+  right: 9%;
+  bottom: -4%;
+  left: 9%;
+  height: 20%;
+  border-radius: 50%;
+  background: rgba(39, 17, 8, 0.38);
+  content: "";
+  filter: blur(0.48rem);
+}
+
+.seasonal-pumpkin::after,
+[data-seasonal-prop="pumpkin"]::after {
+  position: absolute;
+  z-index: 2;
+  top: -16%;
+  left: 44%;
+  width: 16%;
+  height: 24%;
+  border-radius: 65% 30% 25% 35%;
+  background: linear-gradient(125deg, #6c7a42, #2f4527 72%);
+  content: "";
+  transform: rotate(7deg);
+}
+
+.seasonal-pumpkin__shell {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 180, 80, 0.16);
+  border-radius: 48% 48% 44% 44% / 57% 57% 42% 42%;
+  background: #b74a16;
+  box-shadow:
+    inset 0 -1.45rem 1.4rem rgba(77, 22, 6, 0.34),
+    inset 0 0.45rem 0.8rem rgba(255, 205, 110, 0.12);
+}
+
+.seasonal-pumpkin__shell::after {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse at 47% 24%, rgba(255, 224, 148, 0.24), transparent 28%),
+    linear-gradient(180deg, transparent 52%, rgba(84, 24, 7, 0.16));
+  content: "";
+}
+
+.seasonal-pumpkin__lobe {
+  position: absolute;
+  top: 3%;
+  bottom: 1%;
+  border-radius: 50% 50% 46% 46% / 58% 58% 43% 43%;
+  box-shadow:
+    inset 0.36rem 0 0.5rem rgba(255, 183, 77, 0.08),
+    inset -0.42rem -0.25rem 0.55rem rgba(87, 26, 7, 0.25);
+}
+
+.seasonal-pumpkin__lobe--outer-left {
+  z-index: 1;
+  left: -2%;
+  width: 31%;
+  background: linear-gradient(105deg, #9d3811, #c24b14 66%);
+}
+
+.seasonal-pumpkin__lobe--left {
+  z-index: 2;
+  left: 15%;
+  width: 34%;
+  background: linear-gradient(100deg, #bd4713, #e06b1f 68%);
+}
+
+.seasonal-pumpkin__lobe--center {
+  z-index: 3;
+  left: 35%;
+  width: 31%;
+  background: linear-gradient(100deg, #d85c18, #ee852c 52%, #c74912);
+}
+
+.seasonal-pumpkin__lobe--right {
+  z-index: 2;
+  right: 15%;
+  width: 34%;
+  background: linear-gradient(260deg, #ad3c10, #d75e19 68%);
+}
+
+.seasonal-pumpkin__lobe--outer-right {
+  z-index: 1;
+  right: -2%;
+  width: 31%;
+  background: linear-gradient(255deg, #8d2f0d, #b94112 66%);
+}
+
+.seasonal-pumpkin__vine {
+  position: absolute;
+  z-index: 4;
+  top: -7%;
+  left: 55%;
+  width: 2.8rem;
+  height: 1.3rem;
+  border: 0.14rem solid rgba(76, 105, 52, 0.78);
+  border-bottom: 0;
+  border-left-color: transparent;
+  border-radius: 50% 70% 0 0;
+  transform: rotate(-13deg);
+}
+
+.seasonal-pumpkin--left {
+  right: auto;
+  left: clamp(1rem, 3.5vw, 3.5rem);
+  width: clamp(5.5rem, 9vw, 8.5rem);
+  opacity: 0.76;
+  transform: rotate(-2.2deg);
+}
+
+.seasonal-pumpkin--right {
+  right: clamp(0.5rem, 3vw, 3rem);
+  width: clamp(7.5rem, 13vw, 12rem);
+  opacity: 0.84;
+  transform: rotate(1.4deg);
+}
+
+.seasonal-pumpkin__face {
+  position: absolute;
+  z-index: 1;
+  inset: 24% 17% 16%;
+}
+
+.seasonal-pumpkin__eye {
+  position: absolute;
+  top: 8%;
+  width: 23%;
+  height: 25%;
+  background: linear-gradient(180deg, #ffe09a, #f59a31 50%, #8f290c);
+  box-shadow: inset 0 0 0.25rem rgba(255, 244, 184, 0.62);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  filter:
+    drop-shadow(0 0 0.22rem rgba(255, 182, 65, 0.8))
+    drop-shadow(0 0 0.55rem rgba(255, 127, 32, 0.38));
+}
+
+.seasonal-pumpkin__eye--left {
+  left: 10%;
+  transform: rotate(-7deg);
+}
+
+.seasonal-pumpkin__eye--right {
+  right: 10%;
+  transform: rotate(7deg);
+}
+
+.seasonal-pumpkin__mouth {
+  position: absolute;
+  right: 7%;
+  bottom: 5%;
+  left: 7%;
+  height: 34%;
+  background:
+    linear-gradient(180deg, #ffe39a 0 14%, #ffad45 38%, #e65d19 72%, #6a200a 100%);
+  box-shadow:
+    inset 0 0 0.28rem rgba(255, 247, 194, 0.72),
+    inset 0 -0.35rem 0.5rem rgba(104, 25, 5, 0.56);
+  clip-path: polygon(
+    0 28%,
+    13% 39%,
+    22% 14%,
+    37% 45%,
+    50% 17%,
+    64% 46%,
+    78% 13%,
+    88% 38%,
+    100% 24%,
+    92% 78%,
+    73% 69%,
+    58% 91%,
+    42% 69%,
+    25% 91%,
+    9% 72%
+  );
+  filter:
+    drop-shadow(0 0 0.28rem rgba(255, 218, 107, 0.92))
+    drop-shadow(0 0 0.85rem rgba(255, 124, 25, 0.56));
+}
+
+.seasonal-pumpkin.is-glowing,
+[data-seasonal-prop="pumpkin"].is-glowing {
+  animation: seasonal-pumpkin-glow 6s ease-in-out infinite;
+}
+
+@keyframes seasonal-fog-drift {
+  from {
+    transform: translate3d(-3%, 1%, 0) scale(1.04);
+  }
+
+  to {
+    transform: translate3d(4%, -2%, 0) scale(1.1);
+  }
+}
+
+@keyframes seasonal-pumpkin-glow {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 1rem 1.2rem rgba(0, 0, 0, 0.34))
+      drop-shadow(0 0 1.1rem rgba(239, 129, 34, 0.12));
+  }
+
+  50% {
+    filter:
+      drop-shadow(0 1rem 1.2rem rgba(0, 0, 0, 0.34))
+      drop-shadow(0 0 2rem rgba(244, 145, 49, 0.29));
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* St. Patrick's Day, Mother's Day, Father's Day, and Thanksgiving             */
+/* -------------------------------------------------------------------------- */
+
+.seasonal-rainbow,
+[data-seasonal-prop="rainbow"] {
+  top: 9%;
+  right: -7%;
+  width: clamp(18rem, 42vw, 43rem);
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  opacity: 0.26;
+  filter: blur(0.2px) saturate(0.82);
+}
+
+.seasonal-rainbow::before,
+[data-seasonal-prop="rainbow"]::before {
+  position: absolute;
+  inset: 0;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background:
+    radial-gradient(
+      ellipse at 50% 100%,
+      transparent 0 48%,
+      rgba(101, 205, 158, 0.76) 48.4% 50.1%,
+      rgba(105, 169, 231, 0.7) 50.4% 52.2%,
+      rgba(164, 121, 215, 0.66) 52.5% 54.3%,
+      rgba(235, 102, 120, 0.69) 54.6% 56.4%,
+      rgba(242, 180, 83, 0.7) 56.7% 58.5%,
+      transparent 58.8%
+    );
+  content: "";
+}
+
+.seasonal-flower-bed,
+[data-seasonal-prop="flower-bed"] {
+  bottom: -0.25rem;
+  width: clamp(14rem, 25vw, 23rem);
+  height: clamp(8rem, 24vh, 14rem);
+  opacity: 0.88;
+}
+
+.seasonal-flower-bed--left {
+  left: -1.5rem;
+}
+
+.seasonal-flower-bed--right {
+  right: -1.5rem;
+}
+
+.seasonal-flower {
+  position: absolute;
+  bottom: 0;
+  left: var(--flower-x, 50%);
+  width: 2.8rem;
+  height: var(--flower-height, 8rem);
+  transform-origin: 50% 100%;
+  animation: seasonal-individual-flower-sway 5.8s ease-in-out var(--flower-delay, 0s) infinite alternate;
+  will-change: transform;
+}
+
+.seasonal-flower__stem {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0.17rem;
+  height: calc(100% - 1.2rem);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #376c49, #6eac73 52%, #315b3f);
+  box-shadow: 0 0 0.35rem rgba(54, 102, 66, 0.16);
+  transform: translateX(-50%);
+}
+
+.seasonal-flower__leaf {
+  position: absolute;
+  left: 50%;
+  width: 0.78rem;
+  height: 1.38rem;
+  border-radius: 92% 8% 88% 12%;
+  background: linear-gradient(145deg, #6dad78, #376946);
+  clip-path: polygon(0 100%, 12% 48%, 58% 3%, 100% 0, 88% 52%, 0 100%);
+  transform-origin: 0 100%;
+}
+
+.seasonal-flower__leaf--upper {
+  top: 42%;
+  transform: rotate(47deg);
+}
+
+.seasonal-flower__leaf--lower {
+  top: 63%;
+  transform: scaleX(-1) rotate(47deg);
+}
+
+.seasonal-flower__bloom {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2.4rem;
+  aspect-ratio: 1;
+  color: var(--flower-color, #f7a6c3);
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0.35rem 0.36rem rgba(70, 33, 61, 0.2));
+}
+
+.seasonal-flower__bloom::after {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff1ad, #d99c3f 72%);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.seasonal-flower[data-lower-center] .seasonal-flower__bloom::after {
+  top: calc(50% + 2px);
+}
+
+.seasonal-flower__petal {
+  position: absolute;
+  top: 22%;
+  left: 35%;
+  width: 30%;
+  height: 46%;
+  border-radius: 55% 55% 48% 48%;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.38), transparent 42%), currentColor;
+  box-shadow: inset 0 -0.2rem 0.32rem rgba(88, 38, 72, 0.13);
+  transform:
+    rotate(var(--petal-angle))
+    translateY(-38%);
+  transform-origin: 50% 78%;
+}
+
+.seasonal-campsite,
+[data-seasonal-prop="campsite"] {
+  right: clamp(0.25rem, 2vw, 2rem);
+  bottom: 0;
+  width: clamp(16rem, 28vw, 27rem);
+  height: clamp(9rem, 26vh, 15rem);
+  filter: drop-shadow(0 0.8rem 1.2rem rgba(0, 0, 0, 0.24));
+  opacity: 0.82;
+}
+
+.seasonal-camp-forest,
+[data-seasonal-prop="camp-forest"] {
+  bottom: 0;
+  left: -1.2rem;
+  width: clamp(15rem, 27vw, 25rem);
+  height: clamp(9rem, 27vh, 15rem);
+  opacity: 0.8;
+  filter: drop-shadow(0 0.8rem 1rem rgba(0, 0, 0, 0.2));
+}
+
+.seasonal-camp-trees {
+  position: absolute;
+  inset: 0;
+}
+
+.seasonal-camp-tree {
+  position: absolute;
+  bottom: 0;
+  width: 4.7rem;
+  height: 9.5rem;
+  background: linear-gradient(105deg, #294943, #142b29 72%);
+  clip-path: polygon(
+    50% 0,
+    63% 24%,
+    57% 24%,
+    73% 47%,
+    64% 47%,
+    82% 73%,
+    57% 73%,
+    57% 100%,
+    43% 100%,
+    43% 73%,
+    18% 73%,
+    36% 47%,
+    27% 47%,
+    43% 24%,
+    37% 24%
+  );
+  opacity: 0.76;
+}
+
+.seasonal-camp-tree--left {
+  left: var(--camp-tree-left, 0);
+  height: var(--camp-tree-height, 8rem);
+  opacity: var(--camp-tree-opacity, 0.62);
+  transform: scale(var(--camp-tree-scale, 1));
+  transform-origin: 50% 100%;
+}
+
+.seasonal-camp-tree--far {
+  right: 2%;
+  height: 7.2rem;
+  transform: scale(0.72);
+  transform-origin: 50% 100%;
+}
+
+.seasonal-camp-tree--middle {
+  right: 29%;
+  height: 8.4rem;
+  transform: scale(0.86);
+  transform-origin: 50% 100%;
+}
+
+.seasonal-camp-tree--near {
+  left: 1%;
+  height: 11rem;
+}
+
+.seasonal-camp-tent {
+  position: absolute;
+  bottom: 0.55rem;
+  left: 31%;
+  width: 9.4rem;
+  height: 5.4rem;
+  overflow: visible;
+  filter: drop-shadow(0 0.55rem 0.7rem rgba(0, 0, 0, 0.28));
+}
+
+.seasonal-camp-tent__canopy {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(255, 218, 140, 0.22), transparent 42%),
+    linear-gradient(110deg, #5f7d73 0 49%, #3d5d59 50%);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  box-shadow: inset 0 -0.6rem 0.8rem rgba(18, 38, 38, 0.2);
+}
+
+.seasonal-camp-tent__panel {
+  position: absolute;
+  inset: 0;
+  opacity: 0.72;
+}
+
+.seasonal-camp-tent__panel--left {
+  background: linear-gradient(130deg, rgba(172, 205, 183, 0.28), transparent 64%);
+  clip-path: polygon(50% 0, 50% 100%, 0 100%);
+}
+
+.seasonal-camp-tent__panel--right {
+  background: linear-gradient(225deg, rgba(21, 50, 49, 0.32), transparent 68%);
+  clip-path: polygon(50% 0, 100% 100%, 50% 100%);
+}
+
+.seasonal-camp-tent__door {
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: 50%;
+  width: 34%;
+  height: 68%;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(255, 192, 93, 0.5), transparent 72%),
+    linear-gradient(150deg, rgba(255, 189, 86, 0.34), transparent 70%),
+    #213b3a;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  filter: drop-shadow(0 0 0.45rem rgba(255, 169, 70, 0.26));
+  transform: translateX(-50%);
+}
+
+.seasonal-camp-tent__ridge {
+  position: absolute;
+  z-index: 4;
+  top: 49%;
+  left: 49.5%;
+  width: 0.09rem;
+  height: 72%;
+  background: rgba(225, 238, 221, 0.42);
+  transform: translate(-50%, -50%) rotate(27.5deg);
+  transform-origin: 50% 100%;
+}
+
+.seasonal-camp-tent__guyline {
+  position: absolute;
+  z-index: 1;
+  bottom: 0.45rem;
+  width: 5.5rem;
+  height: 1px;
+  background: rgba(214, 225, 209, 0.42);
+  transform-origin: center;
+}
+
+.seasonal-camp-tent__guyline--left {
+  left: -3.35rem;
+  transform: rotate(-25deg);
+}
+
+.seasonal-camp-tent__guyline--right {
+  right: -3.35rem;
+  transform: rotate(25deg);
+}
+
+.seasonal-camp-tent__stake {
+  position: absolute;
+  z-index: 3;
+  bottom: -0.1rem;
+  width: 0.16rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: #8c704d;
+}
+
+.seasonal-camp-tent__stake--left {
+  left: -0.35rem;
+  transform: rotate(-14deg);
+}
+
+.seasonal-camp-tent__stake--right {
+  right: -0.35rem;
+  transform: rotate(14deg);
+}
+
+.seasonal-campfire {
+  position: absolute;
+  right: 11%;
+  bottom: 0.45rem;
+  width: 4rem;
+  height: 4.6rem;
+}
+
+.seasonal-campfire__glow {
+  position: absolute;
+  right: -130%;
+  bottom: -105%;
+  left: -130%;
+  height: 280%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 157, 62, 0.23), transparent 66%);
+  animation: seasonal-campfire-glow 3.8s ease-in-out infinite;
+}
+
+.seasonal-campfire__smoke {
+  position: absolute;
+  z-index: 1;
+  bottom: 3.25rem;
+  left: 50%;
+  width: 5rem;
+  height: calc(100vh - 3.25rem);
+  transform: translateX(-50%);
+}
+
+.seasonal-campfire__smoke-wisp {
+  --smoke-active-drift: var(--smoke-drift, 0rem);
+  position: absolute;
+  bottom: 0;
+  left: calc(50% + var(--smoke-start, 0rem));
+  width: var(--smoke-size, 1.15rem);
+  height: calc(var(--smoke-size, 1.15rem) * 2.15);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(196, 205, 202, 0.26), transparent 72%);
+  filter: blur(var(--smoke-blur, 0.22rem));
+  opacity: 0;
+  animation:
+    seasonal-campfire-smoke var(--smoke-duration, 8s) ease-out
+    var(--smoke-delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+.seasonal-campfire__log {
+  position: absolute;
+  z-index: 2;
+  bottom: 0.2rem;
+  left: 50%;
+  width: 3.4rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #56301c, #8b5330, #422316);
+  transform: translateX(-50%) rotate(13deg);
+}
+
+.seasonal-campfire__log:nth-of-type(3) {
+  transform: translateX(-50%) rotate(-13deg);
+}
+
+.seasonal-campfire__flame {
+  position: absolute;
+  z-index: 3;
+  bottom: 0.55rem;
+  left: 50%;
+  width: 2.15rem;
+  height: 3.2rem;
+  border-radius: 65% 35% 62% 38% / 72% 42% 58% 28%;
+  background: linear-gradient(155deg, #fff09d 3%, #ffac43 42%, #d94b26 92%);
+  filter: drop-shadow(0 0 0.65rem rgba(255, 132, 42, 0.62));
+  transform: translateX(-50%) rotate(4deg);
+  transform-origin: 50% 100%;
+  animation: seasonal-campfire-flicker 1.15s ease-in-out infinite alternate;
+}
+
+.seasonal-campfire__flame-core {
+  position: absolute;
+  right: 27%;
+  bottom: 4%;
+  left: 28%;
+  height: 54%;
+  border-radius: 60% 40% 62% 38%;
+  background: #fff6b4;
+}
+
+.seasonal-wheat,
+[data-seasonal-prop="wheat"] {
+  z-index: 2;
+  right: -2%;
+  bottom: -2%;
+  width: clamp(12rem, 25vw, 22rem);
+  height: clamp(10rem, 32vh, 18rem);
+  max-height: 42vh;
+  opacity: 0.58;
+  filter:
+    sepia(0.16)
+    saturate(0.92)
+    drop-shadow(0 0.8rem 1.2rem rgba(57, 31, 14, 0.14));
+  transform-origin: 50% 100%;
+  animation: seasonal-wheat-sway 8s ease-in-out infinite alternate;
+}
+
+.seasonal-wheat--left {
+  right: auto;
+  left: -2%;
+}
+
+.seasonal-wheat__stalk {
+  position: absolute;
+  bottom: 0;
+  left: var(--wheat-left, 50%);
+  width: 0.12rem;
+  height: var(--wheat-height, 78%);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #80602e, #d2a64f 54%, #775423);
+  box-shadow: 0 0 0.28rem rgba(190, 139, 60, 0.12);
+  transform: rotate(var(--wheat-lean, 0deg));
+  transform-origin: 50% 100%;
+  animation: seasonal-wheat-stalk-sway 5.6s ease-in-out var(--wheat-delay, 0s) infinite alternate;
+}
+
+.seasonal-wheat__grain {
+  position: absolute;
+  top: var(--grain-top, 8%);
+  left: calc(50% + var(--grain-offset, 0px));
+  width: 0.34rem;
+  height: 0.58rem;
+  border-radius: 52% 48% 50% 50%;
+  background:
+    radial-gradient(circle at 36% 30%, rgba(255, 230, 145, 0.52), transparent 25%),
+    linear-gradient(145deg, #e1b85d, #a9792d);
+  box-shadow:
+    inset -0.08rem -0.1rem 0.14rem rgba(102, 68, 22, 0.26),
+    0 0 0.22rem rgba(218, 168, 74, 0.14);
+  transform: translateX(-50%) rotate(var(--grain-angle, 0deg));
+}
+
+.seasonal-turkey,
+[data-seasonal-prop="turkey"] {
+  z-index: 1;
+  max-width: none;
+  object-fit: contain;
+  filter: drop-shadow(0 0.8rem 0.72rem rgba(47, 26, 15, 0.3));
+  image-rendering: auto;
+  transform-origin: 50% 88%;
+  transition: opacity 160ms linear;
+  will-change: left, opacity, transform;
+}
+
+.seasonal-turkey.is-missing,
+[data-seasonal-prop="turkey"].is-missing {
+  display: none;
+}
+
+.seasonal-leaf,
+[data-seasonal-prop="leaf"] {
+  top: var(--leaf-y, -3rem);
+  left: var(--leaf-x, 50%);
+  width: var(--leaf-size, clamp(1rem, 2.2vw, 2rem));
+  aspect-ratio: 1.6;
+  border-radius: 90% 0 90% 0;
+  background:
+    linear-gradient(155deg, rgba(255, 224, 166, 0.32), transparent 42%),
+    var(--leaf-color, #c87938);
+  box-shadow: inset -0.2rem -0.1rem 0.4rem rgba(91, 42, 17, 0.18);
+  opacity: var(--leaf-opacity, 0.78);
+  transform: rotate(var(--leaf-angle, 28deg));
+}
+
+.seasonal-leaf.is-falling,
+[data-seasonal-prop="leaf"].is-falling {
+  animation: seasonal-leaf-fall var(--leaf-duration, 12s) linear var(--leaf-delay, 0s) infinite;
+}
+
+@keyframes seasonal-individual-flower-sway {
+  from {
+    transform: translateX(-50%) rotate(var(--flower-sway-start, -1.3deg));
+  }
+
+  to {
+    transform: translateX(-50%) rotate(var(--flower-sway, 2deg));
+  }
+}
+
+@keyframes seasonal-campfire-flicker {
+  from {
+    transform: translateX(-50%) rotate(-4deg) scale(0.92, 0.96);
+  }
+
+  to {
+    transform: translateX(-50%) rotate(5deg) scale(1.05, 1.03);
+  }
+}
+
+@keyframes seasonal-campfire-glow {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(0.94);
+  }
+
+  50% {
+    opacity: 0.92;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes seasonal-campfire-smoke {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.52);
+  }
+
+  12% {
+    opacity: 0.26;
+  }
+
+  48% {
+    opacity: 0.18;
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(
+        calc(-50% + var(--smoke-active-drift, 0rem)),
+        calc(-100vh + 2rem)
+      )
+      scale(1.72);
+  }
+}
+
+@keyframes seasonal-wheat-sway {
+  from {
+    transform: rotate(-1.2deg);
+  }
+
+  to {
+    transform: rotate(1.4deg);
+  }
+}
+
+@keyframes seasonal-wheat-stalk-sway {
+  from {
+    transform: rotate(calc(var(--wheat-lean, 0deg) - 1.2deg));
+  }
+
+  to {
+    transform: rotate(calc(var(--wheat-lean, 0deg) + 1.6deg));
+  }
+}
+
+@keyframes seasonal-leaf-fall {
+  0% {
+    transform: translate3d(-3vw, -12vh, 0) rotate(0);
+  }
+
+  35% {
+    transform: translate3d(6vw, 34vh, 0) rotate(190deg);
+  }
+
+  68% {
+    transform: translate3d(-4vw, 70vh, 0) rotate(390deg);
+  }
+
+  100% {
+    transform: translate3d(7vw, 112vh, 0) rotate(620deg);
+  }
+}
+
+/* Small DOM particles are optional; most scene particles are canvas-rendered. */
+.seasonal-heart,
+[data-seasonal-prop="heart"],
+.seasonal-petal,
+[data-seasonal-prop="petal"],
+.seasonal-shamrock,
+[data-seasonal-prop="shamrock"] {
+  top: var(--particle-y, -2rem);
+  left: var(--particle-x, 50%);
+  width: var(--particle-size, 1.25rem);
+  opacity: var(--particle-opacity, 0.6);
+  filter: drop-shadow(0 0.3rem 0.45rem rgba(0, 0, 0, 0.1));
+}
+
+.seasonal-heart,
+[data-seasonal-prop="heart"] {
+  aspect-ratio: 1;
+  border-radius: 0.2rem 0.7rem 0.2rem 0.7rem;
+  background: var(--particle-color, #ed6f9d);
+  transform: rotate(45deg);
+}
+
+.seasonal-petal,
+[data-seasonal-prop="petal"] {
+  aspect-ratio: 0.62;
+  border-radius: 85% 12% 78% 18%;
+  background: var(--particle-color, #ee91b4);
+  transform: rotate(var(--particle-angle, 18deg));
+}
+
+.seasonal-shamrock,
+[data-seasonal-prop="shamrock"] {
+  aspect-ratio: 1;
+  border-radius: 52% 48% 46% 54%;
+  background:
+    radial-gradient(circle at 29% 32%, var(--particle-color, #56c984) 0 29%, transparent 30%),
+    radial-gradient(circle at 70% 32%, var(--particle-color, #56c984) 0 29%, transparent 30%),
+    radial-gradient(circle at 50% 69%, var(--particle-color, #56c984) 0 30%, transparent 31%);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Responsive tuning                                                          */
+/* -------------------------------------------------------------------------- */
+
+@media (max-width: 1120px) {
+  [data-seasonal-toggle] {
+    width: 100%;
+    margin: 0.75rem 0 0;
+    justify-content: flex-start;
+    padding-inline: 0.9rem;
+  }
+
+  [data-event-preview-launcher] {
+    right: max(0.75rem, env(safe-area-inset-right));
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  .seasonal-earth,
+  [data-seasonal-prop="earth"] {
+    right: -18rem;
+    bottom: -21rem;
+    width: clamp(34rem, 68vw, 52rem);
+  }
+
+  .seasonal-santa,
+  [data-seasonal-prop="santa"] {
+    width: clamp(17rem, 43vw, 32rem);
+  }
+
+  .seasonal-rainbow,
+  [data-seasonal-prop="rainbow"] {
+    right: -11%;
+    width: clamp(18rem, 48vw, 34rem);
+  }
+}
+
+@media (max-width: 760px) {
+  [data-seasonal-stage] {
+    top: var(--header-height);
+  }
+
+  .seasonal-veil,
+  [data-seasonal-veil] {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--seasonal-veil) 88%, transparent),
+        color-mix(in srgb, var(--seasonal-veil) 38%, transparent) 52%,
+        transparent
+      ),
+      linear-gradient(180deg, var(--seasonal-veil-edge), transparent 55%);
+  }
+
+  .seasonal-canvas,
+  [data-seasonal-canvas] {
+    opacity: 0.82;
+  }
+
+  .seasonal-campfire__smoke-wisp {
+    --smoke-active-drift: var(--smoke-mobile-drift, 0rem);
+  }
+
+  [data-event-preview] {
+    right: max(0.625rem, env(safe-area-inset-right));
+    bottom: max(0.625rem, env(safe-area-inset-bottom));
+    left: max(0.625rem, env(safe-area-inset-left));
+    width: auto;
+    max-height: calc(
+      100dvh - var(--header-height, 4.5rem) - max(1.25rem, env(safe-area-inset-top)) -
+        max(1.25rem, env(safe-area-inset-bottom))
+    );
+  }
+
+  [data-special-greeting] {
+    font-size: clamp(0.98rem, 4.3vw, 1.12rem);
+  }
+
+  .seasonal-earth,
+  [data-seasonal-prop="earth"] {
+    right: -15rem;
+    bottom: -13rem;
+    width: clamp(27rem, 104vw, 38rem);
+  }
+
+  .seasonal-credit,
+  .seasonal-earth-attribution,
+  [data-seasonal-credit] {
+    right: 0.55rem;
+    bottom: 0.5rem;
+    max-width: calc(100vw - 1.1rem);
+    font-size: 0.53rem;
+  }
+
+  .seasonal-santa,
+  [data-seasonal-prop="santa"] {
+    top: var(--seasonal-santa-y, 13%);
+    width: clamp(13rem, 58vw, 23rem);
+  }
+
+  .seasonal-bunny,
+  [data-seasonal-prop="bunny"] {
+    bottom: 1rem;
+    left: -0.5rem;
+    width: clamp(7rem, 29vw, 10rem);
+    opacity: 0.82;
+  }
+
+  .seasonal-moon,
+  [data-seasonal-prop="moon"] {
+    top: 0.35rem;
+    right: -0.5rem;
+    width: clamp(6rem, 25vw, 9rem);
+  }
+
+  .seasonal-pumpkin,
+  [data-seasonal-prop="pumpkin"] {
+    width: clamp(7rem, 28vw, 10rem);
+  }
+
+  .seasonal-pumpkin--left {
+    right: auto;
+    left: 0.4rem;
+    width: clamp(5.2rem, 22vw, 7.2rem);
+  }
+
+  .seasonal-pumpkin--right {
+    right: -0.5rem;
+    width: clamp(6.8rem, 27vw, 9.5rem);
+  }
+
+  .seasonal-rainbow,
+  [data-seasonal-prop="rainbow"] {
+    top: 7%;
+    right: -24%;
+    width: clamp(18rem, 82vw, 30rem);
+  }
+
+  .seasonal-flower-bed,
+  [data-seasonal-prop="flower-bed"] {
+    width: clamp(11rem, 45vw, 16rem);
+    height: 8.5rem;
+    opacity: 0.72;
+  }
+
+  .seasonal-flower:nth-child(n + 7) {
+    display: none;
+  }
+
+  .seasonal-campsite,
+  [data-seasonal-prop="campsite"] {
+    right: -1rem;
+    width: clamp(14rem, 57vw, 20rem);
+    height: 9.5rem;
+    opacity: 0.72;
+  }
+
+  .seasonal-camp-forest,
+  [data-seasonal-prop="camp-forest"] {
+    left: -2rem;
+    width: clamp(12rem, 48vw, 18rem);
+    height: 9.5rem;
+    opacity: 0.66;
+  }
+
+  .seasonal-wheat,
+  [data-seasonal-prop="wheat"] {
+    right: -10%;
+    width: clamp(10rem, 42vw, 16rem);
+    opacity: 0.48;
+  }
+
+  .seasonal-wheat__stalk:nth-child(n + 6) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  [data-seasonal-toggle] {
+    font-size: 0.78rem;
+  }
+
+  [data-event-preview] {
+    padding: 0.7rem;
+    border-radius: 0.85rem;
+  }
+
+  [data-event-preview] .event-preview-actions {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quote-card {
+    padding: 0.75rem;
+    gap: 0.58rem;
+  }
+
+  .seasonal-earth,
+  [data-seasonal-prop="earth"] {
+    right: -14rem;
+    bottom: -11rem;
+    width: 29rem;
+  }
+
+  .seasonal-santa,
+  [data-seasonal-prop="santa"] {
+    width: 14rem;
+  }
+
+  .seasonal-bunny,
+  [data-seasonal-prop="bunny"] {
+    left: -1rem;
+    width: 7.5rem;
+  }
+
+  .seasonal-moon,
+  [data-seasonal-prop="moon"] {
+    top: 0.25rem;
+    right: -0.75rem;
+    width: 6.5rem;
+  }
+
+  .seasonal-rainbow,
+  [data-seasonal-prop="rainbow"] {
+    right: -33%;
+    opacity: 0.2;
+  }
+
+  .seasonal-credit,
+  .seasonal-earth-attribution,
+  [data-seasonal-credit] {
+    overflow: hidden;
+    max-width: 17rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Accessibility and print                                                    */
+/* -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-seasonal-stage],
+  [data-seasonal-stage] *,
+  [data-seasonal-stage] *::before,
+  [data-seasonal-stage] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-seasonal-stage] {
+    transition: none;
+  }
+
+  .seasonal-fog,
+  [data-seasonal-prop="fog"],
+  .seasonal-leaf,
+  [data-seasonal-prop="leaf"] {
+    transform: none;
+  }
+}
+
+@media print {
+  [data-seasonal-stage],
+  [data-seasonal-toggle],
+  [data-event-preview-launcher],
+  [data-event-preview] {
+    display: none !important;
+  }
+
+  body[data-page="home"] > main,
+  body[data-page="home"] > .site-footer {
+    position: static;
+    z-index: auto;
+  }
+}

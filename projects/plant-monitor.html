@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="slate">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plant Monitor Project | Connor Hohlen</title>
+  <meta name="description" content="A visual project profile for an Arduino plant-monitoring prototype with light, temperature, humidity, and LCD output.">
+  <meta name="theme-color" content="#242a30">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://connorhohlen.com/projects/plant-monitor.html">
+  <link rel="icon" href="/assets/images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Plant Monitor Project | Connor Hohlen">
+  <meta property="og:description" content="Environmental sensing and LCD feedback on a breadboard prototype.">
+  <meta property="og:url" content="https://connorhohlen.com/projects/plant-monitor.html">
+  <meta property="og:image" content="https://connorhohlen.com/assets/images/projects/plant-monitor.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("portfolio-theme");
+        document.documentElement.dataset.theme = ["dark", "slate", "light"].includes(saved) ? saved : "slate";
+      } catch { document.documentElement.dataset.theme = "slate"; }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body data-page="projects">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header" data-site-header>
+    <div class="nav-shell">
+      <a class="brand" href="/#top" aria-label="Connor Hohlen, home"><span class="brand-mark" aria-hidden="true">CH</span><span class="brand-name">Connor Hohlen</span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation" data-menu-toggle><span class="menu-toggle-line"></span><span class="menu-toggle-line"></span><span class="menu-toggle-line"></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation" data-primary-nav>
+        <a class="nav-link" href="/#top">Home</a><a class="nav-link" href="/#projects" aria-current="page">Projects</a><a class="nav-link" href="/#experience">Experience</a><a class="nav-link" href="/#education">Education</a><a class="nav-link" href="/about.html">About</a><a class="nav-link" href="/#contact">Contact</a>
+        <div class="theme-switcher" role="group" aria-label="Color theme"><button class="theme-button" type="button" data-theme-value="dark" aria-pressed="false">Dark</button><button class="theme-button" type="button" data-theme-value="slate" aria-pressed="true">Slate</button><button class="theme-button" type="button" data-theme-value="light" aria-pressed="false">Light</button></div>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content">
+    <section class="container visual-detail-hero">
+      <div>
+        <span class="eyebrow">Sensors + display</span>
+        <h1>Plant Monitor</h1>
+        <p>A breadboard prototype that gathers light, temperature, and humidity readings and turns them into clear LCD feedback.</p>
+        <ul class="visual-facts"><li>Arduino</li><li>SHT20</li><li>Photoresistor</li><li>LCD</li></ul>
+      </div>
+      <figure class="visual-hero-media contain">
+        <img src="/assets/images/projects/plant-monitor.jpg" alt="Breadboard plant monitor displaying temperature and humidity readings on an LCD" width="1400" height="1161" fetchpriority="high">
+      </figure>
+    </section>
+
+    <section class="section container">
+      <div class="section-heading reveal"><span class="eyebrow">Signal path</span><h2>Read the environment, then make it visible.</h2></div>
+      <div class="system-visual reveal">
+        <div class="system-node"><strong>Light</strong><span>Analog photoresistor</span></div>
+        <div class="system-node"><strong>Air</strong><span>Temperature + humidity</span></div>
+        <div class="system-node"><strong>Arduino</strong><span>Read and organize</span></div>
+        <div class="system-node"><strong>LCD</strong><span>Show conditions</span></div>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-heading reveal"><span class="eyebrow">Prototype logic</span><h2>Small loops, observable results.</h2></div>
+      <div class="story-grid">
+        <article class="story-card reveal"><span class="story-card-number">01</span><h3>Sample</h3><p>Read the light sensor at a regular interval so changes can be observed.</p></article>
+        <article class="story-card reveal"><span class="story-card-number">02</span><h3>Combine</h3><p>Pair the light value with temperature and humidity measurements.</p></article>
+        <article class="story-card reveal"><span class="story-card-number">03</span><h3>Display</h3><p>Present the readings on the LCD instead of leaving them only in a serial log.</p></article>
+      </div>
+      <section class="reveal" aria-label="Plant monitor code sample">
+        <pre class="code-visual"><code>int photoPin = A0;
+
+void loop() {
+  int light = analogRead(photoPin);
+  Serial.println(light);
+  delay(1000);
+}</code></pre>
+      </section>
+    </section>
+
+    <nav class="container case-navigation" aria-label="Project navigation">
+      <a href="/projects/led-lighting.html"><span>Previous project</span><strong>Wi-Fi LED Lighting</strong></a>
+      <a href="/projects/sql-java-data-system.html"><span>Next project</span><strong>SQL + Java Data System</strong></a>
+    </nav>
+  </main>
+  <footer class="site-footer"><div class="container footer-shell"><p>© <span data-current-year></span> Connor Hohlen.</p><nav class="footer-links" aria-label="Footer navigation"><a href="/#projects">All projects</a><a href="mailto:connorhohlen@gmail.com">Email</a><a href="https://github.com/ConConHeat1">GitHub</a></nav></div></footer>
+</body>
+</html>
