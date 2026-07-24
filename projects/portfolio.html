@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="slate">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio Website Case Study | Connor Hohlen</title>
+  <meta name="description" content="Case study of Connor Hohlen’s accessible, responsive, theme-aware engineering portfolio built with semantic HTML, CSS, JavaScript, and GitHub Pages.">
+  <meta name="theme-color" content="#242a30">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://connorhohlen.com/projects/portfolio.html">
+  <link rel="icon" href="/assets/images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Connor Hohlen">
+  <meta property="og:title" content="Portfolio Website | Web Engineering Case Study">
+  <meta property="og:description" content="A lightweight portfolio rebuilt around semantic structure, accessibility, performance, theme support, and static deployment.">
+  <meta property="og:url" content="https://connorhohlen.com/projects/portfolio.html">
+  <meta property="og:image" content="https://connorhohlen.com/assets/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Connor Hohlen computer engineering portfolio social preview">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Portfolio Website | Connor Hohlen">
+  <meta name="twitter:description" content="Semantic HTML, responsive CSS, accessible JavaScript, and GitHub Pages.">
+  <meta name="twitter:image" content="https://connorhohlen.com/assets/images/og-card.png">
+  <meta name="twitter:image:alt" content="Connor Hohlen computer engineering portfolio social preview">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("portfolio-theme");
+        document.documentElement.dataset.theme = ["dark", "slate", "light"].includes(saved) ? saved : "slate";
+      } catch {
+        document.documentElement.dataset.theme = "slate";
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": "Connor Hohlen Portfolio Website",
+      "description": "An accessible static engineering portfolio built with HTML, CSS, and JavaScript.",
+      "creator": {
+        "@type": "Person",
+        "name": "Connor Hohlen",
+        "url": "https://connorhohlen.com/"
+      },
+      "url": "https://connorhohlen.com/projects/portfolio.html"
+    }
+  </script>
+</head>
+<body data-page="projects">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header" data-site-header>
+    <div class="nav-shell">
+      <a class="brand" href="/#top" aria-label="Connor Hohlen, home">
+        <span class="brand-mark" aria-hidden="true">CH</span>
+        <span class="brand-name">Connor Hohlen</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation" data-menu-toggle>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation" data-primary-nav>
+        <a class="nav-link" href="/#top">Home</a>
+        <a class="nav-link" href="/#projects" aria-current="page">Projects</a>
+        <a class="nav-link" href="/#experience">Experience</a>
+        <a class="nav-link" href="/#education">Education</a>
+        <a class="nav-link" href="/about.html">About</a>
+        <a class="nav-link" href="/#contact">Contact</a>
+        <div class="theme-switcher" role="group" aria-label="Color theme">
+          <button class="theme-button" type="button" data-theme-value="dark" aria-pressed="false">Dark</button>
+          <button class="theme-button" type="button" data-theme-value="slate" aria-pressed="true">Slate</button>
+          <button class="theme-button" type="button" data-theme-value="light" aria-pressed="false">Light</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <article>
+      <header class="container case-hero">
+        <span class="eyebrow">Web engineering case study</span>
+        <h1>Portfolio Website</h1>
+        <p class="case-summary">A complete redesign of a first-generation personal site into a fast, accessible, recruiter-focused engineering portfolio—without replacing its lightweight static architecture.</p>
+        <dl class="case-meta">
+          <div>
+            <dt>Status</dt>
+            <dd>Live + ongoing</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>Design + development</dd>
+          </div>
+          <div>
+            <dt>Stack</dt>
+            <dd>HTML, CSS, JavaScript</dd>
+          </div>
+          <div>
+            <dt>Deployment</dt>
+            <dd>GitHub Pages</dd>
+          </div>
+        </dl>
+      </header>
+
+      <div class="container case-layout">
+        <aside class="case-sidebar">
+          <div class="case-sidebar-inner">
+            <nav aria-label="Case study sections">
+              <a href="#overview">Overview</a>
+              <a href="#constraints">Goals + constraints</a>
+              <a href="#architecture">Architecture</a>
+              <a href="#implementation">Implementation</a>
+              <a href="#challenges">Challenges</a>
+              <a href="#validation">Validation</a>
+              <a href="#results">Results</a>
+              <a href="#lessons">Lessons</a>
+            </nav>
+          </div>
+        </aside>
+
+        <div class="case-copy">
+          <figure class="case-media reveal">
+            <picture>
+              <source srcset="/assets/images/portfolio-before.avif" type="image/avif">
+              <img src="/assets/images/portfolio-before.jpg" alt="Earlier version of the portfolio homepage with a dark theme and project navigation" width="1600" height="763">
+            </picture>
+            <figcaption>The first-generation site established the dark, technological personality preserved in the redesign.</figcaption>
+          </figure>
+
+          <section class="case-panel reveal" id="overview">
+            <h2>Problem and motivation</h2>
+            <p>The original website was an important learning project, but its content structure no longer matched the needs of an engineering job search. A click-to-enter gate delayed access, the navigation exposed unfinished projects, page layouts repeated large blocks of inline code, and professional information competed with extensive personal galleries.</p>
+            <p>The redesign needed to let a recruiter understand my degree, graduation date, technical range, experience, projects, availability, and contact options in seconds.</p>
+          </section>
+
+          <section class="case-panel reveal" id="constraints">
+            <h2>Goals and constraints</h2>
+            <ul>
+              <li>Retain the existing dark, gray, and light theme concept and technological personality.</li>
+              <li>Stay compatible with GitHub Pages and the custom domain.</li>
+              <li>Avoid frameworks, databases, and build steps that were unnecessary for a content-focused static site.</li>
+              <li>Preserve useful project photography while removing personal or obsolete public assets.</li>
+              <li>Meet practical keyboard, responsive, contrast, reduced-motion, performance, and metadata requirements.</li>
+            </ul>
+          </section>
+
+          <section class="case-panel reveal" id="architecture">
+            <h2>Site architecture</h2>
+            <div class="architecture">
+              <div class="architecture-step">
+                <strong>Semantic pages</strong>
+                <span>Homepage, About, three case studies</span>
+              </div>
+              <div class="architecture-step">
+                <strong>Shared assets</strong>
+                <span>One design system and one behavior file</span>
+              </div>
+              <div class="architecture-step">
+                <strong>Static hosting</strong>
+                <span>GitHub Pages + custom domain</span>
+              </div>
+            </div>
+            <p>Each public page contains complete semantic content and metadata. Shared CSS and JavaScript handle the design system, navigation, themes, section state, and résumé preview without relying on client rendering for essential information.</p>
+          </section>
+
+          <section class="case-panel reveal" id="implementation">
+            <h2>Implementation</h2>
+            <ul>
+              <li>Replaced the blocking entrance with an immediate professional hero and reduced-motion-safe reveal effects.</li>
+              <li>Consolidated duplicated inline styles and scripts into shared assets using CSS custom properties and guarded JavaScript.</li>
+              <li>Built a sticky navigation system with a focus-managed mobile menu and scroll-aware section state.</li>
+              <li>Created Dark, Slate, and Light themes that use the operating-system preference on first visit and persist an explicit choice.</li>
+              <li>Reorganized the site around three verified case studies, experience, education, skills, a safe résumé, and a clear contact path.</li>
+              <li>Added canonical metadata, social sharing data, structured data, a sitemap, robots rules, and legacy URL redirects.</li>
+            </ul>
+          </section>
+
+          <section class="case-panel reveal" id="challenges">
+            <h2>Major challenges and solutions</h2>
+            <p><strong>Reducing duplication without introducing a framework.</strong> Essential markup remains in each static page for resilience and SEO, while the large style and behavior layers are centralized into one CSS and one JavaScript file.</p>
+            <p><strong>Preserving personality without preserving distraction.</strong> The redesign keeps the grid, cyan accents, dark surfaces, and subtle technical details, but removes constant motion, excessive glowing effects, novelty APIs, and generic placeholders.</p>
+            <p><strong>Protecting privacy while keeping the résumé useful.</strong> The public résumé was rebuilt from verified professional information and excludes the previous street address and phone number.</p>
+          </section>
+
+          <section class="case-panel reveal" id="validation">
+            <h2>Testing and validation</h2>
+            <ul>
+              <li>Validate HTML structure, metadata, headings, alt text, internal paths, and legacy redirects.</li>
+              <li>Check JavaScript syntax and test menu, theme, active navigation, and résumé behaviors with keyboard and touch input.</li>
+              <li>Test responsive layouts from 320px through large desktop widths and verify direct static URLs.</li>
+              <li>Inspect the résumé PDF visually and scan extracted content for private phone or street-address information.</li>
+              <li>Run accessibility and Lighthouse audits against the locally served site.</li>
+            </ul>
+          </section>
+
+          <section class="case-panel reveal" id="results">
+            <h2>Result</h2>
+            <p>The site now presents a clear Computer Engineering identity, prioritizes three meaningful projects, makes professional links immediately available, and uses a much smaller set of intentional assets. Every primary page shares the same responsive design system and remains deployable as plain static files.</p>
+            <p>The portfolio is designed to evolve: project screenshots and verified outcomes can be added without changing the overall information architecture.</p>
+            <!-- TODO: Add a current full-page screenshot after the redesigned production site is deployed. -->
+          </section>
+
+          <section class="case-panel reveal" id="lessons">
+            <h2>Lessons learned</h2>
+            <ul>
+              <li>Clear content hierarchy often improves credibility more than adding new visual effects.</li>
+              <li>Accessibility requirements are easier to satisfy when they shape components from the beginning.</li>
+              <li>Static sites can remain highly polished without a large runtime or framework.</li>
+              <li>Privacy review belongs in the same workflow as content, performance, and visual QA.</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </article>
+
+    <nav class="container case-navigation" aria-label="Project navigation">
+      <a href="/projects/fpv-drone.html">
+        <span>Previous project</span>
+        <strong>Custom FPV Drone</strong>
+      </a>
+      <a href="/projects/led-lighting.html">
+        <span>Next project</span>
+        <strong>Wi-Fi LED Lighting</strong>
+      </a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-shell">
+      <p>© <span data-current-year></span> Connor Hohlen. Built with HTML, CSS, and JavaScript.</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/#projects">All projects</a>
+        <a href="mailto:connorhohlen@gmail.com">Email</a>
+        <a href="https://github.com/ConConHeat1">GitHub</a>
+        <a href="https://www.linkedin.com/in/connor-hohlen/">LinkedIn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

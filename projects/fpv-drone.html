@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="slate">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Custom FPV Drone Case Study | Connor Hohlen</title>
+  <meta name="description" content="A custom FPV drone engineering case study covering electronics, soldering, Betaflight, SBUS, failsafe configuration, troubleshooting, and flight testing.">
+  <meta name="theme-color" content="#242a30">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://connorhohlen.com/projects/fpv-drone.html">
+  <link rel="icon" href="/assets/images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Connor Hohlen">
+  <meta property="og:title" content="Custom FPV Drone | Hardware Case Study">
+  <meta property="og:description" content="A ground-up quadcopter build focused on systems integration, electronics, configuration, and safe testing.">
+  <meta property="og:url" content="https://connorhohlen.com/projects/fpv-drone.html">
+  <meta property="og:image" content="https://connorhohlen.com/assets/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Connor Hohlen computer engineering portfolio social preview">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Custom FPV Drone | Connor Hohlen">
+  <meta name="twitter:description" content="Electronics, soldering, Betaflight, failsafe, and flight-validation case study.">
+  <meta name="twitter:image" content="https://connorhohlen.com/assets/images/og-card.png">
+  <meta name="twitter:image:alt" content="Connor Hohlen computer engineering portfolio social preview">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("portfolio-theme");
+        document.documentElement.dataset.theme = ["dark", "slate", "light"].includes(saved) ? saved : "slate";
+      } catch {
+        document.documentElement.dataset.theme = "slate";
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": "Custom FPV Drone",
+      "description": "A custom quadcopter built and configured by Connor Hohlen.",
+      "creator": {
+        "@type": "Person",
+        "name": "Connor Hohlen",
+        "url": "https://connorhohlen.com/"
+      },
+      "url": "https://connorhohlen.com/projects/fpv-drone.html"
+    }
+  </script>
+</head>
+<body data-page="projects">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header" data-site-header>
+    <div class="nav-shell">
+      <a class="brand" href="/#top" aria-label="Connor Hohlen, home">
+        <span class="brand-mark" aria-hidden="true">CH</span>
+        <span class="brand-name">Connor Hohlen</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation" data-menu-toggle>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation" data-primary-nav>
+        <a class="nav-link" href="/#top">Home</a>
+        <a class="nav-link" href="/#projects" aria-current="page">Projects</a>
+        <a class="nav-link" href="/#experience">Experience</a>
+        <a class="nav-link" href="/#education">Education</a>
+        <a class="nav-link" href="/about.html">About</a>
+        <a class="nav-link" href="/#contact">Contact</a>
+        <div class="theme-switcher" role="group" aria-label="Color theme">
+          <button class="theme-button" type="button" data-theme-value="dark" aria-pressed="false">Dark</button>
+          <button class="theme-button" type="button" data-theme-value="slate" aria-pressed="true">Slate</button>
+          <button class="theme-button" type="button" data-theme-value="light" aria-pressed="false">Light</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <article>
+      <header class="container case-hero">
+        <span class="eyebrow">Embedded hardware case study</span>
+        <h1>Custom FPV Drone</h1>
+        <p class="case-summary">A ground-up quadcopter build that required component compatibility, precise soldering, signal configuration, failsafe behavior, systematic troubleshooting, and staged flight validation.</p>
+        <dl class="case-meta">
+          <div>
+            <dt>Status</dt>
+            <dd>Completed personal build</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>Builder + systems integrator</dd>
+          </div>
+          <div>
+            <dt>Focus</dt>
+            <dd>Electronics + controls</dd>
+          </div>
+          <div>
+            <dt>Tools</dt>
+            <dd>Betaflight + SBUS</dd>
+          </div>
+        </dl>
+      </header>
+
+      <div class="container case-layout">
+        <aside class="case-sidebar">
+          <div class="case-sidebar-inner">
+            <nav aria-label="Case study sections">
+              <a href="#overview">Overview</a>
+              <a href="#constraints">Goals + constraints</a>
+              <a href="#architecture">Architecture</a>
+              <a href="#implementation">Implementation</a>
+              <a href="#challenges">Challenges</a>
+              <a href="#validation">Validation</a>
+              <a href="#results">Results</a>
+              <a href="#lessons">Lessons</a>
+            </nav>
+          </div>
+        </aside>
+
+        <div class="case-copy">
+          <div class="media-grid reveal">
+            <figure>
+              <picture>
+                <source srcset="/assets/images/fpv-drone-build.avif" type="image/avif">
+                <img src="/assets/images/fpv-drone-build.jpg" alt="Custom carbon-frame FPV drone during assembly" width="1181" height="1200">
+              </picture>
+              <figcaption>Flight controller, receiver, power wiring, and motors during assembly.</figcaption>
+            </figure>
+            <figure>
+              <picture>
+                <source srcset="/assets/images/fpv-components.avif" type="image/avif">
+                <img src="/assets/images/fpv-components.jpg" alt="FPV drone frame, battery, flight controller, video transmitter, receiver, and wiring before assembly" width="1400" height="883">
+              </picture>
+              <figcaption>Major components staged before integration.</figcaption>
+            </figure>
+          </div>
+
+          <section class="case-panel reveal" id="overview">
+            <h2>Problem and motivation</h2>
+            <p>The goal was to build a complete FPV aircraft from individual components rather than start with a ready-to-fly system. That meant treating the drone as a connected electrical and control system: every power rating, signal protocol, connector, firmware setting, and physical mounting decision had to work with the others.</p>
+            <p>The project created a practical way to learn electronics, soldering, configuration, and troubleshooting while producing a system that could be validated in real flight.</p>
+          </section>
+
+          <section class="case-panel reveal" id="constraints">
+            <h2>Goals and constraints</h2>
+            <ul>
+              <li>Select a frame, motors, electronic speed controllers, flight controller, receiver, video system, and battery that could operate safely together.</li>
+              <li>Fit the complete electrical system into a compact carbon frame while protecting signal wiring and high-current paths.</li>
+              <li>Configure receiver channels, arming behavior, motor direction, flight modes, and failsafe response before flight.</li>
+              <li>Diagnose power, communication, and configuration faults without risking props, electronics, or nearby people.</li>
+            </ul>
+          </section>
+
+          <section class="case-panel reveal" id="architecture">
+            <h2>System architecture</h2>
+            <div class="architecture">
+              <div class="architecture-step">
+                <strong>Pilot input</strong>
+                <span>Radio transmitter → SBUS receiver</span>
+              </div>
+              <div class="architecture-step">
+                <strong>Flight control</strong>
+                <span>Flight controller + Betaflight configuration</span>
+              </div>
+              <div class="architecture-step">
+                <strong>Physical output</strong>
+                <span>ESCs → motors, plus camera → video transmitter</span>
+              </div>
+            </div>
+            <p>The receiver sends control data to the flight controller over SBUS. Betaflight interprets pilot input and sensor data, then commands the electronic speed controllers. A separate camera and video-transmitter path provides the live first-person view.</p>
+          </section>
+
+          <section class="case-panel reveal" id="implementation">
+            <h2>Implementation</h2>
+            <ul>
+              <li>Compared electrical ratings, signal protocols, physical dimensions, and connector requirements before finalizing the component set.</li>
+              <li>Mounted the stack and motors, routed wiring, and soldered power, motor, receiver, and video connections.</li>
+              <li>Configured Betaflight for receiver input, channel mapping, motor orientation, arming, flight modes, and failsafe behavior.</li>
+              <li>Verified SBUS controls and checked that stick movement matched the expected software channels before enabling motors.</li>
+              <li>Organized and secured wiring to reduce strain and keep conductors away from moving parts.</li>
+            </ul>
+          </section>
+
+          <section class="case-panel reveal" id="challenges">
+            <h2>Major challenges and solutions</h2>
+            <p><strong>Compatibility across several subsystems.</strong> A component can be electrically suitable but still use the wrong signal protocol, mounting pattern, or connector. I compared requirements at the system level and treated every interface as something that needed verification.</p>
+            <p><strong>Distinguishing wiring faults from configuration faults.</strong> When a control or motor did not behave as expected, I worked through the path in order: power, physical connection, receiver signal, software configuration, and output.</p>
+            <p><strong>Testing safely.</strong> Configuration checks were completed with propellers removed. Motors, receiver input, arming, and failsafe behavior were validated independently before a controlled outdoor flight.</p>
+          </section>
+
+          <section class="case-panel reveal" id="validation">
+            <h2>Testing and validation</h2>
+            <ul>
+              <li>Inspected solder joints, wire routing, and polarity before applying power.</li>
+              <li>Confirmed receiver channel movement and failsafe response in Betaflight.</li>
+              <li>Tested each motor independently with propellers removed and corrected direction where needed.</li>
+              <li>Performed short, controlled outdoor flights before expanding the operating envelope.</li>
+            </ul>
+          </section>
+
+          <section class="case-panel reveal" id="results">
+            <h2>Result</h2>
+            <p>The finished quadcopter powered up, accepted the configured radio controls, transmitted a live FPV video signal, and completed controlled outdoor flight testing.</p>
+            <figure class="case-media">
+              <img src="/assets/images/fpv-flight.jpg" alt="Completed FPV drone flying over a field" width="960" height="480" loading="lazy">
+              <figcaption>The completed build during outdoor flight validation.</figcaption>
+            </figure>
+          </section>
+
+          <section class="case-panel reveal" id="lessons">
+            <h2>Lessons learned</h2>
+            <ul>
+              <li>Systems integration problems are easiest to solve when each interface is tested separately.</li>
+              <li>Good wire routing and mechanical strain relief are part of electrical reliability.</li>
+              <li>A repeatable preflight checklist reduces risk and makes troubleshooting faster.</li>
+              <li>Configuration software is most useful when paired with a clear physical model of the hardware.</li>
+            </ul>
+            <!-- TODO: Add verified component model numbers and project dates if Connor wants them published. -->
+          </section>
+        </div>
+      </div>
+    </article>
+
+    <nav class="container case-navigation" aria-label="Project navigation">
+      <a href="/projects/flexin.html">
+        <span>Previous project</span>
+        <strong>Flexin</strong>
+      </a>
+      <a href="/projects/portfolio.html">
+        <span>Next project</span>
+        <strong>Portfolio Website</strong>
+      </a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-shell">
+      <p>© <span data-current-year></span> Connor Hohlen. Built with HTML, CSS, and JavaScript.</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/#projects">All projects</a>
+        <a href="mailto:connorhohlen@gmail.com">Email</a>
+        <a href="https://github.com/ConConHeat1">GitHub</a>
+        <a href="https://www.linkedin.com/in/connor-hohlen/">LinkedIn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

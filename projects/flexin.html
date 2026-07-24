@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="slate">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flexin Case Study | Connor Hohlen</title>
+  <meta name="description" content="Case study of Flexin, Connor Hohlen’s in-development Flutter and Firebase social training tracker for iOS.">
+  <meta name="theme-color" content="#242a30">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://connorhohlen.com/projects/flexin.html">
+  <link rel="icon" href="/assets/images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Connor Hohlen">
+  <meta property="og:title" content="Flexin | Mobile + Cloud Case Study">
+  <meta property="og:description" content="An in-development social training tracker built with Flutter, Dart, Firebase, and iOS services.">
+  <meta property="og:url" content="https://connorhohlen.com/projects/flexin.html">
+  <meta property="og:image" content="https://connorhohlen.com/assets/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Connor Hohlen computer engineering portfolio social preview">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Flexin | Connor Hohlen">
+  <meta name="twitter:description" content="Flutter and Firebase social training tracker case study.">
+  <meta name="twitter:image" content="https://connorhohlen.com/assets/images/og-card.png">
+  <meta name="twitter:image:alt" content="Connor Hohlen computer engineering portfolio social preview">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("portfolio-theme");
+        document.documentElement.dataset.theme = ["dark", "slate", "light"].includes(saved) ? saved : "slate";
+      } catch {
+        document.documentElement.dataset.theme = "slate";
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Flexin",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "iOS",
+      "description": "An in-development social training tracker built with Flutter and Firebase.",
+      "author": {
+        "@type": "Person",
+        "name": "Connor Hohlen",
+        "url": "https://connorhohlen.com/"
+      },
+      "url": "https://connorhohlen.com/projects/flexin.html"
+    }
+  </script>
+</head>
+<body data-page="projects">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header" data-site-header>
+    <div class="nav-shell">
+      <a class="brand" href="/#top" aria-label="Connor Hohlen, home">
+        <span class="brand-mark" aria-hidden="true">CH</span>
+        <span class="brand-name">Connor Hohlen</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation" data-menu-toggle>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation" data-primary-nav>
+        <a class="nav-link" href="/#top">Home</a>
+        <a class="nav-link" href="/#projects" aria-current="page">Projects</a>
+        <a class="nav-link" href="/#experience">Experience</a>
+        <a class="nav-link" href="/#education">Education</a>
+        <a class="nav-link" href="/about.html">About</a>
+        <a class="nav-link" href="/#contact">Contact</a>
+        <div class="theme-switcher" role="group" aria-label="Color theme">
+          <button class="theme-button" type="button" data-theme-value="dark" aria-pressed="false">Dark</button>
+          <button class="theme-button" type="button" data-theme-value="slate" aria-pressed="true">Slate</button>
+          <button class="theme-button" type="button" data-theme-value="light" aria-pressed="false">Light</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <article>
+      <header class="container case-hero">
+        <span class="eyebrow">Mobile + cloud case study</span>
+        <h1>Flexin</h1>
+        <p class="case-summary">An in-development social training tracker that turns each workout into a media Check-In, connects it with training and health data, and gives friends a focused way to share progress.</p>
+        <dl class="case-meta">
+          <div>
+            <dt>Status</dt>
+            <dd>In development</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>Product design + development</dd>
+          </div>
+          <div>
+            <dt>Platform</dt>
+            <dd>iOS-focused Flutter app</dd>
+          </div>
+          <div>
+            <dt>Timeline</dt>
+            <dd>Ongoing</dd>
+          </div>
+        </dl>
+      </header>
+
+      <div class="container case-layout">
+        <aside class="case-sidebar">
+          <div class="case-sidebar-inner">
+            <nav aria-label="Case study sections">
+              <a href="#overview">Overview</a>
+              <a href="#constraints">Goals + constraints</a>
+              <a href="#architecture">Architecture</a>
+              <a href="#implementation">Implementation</a>
+              <a href="#challenges">Challenges</a>
+              <a href="#validation">Validation</a>
+              <a href="#results">Current status</a>
+              <a href="#lessons">Lessons</a>
+            </nav>
+          </div>
+        </aside>
+
+        <div class="case-copy">
+          <figure class="case-media reveal">
+            <div class="project-visual project-visual-flexin">
+              <img src="/assets/images/flexin-icon.png" alt="Flexin app icon" width="1024" height="1024">
+            </div>
+            <figcaption>Flexin branding used by the current application.</figcaption>
+          </figure>
+
+          <section class="case-panel reveal" id="overview">
+            <h2>Problem and motivation</h2>
+            <p>Workout tracking is often private and data-heavy, while social fitness products can feel disconnected from the training itself. Flexin explores a narrower interaction: one photo or short video Check-In per session, paired with the workout context that made it meaningful.</p>
+            <p>The product combines social accountability with practical training tools. Active Check-Ins appear in a friend feed, profiles preserve selected milestones, and training features provide a place to plan and review exercise, nutrition, and health information.</p>
+          </section>
+
+          <section class="case-panel reveal" id="constraints">
+            <h2>Goals and constraints</h2>
+            <ul>
+              <li>Keep posting fast enough to fit naturally at the end of a workout.</li>
+              <li>Support photos and short videos without making feed performance unpredictable.</li>
+              <li>Respect audience controls and avoid exposing private account information.</li>
+              <li>Coordinate Flutter UI, Firebase services, notifications, purchases, health data, and native iOS behavior.</li>
+              <li>Design failure states that explain what happened instead of leaving dead or ambiguous controls.</li>
+            </ul>
+          </section>
+
+          <section class="case-panel reveal" id="architecture">
+            <h2>System architecture</h2>
+            <div class="architecture">
+              <div class="architecture-step">
+                <strong>Flutter client</strong>
+                <span>UI, training flows, media capture, local state</span>
+              </div>
+              <div class="architecture-step">
+                <strong>Firebase services</strong>
+                <span>Authentication, Firestore, Storage, Functions</span>
+              </div>
+              <div class="architecture-step">
+                <strong>iOS services</strong>
+                <span>Health data, notifications, TestFlight workflows</span>
+              </div>
+            </div>
+            <p>The Flutter client owns the cross-platform product experience. Firebase provides authenticated data, media storage, and server-side workflows, while platform-specific iOS integrations handle capabilities that require native operating-system support.</p>
+          </section>
+
+          <section class="case-panel reveal" id="implementation">
+            <h2>Implementation</h2>
+            <ul>
+              <li>Built authenticated account and profile flows with Firebase Authentication.</li>
+              <li>Modeled social feeds, profiles, privacy controls, training records, and supporting product state in Cloud Firestore.</li>
+              <li>Used Firebase Storage for user-generated photo and video media.</li>
+              <li>Developed Check-In creation, media editing, friend discovery, engagement, reporting, and moderation workflows.</li>
+              <li>Connected training features with exercise, nutrition, and health-oriented data surfaces.</li>
+              <li>Integrated notifications, analytics, crash reporting, advertising, and subscription infrastructure around the core product.</li>
+            </ul>
+            <!-- TODO: Add current in-app screenshots supplied by Connor. Do not create mock product UI. -->
+          </section>
+
+          <section class="case-panel reveal" id="challenges">
+            <h2>Major challenges and solutions</h2>
+            <p><strong>Coordinating several sources of truth.</strong> Social state, media, health data, notification state, and platform capabilities do not all update at the same speed. I separated service responsibilities, preserved useful cached state during reloads, and made loading or failure states explicit.</p>
+            <p><strong>Keeping private settings private.</strong> Public profile features need selected public fields without mirroring a user’s complete preference data. Public-facing models project only the data each surface needs.</p>
+            <p><strong>Maintaining native iOS behavior.</strong> Health, notifications, purchases, and newer iOS interface behavior require careful boundaries between Flutter and native code. I kept these integrations behind focused services and runtime checks so unsupported paths retain dependable fallbacks.</p>
+          </section>
+
+          <section class="case-panel reveal" id="validation">
+            <h2>Testing and validation</h2>
+            <p>Development uses focused Flutter unit and widget tests, Firebase Functions tests, static analysis, native build checks, and targeted device/TestFlight validation where platform services cannot be represented accurately by a simple simulator-only test.</p>
+            <p>Regression work emphasizes the real ownership path for each feature—for example, separating a workout reminder from a social notification or verifying the public profile data actually stored in Firestore.</p>
+          </section>
+
+          <section class="case-panel reveal" id="results">
+            <h2>Current status</h2>
+            <p>Flexin is an active, private development project. Core social Check-Ins, feeds, profiles, training features, health-oriented workflows, privacy controls, moderation, and supporting iOS infrastructure are implemented and continue to be refined.</p>
+            <p>No public-launch, usage, revenue, or performance claims are made here. A public product link will be added only when one is available.</p>
+            <!-- TODO: Add a verified public or TestFlight link only when Connor intentionally makes one available. -->
+          </section>
+
+          <section class="case-panel reveal" id="lessons">
+            <h2>Lessons learned</h2>
+            <ul>
+              <li>Mobile polish depends as much on state ownership and failure behavior as it does on visual design.</li>
+              <li>Cross-platform code still needs deliberate platform boundaries for native capabilities.</li>
+              <li>Privacy is easier to protect when public data is modeled explicitly instead of filtered at the last moment.</li>
+              <li>Focused tests around a real user path provide more confidence than broad checks that miss integration boundaries.</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </article>
+
+    <nav class="container case-navigation" aria-label="Project navigation">
+      <a href="/projects/rocket-computer.html">
+        <span>Previous project</span>
+        <strong>Rocket Computer</strong>
+      </a>
+      <a href="/projects/fpv-drone.html">
+        <span>Next project</span>
+        <strong>Custom FPV Drone</strong>
+      </a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-shell">
+      <p>© <span data-current-year></span> Connor Hohlen. Built with HTML, CSS, and JavaScript.</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/#projects">All projects</a>
+        <a href="mailto:connorhohlen@gmail.com">Email</a>
+        <a href="https://github.com/ConConHeat1">GitHub</a>
+        <a href="https://www.linkedin.com/in/connor-hohlen/">LinkedIn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
