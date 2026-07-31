@@ -2,3 +2,7 @@
 node_modules/
 tmp/
 npm-debug.log*
+
+# Keep large original videos local. Only optimized web copies belong in assets/videos/.
+local-video-sources/*
+!local-video-sources/README.md
