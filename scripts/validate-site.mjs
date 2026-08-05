@@ -20,6 +20,8 @@ const publicPages = [
   "projects/plant-monitor.html",
   "projects/sql-java-data-system.html",
   "projects/rocket-computer.html",
+  "orbit-shift/privacy.html",
+  "orbit-shift/support.html",
 ];
 const legacyPages = [
   "project1.html",
@@ -97,6 +99,7 @@ for (const required of [
   "assets/images/og-card.png",
   "assets/images/resume-preview.png",
   "output/pdf/connor-hohlen-resume.pdf",
+  "app-ads.txt",
   ...seasonalFiles,
 ]) {
   if (!existsSync(join(root, required))) fail(required, "required file is missing");
@@ -234,6 +237,11 @@ for (const path of sourceFiles) {
 
 const cname = readFileSync(join(root, "CNAME"), "utf8").trim();
 if (cname !== "connorhohlen.com") fail("CNAME", "must contain connorhohlen.com");
+
+const appAds = readFileSync(join(root, "app-ads.txt"), "utf8").trim();
+if (appAds !== "google.com, pub-8455848665034868, DIRECT, f08c47fec0942fa0") {
+  fail("app-ads.txt", "must contain the exact authorized Google seller entry");
+}
 
 const ogSize = statSync(join(root, "assets/images/og-card.png")).size;
 if (ogSize > 1_000_000) fail("assets/images/og-card.png", "social card should remain below 1 MB");
