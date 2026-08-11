@@ -155,6 +155,26 @@ for (const file of publicPages) {
   }
 }
 
+const orbitPrivacyHtml = readFileSync(join(root, "orbit-shift/privacy.html"), "utf8");
+for (const requiredText of [
+  "Effective August 10, 2026",
+  "App Tracking Transparency permission",
+  "less-personalized advertising as the privacy-safe default",
+  "same or equivalent protection described in this policy",
+]) {
+  if (!orbitPrivacyHtml.includes(requiredText)) {
+    fail("orbit-shift/privacy.html", `missing required current policy text: ${requiredText}`);
+  }
+}
+for (const staleText of [
+  "currently does not request Apple's App Tracking Transparency permission",
+  "Play Your Way",
+]) {
+  if (orbitPrivacyHtml.includes(staleText)) {
+    fail("orbit-shift/privacy.html", `contains stale policy text: ${staleText}`);
+  }
+}
+
 const indexHtml = readFileSync(join(root, "index.html"), "utf8");
 if (!/<button\b[^>]*data-resume-toggle/i.test(indexHtml)) fail("index.html", "missing Contact résumé button");
 if (!/<dialog\b[^>]*data-resume-dialog/i.test(indexHtml)) fail("index.html", "missing résumé dialog");
