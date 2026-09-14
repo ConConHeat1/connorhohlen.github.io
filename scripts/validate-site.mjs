@@ -157,7 +157,7 @@ for (const file of publicPages) {
 
 const orbitPrivacyHtml = readFileSync(join(root, "orbit-shift/privacy.html"), "utf8");
 for (const requiredText of [
-  "Effective September 3, 2026",
+  "Effective September 14, 2026",
   "App Tracking Transparency permission",
   "less-personalized advertising as the privacy-safe default",
   "Google Play Billing",
