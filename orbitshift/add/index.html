@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Orbit Shift Add a Friend | Connor Hohlen</title>
   <meta name="description" content="Use a shared friend code to find a player in Orbit Shift.">
+  <meta name="apple-itunes-app" content="app-id=6798365274">
   <meta name="theme-color" content="#242a30">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://connorhohlen.com/orbitshift/add/">
@@ -40,8 +41,8 @@
     </div>
   </header>
   <main id="main-content"><section class="container visual-detail-hero"><div><span class="eyebrow">Orbit Shift</span><h1>Add a Friend</h1><p>Use a shared friend code to find a player in Orbit Shift.</p></div></section>
-<section class="section container"><article class="story-card"><h2>Your invitation</h2><p id="invite-code" aria-live="polite">Open the shared link to see its friend code.</p><p>Open Orbit Shift → Leaderboard → Friends → Add a Friend. Choose Friend Code, enter the code, then send a request. Your friend must accept before appearing in your friends leaderboard.</p><p>A code cannot sign you into or recover another player's account.</p><p><a href="https://apps.apple.com/app/id6798365274">Orbit Shift on the App Store</a> · <a href="/orbit-shift/support.html">Support</a></p></article></section>
-<script>const code = new URLSearchParams(location.search).get('code') || ''; document.getElementById('invite-code').textContent = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{8}$/.test(code.toUpperCase()) ? 'Friend code: ' + code.toUpperCase() : 'This invitation has no valid code. Ask your friend to share it again.';</script></main>
+<section class="section container"><article class="story-card"><h2>Your invitation</h2><p id="invite-code" aria-live="polite">Open the shared link to see its friend code.</p><p id="invite-status" aria-live="polite">Open Orbit Shift to send your friend request. Your friend must accept before appearing on your friends leaderboard.</p><p><a id="open-invite" hidden>Open Orbit Shift</a></p><p>If you install the app now, tap the invitation again afterward. You can also enter the code in Leaderboard → Friends → Add Friend.</p><p>A code cannot sign you into or recover another player's account.</p><p><a href="https://apps.apple.com/app/id6798365274">Orbit Shift on the App Store</a> · <a href="/orbit-shift/support.html">Support</a></p></article></section>
+<script type="module" src="/orbitshift/add/invite.mjs"></script></main>
   <footer class="site-footer"><div class="container footer-shell"><p>© <span data-current-year></span> Connor Hohlen.</p><nav class="footer-links" aria-label="Footer navigation"><a href="/orbit-shift/support.html">Orbit Shift support</a><a href="/orbit-shift/notices.html">Third-party notices</a><a href="mailto:connorhohlen@gmail.com">Email</a><a href="https://github.com/ConConHeat1">GitHub</a></nav></div></footer>
 </body>
 </html>
