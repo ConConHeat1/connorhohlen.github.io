@@ -25,8 +25,8 @@
     })();
   </script>
   <script src="/assets/js/motion-init.js"></script>
-  <link rel="stylesheet" href="/assets/css/site.css">
-  <script src="/assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260921-projects2">
+  <script src="/assets/js/site.js?v=20260921-projects2" defer></script>
 </head>
 <body data-page="projects">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -52,10 +52,10 @@
   <main id="main-content">
     <section class="container visual-detail-hero">
       <div>
-        <span class="eyebrow">Connected lighting prototype</span>
+        <span class="eyebrow">Personal high school project</span>
         <h1>Wi-Fi LED Lighting</h1>
-        <p>An individually addressable LED build used to explore wiring, connected control, and programmable color patterns.</p>
-        <ul class="visual-facts"><li>Addressable LEDs</li><li>Wi-Fi control</li><li>Electronics</li><li>Prototype</li></ul>
+        <p>I wanted phone-controlled, individually addressable lights without spending a fortune. In high school, I put together a lower-cost setup using string lights, an ESP8266, and WLED. I still use it today.</p>
+        <ul class="visual-facts"><li>Addressable LEDs</li><li>ESP8266</li><li>WLED</li><li>Still in use</li></ul>
       </div>
       <figure class="visual-hero-media contain">
         <img src="/assets/images/projects/led-lighting.jpg" alt="Addressable LED strips glowing red, white, and blue during testing" width="1353" height="1400" fetchpriority="high">
@@ -65,9 +65,9 @@
     <section class="section container">
       <div class="section-heading reveal"><span class="eyebrow">Build path</span><h2>From loose strip to controllable light.</h2></div>
       <div class="story-grid">
-        <article class="story-card reveal"><span class="story-card-number">01</span><h3>Connect</h3><p>Lay out the LED strip and establish dependable power, data, and physical connections.</p></article>
-        <article class="story-card reveal"><span class="story-card-number">02</span><h3>Address</h3><p>Treat each light as part of a controllable sequence instead of switching the full strip at once.</p></article>
-        <article class="story-card reveal"><span class="story-card-number">03</span><h3>Experiment</h3><p>Test colors and patterns while learning how software choices appear on real hardware.</p></article>
+        <article class="story-card reveal"><span class="story-card-number">01</span><h3>Connect</h3><p>I found inexpensive addressable string lights on Amazon and paired them with a commercial 120 V AC to 5 V DC, 60 A power supply.</p></article>
+        <article class="story-card reveal"><span class="story-card-number">02</span><h3>Address</h3><p>An ESP8266 runs WLED, which handles the patterns and individual LED control. I used existing firmware and focused on putting the hardware together.</p></article>
+        <article class="story-card reveal"><span class="story-card-number">03</span><h3>Experiment</h3><p>I use the WLED phone app over Wi-Fi to choose colors and effects. This was one of my first projects that became something I kept using.</p></article>
       </div>
     </section>
 
@@ -75,7 +75,7 @@
       <div class="section-heading reveal"><span class="eyebrow">System view</span><h2>A simple connected-lighting flow.</h2></div>
       <div class="system-visual reveal">
         <div class="system-node"><strong>Wi-Fi input</strong><span>Choose an action</span></div>
-        <div class="system-node"><strong>Controller</strong><span>Interpret the command</span></div>
+        <div class="system-node"><strong>ESP8266 + WLED</strong><span>Run the lighting effects</span></div>
         <div class="system-node"><strong>LED data</strong><span>Address the strip</span></div>
         <div class="system-node"><strong>Color output</strong><span>Display the pattern</span></div>
       </div>

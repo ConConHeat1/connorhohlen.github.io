@@ -1109,7 +1109,8 @@ html.story-motion-ready[data-motion="full"] [data-story-section].is-story-comple
     overflow: visible;
     inset: 0;
     scroll-snap-type: none;
-    transform-style: preserve-3d;
+    transform-style: flat;
+    pointer-events: none;
   }
 
   html[data-scroll-experience="story"] .project-carousel[data-home-cover-flow] .project-card {
@@ -1120,11 +1121,12 @@ html.story-motion-ready[data-motion="full"] [data-story-section].is-story-comple
     width: min(68vw, 880px);
     height: auto;
     min-height: clamp(330px, 48svh, 460px);
-    opacity: var(--project-opacity, 0);
+    opacity: 1;
+    filter: brightness(var(--project-opacity, 1));
     pointer-events: auto;
     grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
     grid-template-rows: minmax(0, 1fr);
-    transform: translateX(-50%) translate3d(var(--project-x, 0), -50%, var(--project-z, -300px)) rotateY(var(--project-yaw, 0deg)) scale(var(--project-scale, 0.8));
+    transform: translateX(-50%) perspective(1400px) translate3d(var(--project-x, 0), -50%, var(--project-z, -300px)) rotateY(var(--project-yaw, 0deg)) scale(var(--project-scale, 0.8));
     transform-origin: center;
     transition: border-color var(--transition), box-shadow var(--transition);
   }
@@ -1155,7 +1157,7 @@ html.story-motion-ready[data-motion="full"] [data-story-section].is-story-comple
 
   html[data-scroll-experience="story"] .project-card:hover,
   html[data-scroll-experience="story"] .project-card:focus-within {
-    transform: translateX(-50%) translate3d(var(--project-x, 0), -50%, var(--project-z, -300px)) rotateY(var(--project-yaw, 0deg)) scale(var(--project-scale, 0.8));
+    transform: translateX(-50%) perspective(1400px) translate3d(var(--project-x, 0), -50%, var(--project-z, -300px)) rotateY(var(--project-yaw, 0deg)) scale(var(--project-scale, 0.8));
   }
 
   html[data-scroll-experience="story"] .project-card:hover .project-visual img {

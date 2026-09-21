@@ -180,7 +180,7 @@ for (const file of [...publicPages, ...legacyPages]) {
 for (const file of [...publicPages, "orbit-shift/notices.html"]) {
   const html = readFileSync(join(root, file), "utf8");
   const motionBootstrapIndex = html.indexOf('<script src="/assets/js/motion-init.js"></script>');
-  const sharedStylesIndex = html.indexOf('<link rel="stylesheet" href="/assets/css/site.css">');
+  const sharedStylesIndex = html.search(/<link rel="stylesheet" href="\/assets\/css\/site\.css(?:\?[^"]*)?">/);
   if (sharedStylesIndex >= 0 && (motionBootstrapIndex < 0 || motionBootstrapIndex > sharedStylesIndex)) {
     fail(file, "motion bootstrap must load before the shared stylesheet");
   }
@@ -228,10 +228,10 @@ if (!/<link\b[^>]*href="\/assets\/css\/seasonal\.css"/i.test(indexHtml)) {
 if (!/<script\b[^>]*type="module"[^>]*src="\/assets\/js\/seasonal\/index\.mjs"/i.test(indexHtml)) {
   fail("index.html", "missing seasonal module");
 }
-if (!/<link\b[^>]*href="\/assets\/css\/home\.css"/i.test(indexHtml)) {
+if (!/<link\b[^>]*href="\/assets\/css\/home\.css(?:\?[^"]*)?"/i.test(indexHtml)) {
   fail("index.html", "missing homepage stylesheet");
 }
-if (!/<script\b[^>]*type="module"[^>]*src="\/assets\/js\/home\.mjs"/i.test(indexHtml)) {
+if (!/<script\b[^>]*type="module"[^>]*src="\/assets\/js\/home\.mjs(?:\?[^"]*)?"/i.test(indexHtml)) {
   fail("index.html", "missing homepage interaction module");
 }
 for (const hook of [

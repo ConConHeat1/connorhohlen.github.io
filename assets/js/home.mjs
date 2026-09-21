@@ -8,6 +8,7 @@ import {
   handoffCircuitState,
   mobileHandoffCircuitState,
   projectCardState,
+  projectIsCentered,
   projectHandoffShare,
   projectNavigationState,
   projectStoryState,
@@ -19,7 +20,7 @@ import {
   shouldRestoreProjectInStory,
   storyHeightVh,
   storyViewportEligible,
-} from "./home-state.mjs";
+} from "./home-state.mjs?v=20260921-projects2";
 
 const root = document.documentElement;
 const heroScene = document.querySelector("[data-hero-scene]");
@@ -696,16 +697,16 @@ function setActiveProject(index, { announce = true, force = false } = {}) {
   if (announce && projectAnnouncer) projectAnnouncer.textContent = announcement;
 }
 
-function jumpToStoryProject(index) {
+function jumpToStoryProject(index, { behavior = "auto" } = {}) {
   if (!projectScene || !sceneMetrics.projects) return;
   const cardProgress = projectCards.length > 1 ? index / (projectCards.length - 1) : 0;
   const progress = cardProgress * (1 - projectHandoffShare(projectCards.length));
   const destination = sceneMetrics.projects.top + sceneMetrics.projects.range * progress;
   const previousBehavior = root.style.scrollBehavior;
   root.style.scrollBehavior = "auto";
-  window.scrollTo({ top: destination, behavior: "auto" });
+  window.scrollTo({ top: destination, behavior });
   root.style.scrollBehavior = previousBehavior;
-  updateProjectScene(progress);
+  if (behavior === "auto") updateProjectScene(progress);
 }
 
 function scrollMobileTrackTo(index, { behavior = "smooth" } = {}) {
@@ -721,7 +722,7 @@ function selectProject(index, { focusCard = false } = {}) {
   const nextIndex = clampProjectIndex(index, projectCards.length);
   requestedProjectIndex = nextIndex;
   setActiveProject(nextIndex, { announce: true });
-  if (usesScrollScenes()) jumpToStoryProject(nextIndex);
+  if (usesScrollScenes()) jumpToStoryProject(nextIndex, { behavior: "smooth" });
   else scrollMobileTrackTo(nextIndex);
   if (focusCard) projectCards[nextIndex]?.focus({ preventScroll: true });
 }
@@ -888,6 +889,22 @@ function configureSchematicMotion() {
   resetSchematicProgress();
   scheduleMeasure();
 }
+
+projectCards.forEach((card, index) => card.addEventListener("click", (event) => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  let centered;
+  if (usesScrollScenes() && sceneMetrics.projects) {
+    const progress = cachedSceneProgress(window.scrollY, sceneMetrics.projects.top, sceneMetrics.projects.range);
+    centered = projectIsCentered(index, projectStoryState(progress, projectCards.length).cardPosition);
+  } else {
+    const destination = centeredTrackOffset(card.offsetLeft, card.offsetWidth, projectTrack.clientWidth, projectTrack.scrollWidth - projectTrack.clientWidth);
+    centered = Math.abs(projectTrack.scrollLeft - destination) <= 6;
+  }
+  if (!centered) {
+    event.preventDefault();
+    selectProject(index, { focusCard: true });
+  }
+}));
 
 projectPrevious?.addEventListener("click", () => selectProject(activeProjectIndex - 1));
 projectNext?.addEventListener("click", () => selectProject(activeProjectIndex + 1));

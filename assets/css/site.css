@@ -3156,3 +3156,21 @@ h3 {
     padding-block: 2rem;
   }
 }
+
+.project-code { margin-block: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: 1rem; }
+.project-code summary { cursor: pointer; font-weight: 600; }
+.project-code pre { margin-top: 1rem; }
+
+/* Keep project stories compact enough to skim alongside the build photos. */
+body[data-page="projects"] .section {
+  padding-block: clamp(1.5rem, 3vw, 2.5rem);
+}
+body[data-page="projects"] .section-heading {
+  margin-bottom: 1.25rem;
+}
+body[data-page="projects"] .section-heading h2 {
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+}
+body[data-page="projects"] .section > p {
+  max-width: 78ch;
+}

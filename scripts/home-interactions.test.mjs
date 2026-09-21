@@ -13,6 +13,7 @@ import {
   handoffCircuitState,
   mobileHandoffCircuitState,
   projectCardState,
+  projectIsCentered,
   projectHandoffShare,
   projectIndex,
   projectNavigationState,
@@ -621,4 +622,28 @@ test("mobile centering and project boundary controls clamp safely", () => {
   assert.equal(centeredTrackOffset(1100, 300, 390, 1000), 1000);
   assert.deepEqual(projectNavigationState(0, 7), { activeIndex: 0, previousDisabled: true, nextDisabled: false });
   assert.deepEqual(projectNavigationState(6, 7), { activeIndex: 6, previousDisabled: false, nextDisabled: true });
+});
+
+
+test("a halfway or nearby card centers before it can open", () => {
+  assert.equal(projectIsCentered(2, 1.5), false);
+  assert.equal(projectIsCentered(2, 2.45), false);
+  assert.equal(projectIsCentered(1, 2), false);
+  assert.equal(projectIsCentered(2, 2), true);
+  assert.equal(projectIsCentered(0, 0.002), true);
+  assert.equal(projectIsCentered(7, 6.998), true);
+  assert.equal(projectIsCentered(2, NaN), false);
+});
+
+test("dropdown, carousel, and previous/next pages share the same project order", () => {
+  const order = ["orbit-shift", "wearable-ecg", "fpv-drone", "flexin", "sql-java-data-system", "led-lighting", "plant-monitor", "portfolio"];
+  const script = readFileSync(new URL("../assets/js/site.js", import.meta.url), "utf8");
+  const menu = script.slice(script.indexOf('label: "Projects"'), script.indexOf('label: "Experience"'));
+  assert.deepEqual([...menu.matchAll(/url: "\/projects\/([^"/]+)\.html"/g)].map(m => m[1]), order);
+  assert.deepEqual(attributeValues(indexMarkup, "data-project-card", "href"), order.map(id => `/projects/${id}.html`));
+  order.forEach((id, index) => {
+    const page = readFileSync(new URL(`../projects/${id}.html`, import.meta.url), "utf8");
+    const nav = page.slice(page.indexOf('aria-label="Project navigation"'), page.indexOf('</main>'));
+    assert.deepEqual([...nav.matchAll(/href="\/projects\/([^"/]+)\.html"/g)].map(m => m[1]), [order[(index + 7) % 8], order[(index + 1) % 8]]);
+  });
 });

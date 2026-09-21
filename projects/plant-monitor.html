@@ -25,8 +25,8 @@
     })();
   </script>
   <script src="/assets/js/motion-init.js"></script>
-  <link rel="stylesheet" href="/assets/css/site.css">
-  <script src="/assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260921-projects2">
+  <script src="/assets/js/site.js?v=20260921-projects2" defer></script>
 </head>
 <body data-page="projects">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -45,18 +45,18 @@
       <div>
         <span class="eyebrow">Personal Electronics Project</span>
         <h1>Plant Monitor</h1>
-        <p>A personal project I built outside of school that gathers light, temperature, and humidity readings and turns them into clear LCD feedback.</p>
-        <ul class="visual-facts"><li>Arduino</li><li>SHT20</li><li>Photoresistor</li><li>LCD</li></ul>
+        <p>I built this during my freshman year of high school because I wanted to understand what a plant needed throughout the day. It monitored light, temperature, humidity, and soil moisture, with readings shown on an LCD.</p>
+        <ul class="visual-facts"><li>Arduino</li><li>DHT11</li><li>Soil moisture</li><li>Photoresistor</li><li>LCD</li></ul>
       </div>
       <figure class="visual-hero-media contain">
         <img src="/assets/images/projects/plant-monitor.jpg" alt="Breadboard plant monitor displaying temperature and humidity readings on an LCD" width="1400" height="1161" fetchpriority="high">
       </figure>
-    </section>
+    </section><section class="section container"><div class="section-heading reveal"><h2>Why I made it</h2></div><p>I wanted to see how much light a plant received and use soil moisture to help tell when it needed water. It was an early project where I could write a little code, change something in the real world, and watch the sensor readings respond.</p></section>
 
     <section class="section container">
       <div class="section-heading reveal"><span class="eyebrow">Signal path</span><h2>Read the environment, then make it visible.</h2></div>
       <div class="system-visual reveal">
-        <div class="system-node"><strong>Light</strong><span>Analog photoresistor</span></div>
+        <div class="system-node"><strong>Light + soil</strong><span>Light level + moisture</span></div>
         <div class="system-node"><strong>Air</strong><span>Temperature + humidity</span></div>
         <div class="system-node"><strong>Arduino</strong><span>Read and organize</span></div>
         <div class="system-node"><strong>LCD</strong><span>Show conditions</span></div>
@@ -70,15 +70,34 @@
         <article class="story-card reveal"><span class="story-card-number">02</span><h3>Combine</h3><p>Pair the light value with temperature and humidity measurements.</p></article>
         <article class="story-card reveal"><span class="story-card-number">03</span><h3>Display</h3><p>Present the readings on the LCD instead of leaving them only in a serial log.</p></article>
       </div>
-      <section class="reveal" aria-label="Plant monitor code sample">
-        <pre class="code-visual"><code>int photoPin = A0;
+<div class="section-heading"><h3>Two original sensor tests</h3><p>These small sketches test the sensors separately and print a reading once per second. They are examples from the build, rather than the complete soil-moisture and LCD program. The temperature file is named SHT20TempAndHumid, but its code uses a DHT11 on pin 7.</p></div><details class="project-code"><summary>Light level · analog pin A0</summary><pre class="code-visual"><code>int photoPin = A0;
+
+void setup() {
+  Serial.begin(9600);
+}
 
 void loop() {
   int light = analogRead(photoPin);
   Serial.println(light);
   delay(1000);
-}</code></pre>
-      </section>
+}</code></pre><p><a href="/assets/code/plant-monitor/PhotoResistor.ino" download>Download PhotoResistor.ino</a></p></details><details class="project-code"><summary>Temperature and humidity · DHT11</summary><pre class="code-visual"><code>#include &lt;dht.h&gt;
+
+dht DHT;
+
+#define DHT11_PIN 7
+
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  int chk = DHT.read11(DHT11_PIN);
+  Serial.print(&quot;Temperature = &quot;);
+  Serial.println(DHT.temperature);
+  Serial.print(&quot;Humidity = &quot;);
+  Serial.println(DHT.humidity);
+  delay(1000);
+}</code></pre><p><a href="/assets/code/plant-monitor/SHT20TempAndHumid.ino" download>Download SHT20TempAndHumid.ino</a></p></details>
     </section>
 
     <nav class="container case-navigation" aria-label="Project navigation">

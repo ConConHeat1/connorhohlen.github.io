@@ -254,3 +254,8 @@ export function projectNavigationState(index, projectCount) {
     nextDisabled: projectCount < 1 || activeIndex >= projectCount - 1,
   };
 }
+
+// An active card can still be halfway through moving; only open once centered.
+export function projectIsCentered(index, position, tolerance = 0.025) {
+  return Number.isFinite(index) && Number.isFinite(position) && Math.abs(index - position) <= tolerance;
+}
