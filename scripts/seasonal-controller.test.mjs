@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import {
+  getMotionState,
+  resolveMotionState,
+} from "../assets/js/motion-preferences.mjs";
 
 class FakeStyle {
   setProperty(name, value) {
@@ -194,6 +198,12 @@ function flush() {
 
 let controllerImport = 0;
 
+test("the shared motion contract is always full", () => {
+  assert.equal(getMotionState(), "full");
+  assert.equal(resolveMotionState({ storedPreference: "off", reducedMotion: true }), "full");
+  assert.equal(resolveMotionState({ storedPreference: "on", reducedMotion: true }), "full");
+});
+
 async function createHarness({
   href = "https://example.test/",
   storedPreference = null,
@@ -221,7 +231,7 @@ async function createHarness({
   const timerDelays = [];
   const timers = new Map();
   const frames = new Set();
-  const storageWrites = [];
+  const storageRemovals = [];
   let nextTimerId = 0;
   let nextFrameId = 0;
 
@@ -283,7 +293,6 @@ async function createHarness({
     canvas: new FakeCanvasElement(documentRef),
     propLayer: new FakeElement("div", documentRef),
     veil: new FakeElement("div", documentRef),
-    toggle: new FakeElement("button", documentRef),
     previewLauncher: new FakeElement("button", documentRef),
     previewTray: new FakeElement("aside", documentRef),
     previewMinimize: new FakeElement("button", documentRef),
@@ -301,7 +310,6 @@ async function createHarness({
     greeting: new FakeElement("p", documentRef),
   };
   elements.stage.hidden = true;
-  elements.toggle.hidden = true;
   elements.previewLauncher.hidden = true;
   elements.previewTray.hidden = true;
   elements.greeting.hidden = true;
@@ -312,7 +320,6 @@ async function createHarness({
     ["[data-seasonal-canvas]", elements.canvas],
     ["[data-seasonal-props]", elements.propLayer],
     ["[data-seasonal-veil]", elements.veil],
-    ["[data-seasonal-toggle]", elements.toggle],
     ["[data-event-preview-launcher]", elements.previewLauncher],
     ["[data-event-preview]", elements.previewTray],
     ["[data-event-preview-minimize]", elements.previewMinimize],
@@ -414,9 +421,9 @@ async function createHarness({
       if (storageThrows) throw new Error("Storage unavailable");
       return storedPreference;
     },
-    setItem(key, value) {
+    removeItem(key) {
       if (storageThrows) throw new Error("Storage unavailable");
-      storageWrites.push([key, value]);
+      storageRemovals.push(key);
     },
   };
   globalThis.fetch =
@@ -445,7 +452,8 @@ async function createHarness({
     elements,
     frames,
     timerDelays,
-    storageWrites,
+    storageRemovals,
+    motionListenerCount: () => motionListeners.length,
     mobileMenuClosures,
     async settle() {
       await flush();
@@ -463,7 +471,7 @@ async function createHarness({
   };
 }
 
-test("preview switching keeps the greeting, toggle, URL, and quote in sync", async () => {
+test("preview switching keeps the greeting, URL, scene, and quote in sync without a motion control", async () => {
   const harness = await createHarness({
     href: "https://example.test/?event-preview=christmas",
   });
@@ -476,8 +484,6 @@ test("preview switching keeps the greeting, toggle, URL, and quote in sync", asy
     assert.equal(elements.greeting.textContent, "Merry Christmas!");
     assert.equal(elements.greeting.hidden, false);
     assert.equal(elements.quoteText.hidden, true);
-    assert.equal(elements.toggle.hidden, false);
-    assert.equal(elements.toggle.textContent, "Turn off animation");
     assert.equal(elements.stage.hidden, false);
 
     elements.previewSelect.value = "valentines-day";
@@ -487,23 +493,10 @@ test("preview switching keeps the greeting, toggle, URL, and quote in sync", asy
     assert.equal(harness.documentRef.body.dataset.specialEvent, "valentines-day");
     assert.equal(elements.greeting.textContent, "Happy Valentine’s Day!");
 
-    elements.toggle.dispatch("click");
-    await harness.settle();
-    assert.deepEqual(harness.storageWrites.at(-1), ["portfolio-special-effects", "off"]);
-    assert.equal(elements.stage.hidden, true);
-    assert.equal(elements.toggle.textContent, "Turn on animation");
-    assert.equal(elements.greeting.hidden, false, "the greeting stays visible when motion is off");
-    assert.equal(
-      elements.propLayer.querySelectorAll("[data-seasonal-prop]").length,
-      0,
-      "turning animation off destroys the inactive scene",
-    );
-
     elements.previewSelect.value = "none";
     elements.previewSelect.dispatch("change");
     await harness.settle();
     assert.equal(harness.documentRef.body.dataset.specialEvent, undefined);
-    assert.equal(elements.toggle.hidden, true);
     assert.equal(elements.greeting.hidden, true);
     assert.equal(elements.quoteText.hidden, false);
     assert.equal(elements.quoteText.textContent, "Loaded quote");
@@ -647,17 +640,20 @@ test("an in-flight quote cannot overwrite a holiday greeting and restores afterw
   }
 });
 
-test("stored opt-out and unavailable storage honor reduced-motion changes", async () => {
+test("legacy opt-out and reduced-motion signals are ignored while storage is cleared safely", async () => {
   const optedOut = await createHarness({
     href: "https://example.test/?event-preview=christmas",
     storedPreference: "off",
+    reducedMotion: true,
   });
 
   try {
-    assert.equal(optedOut.elements.toggle.textContent, "Turn on animation");
-    assert.equal(optedOut.elements.stage.hidden, true);
+    assert.equal(optedOut.documentRef.documentElement.dataset.motion, "full");
+    assert.equal(optedOut.elements.stage.hidden, false);
+    assert.deepEqual(optedOut.storageRemovals, ["portfolio-special-effects"]);
+    assert.equal(optedOut.motionListenerCount(), 0);
     optedOut.motionPreference.emit(false);
-    assert.equal(optedOut.elements.stage.hidden, true, "an explicit opt-out wins over system motion");
+    assert.equal(optedOut.elements.stage.hidden, false);
   } finally {
     optedOut.restore();
   }
@@ -669,11 +665,11 @@ test("stored opt-out and unavailable storage honor reduced-motion changes", asyn
   });
 
   try {
-    assert.equal(unavailable.elements.toggle.textContent, "Turn on animation");
-    assert.equal(unavailable.elements.stage.hidden, true);
+    assert.equal(unavailable.documentRef.documentElement.dataset.motion, "full");
+    assert.equal(unavailable.elements.stage.hidden, false);
+    assert.equal(unavailable.motionListenerCount(), 0);
     unavailable.motionPreference.emit(false);
     await unavailable.settle();
-    assert.equal(unavailable.elements.toggle.textContent, "Turn off animation");
     assert.equal(unavailable.elements.stage.hidden, false);
   } finally {
     unavailable.restore();

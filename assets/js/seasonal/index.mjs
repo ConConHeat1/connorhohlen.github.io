@@ -5,10 +5,11 @@ import {
   resolveEventPreview,
 } from "./events.mjs";
 import { createSeasonalEngine } from "./engine.mjs";
-
-const EFFECTS_STORAGE_KEY = "portfolio-special-effects";
+import { initializeMotionPreferences } from "../motion-preferences.mjs";
 const root = document.documentElement;
 const body = document.body;
+const seasonalStylesheet = document.querySelector("[data-seasonal-stylesheet]");
+if (seasonalStylesheet) seasonalStylesheet.media = "all";
 
 if (body?.dataset.page === "home") {
   initializeSeasonalEvents();
@@ -19,7 +20,6 @@ function initializeSeasonalEvents() {
   const canvas = document.querySelector("[data-seasonal-canvas]");
   const propLayer = document.querySelector("[data-seasonal-props]");
   const veil = document.querySelector("[data-seasonal-veil]");
-  const toggle = document.querySelector("[data-seasonal-toggle]");
   const previewLauncher = document.querySelector("[data-event-preview-launcher]");
   const previewTray = document.querySelector("[data-event-preview]");
   const previewMinimize = document.querySelector("[data-event-preview-minimize]");
@@ -41,7 +41,6 @@ function initializeSeasonalEvents() {
     !(canvas instanceof HTMLCanvasElement) ||
     !propLayer ||
     !veil ||
-    !toggle ||
     !previewLauncher ||
     !previewTray ||
     !previewMinimize ||
@@ -61,9 +60,6 @@ function initializeSeasonalEvents() {
     day: "numeric",
     year: "numeric",
   });
-  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-  let storedPreference = readStoredPreference();
-  let effectsEnabled = storedPreference ? storedPreference === "on" : !motionPreference.matches;
   let currentEvent = null;
   let quoteGeneration = 0;
   let sceneGeneration = 0;
@@ -79,18 +75,12 @@ function initializeSeasonalEvents() {
     getTheme: () => root.dataset.theme || "slate",
   });
 
+  initializeMotionPreferences();
+
   populatePreviewOptions();
   setPreviewVisibility();
   updateSeasonalState();
   scheduleMidnightUpdate();
-
-  toggle.addEventListener("click", () => {
-    effectsEnabled = !effectsEnabled;
-    storedPreference = effectsEnabled ? "on" : "off";
-    writeStoredPreference(storedPreference);
-    updateToggle();
-    updateScene(currentEvent);
-  });
 
   previewLauncher.addEventListener("click", () => {
     const willExpand = !previewExpanded;
@@ -142,19 +132,6 @@ function initializeSeasonalEvents() {
     event.stopPropagation();
     setPreviewExpanded(false, { returnFocus: true });
   });
-
-  const handleMotionChange = () => {
-    if (storedPreference) return;
-    effectsEnabled = !motionPreference.matches;
-    updateToggle();
-    updateScene(currentEvent);
-  };
-
-  if (typeof motionPreference.addEventListener === "function") {
-    motionPreference.addEventListener("change", handleMotionChange);
-  } else {
-    motionPreference.addListener(handleMotionChange);
-  }
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
@@ -256,7 +233,6 @@ function initializeSeasonalEvents() {
       showDailyQuote(now, generation);
     }
 
-    updateToggle();
     updateScene(currentEvent);
   }
 
@@ -274,7 +250,7 @@ function initializeSeasonalEvents() {
     greeting.textContent = "";
     quoteText.hidden = false;
     quoteLabel.textContent = "Quote of the day";
-    quoteMetaLabel.textContent = "Fresh perspective";
+    quoteMetaLabel.textContent = "";
     quoteMark.textContent = "“";
 
     loadDailyQuote(now)
@@ -319,23 +295,9 @@ function initializeSeasonalEvents() {
     return promise;
   }
 
-  function updateToggle() {
-    const hasEvent = Boolean(currentEvent);
-    toggle.hidden = !hasEvent;
-    toggle.setAttribute("aria-pressed", String(effectsEnabled));
-    toggle.textContent = effectsEnabled ? "Turn off animation" : "Turn on animation";
-    toggle.setAttribute(
-      "aria-label",
-      effectsEnabled
-        ? `Turn off the ${currentEvent?.label ?? "seasonal"} animation`
-        : `Turn on the ${currentEvent?.label ?? "seasonal"} animation`,
-    );
-    body.dataset.specialEffects = effectsEnabled ? "on" : "off";
-  }
-
   async function updateScene(event) {
     const generation = ++sceneGeneration;
-    const shouldAnimate = Boolean(event && effectsEnabled);
+    const shouldAnimate = Boolean(event);
 
     if (!shouldAnimate) {
       stage.hidden = true;
@@ -355,7 +317,7 @@ function initializeSeasonalEvents() {
         engine.setEnabled(false);
         return;
       }
-      if (currentEvent?.id !== event.id || !effectsEnabled) {
+      if (currentEvent?.id !== event.id) {
         return;
       }
       engine.resize();
@@ -374,22 +336,5 @@ function initializeSeasonalEvents() {
       updateSeasonalState();
       scheduleMidnightUpdate();
     }, Math.max(1000, nextMidnight.getTime() - now.getTime() + 100));
-  }
-}
-
-function readStoredPreference() {
-  try {
-    const value = localStorage.getItem(EFFECTS_STORAGE_KEY);
-    return value === "on" || value === "off" ? value : null;
-  } catch {
-    return null;
-  }
-}
-
-function writeStoredPreference(value) {
-  try {
-    localStorage.setItem(EFFECTS_STORAGE_KEY, value);
-  } catch {
-    // The current page still honors the choice when storage is unavailable.
   }
 }

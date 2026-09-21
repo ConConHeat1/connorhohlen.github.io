@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="slate">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wearable ECG Monitor Project | Connor Hohlen</title>
+  <meta name="description" content="For my Senior Design project, my team is developing a wearable ECG system using an ESP32 and AD8232 sensor. Our current prototype captures and processes the signal from electrodes, then displays the waveform for testing.">
+  <meta name="theme-color" content="#242a30">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://connorhohlen.com/projects/wearable-ecg.html">
+  <link rel="icon" href="/assets/images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Wearable ECG Monitor | Connor Hohlen">
+  <meta property="og:description" content="For my Senior Design project, my team is developing a wearable ECG system using an ESP32 and AD8232 sensor. Our current prototype captures and processes the signal from electrodes, then displays the waveform for testing.">
+  <meta property="og:url" content="https://connorhohlen.com/projects/wearable-ecg.html">
+  <meta property="og:image" content="https://connorhohlen.com/assets/images/projects/ecg-prototype.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("portfolio-theme");
+        document.documentElement.dataset.theme = ["dark", "slate", "light"].includes(saved) ? saved : "slate";
+      } catch { document.documentElement.dataset.theme = "slate"; }
+    })();
+  </script>
+  <script src="/assets/js/motion-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body data-page="projects">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header" data-site-header>
+    <div class="nav-shell">
+      <a class="brand" href="/#top" aria-label="Connor Hohlen, home"><span class="brand-mark" aria-hidden="true">CH</span><span class="brand-name">Connor Hohlen</span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation" data-menu-toggle><span class="menu-toggle-line"></span><span class="menu-toggle-line"></span><span class="menu-toggle-line"></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation" data-primary-nav>
+        <a class="nav-link" href="/#top">Home</a>
+        <a class="nav-link" href="/#projects" aria-current="page">Projects</a>
+        <a class="nav-link" href="/#experience">Experience</a>
+        <a class="nav-link" href="/#education">Education</a>
+        <a class="nav-link" href="/about.html">About</a>
+        <a class="nav-link" href="/#contact">Contact</a>
+        <div class="theme-switcher" role="group" aria-label="Color theme">
+          <button class="theme-button" type="button" data-theme-value="dark" aria-pressed="false">Dark</button>
+          <button class="theme-button" type="button" data-theme-value="slate" aria-pressed="true">Slate</button>
+          <button class="theme-button" type="button" data-theme-value="light" aria-pressed="false">Light</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content">
+    <section class="container visual-detail-hero">
+      <div><span class="eyebrow">Senior Design / Embedded Systems</span><h1>Wearable ECG Monitor</h1><p>For my Senior Design project, my team is developing a wearable ECG system using an ESP32 and AD8232 sensor. Our current prototype captures and processes the signal from electrodes, then displays the waveform for testing.</p>
+        <ul class="visual-facts"><li>ESP32</li><li>AD8232</li><li>C/C++</li><li>ADC</li><li>Signal Processing</li></ul>
+        <p class="project-release"><span class="status">In development</span></p>
+      </div>
+      <figure class="visual-hero-media contain"><img src="/assets/images/projects/ecg-prototype.png" alt="ESP32 and AD8232 breadboard prototype connected to ECG electrode leads" width="486" height="365" fetchpriority="high" decoding="async"></figure>
+    </section><section class="section container"><div class="section-heading reveal"><h2>System flow</h2></div><div class="system-visual project-flow reveal" role="group" aria-label="Electrodes to AD8232 to ESP32 ADC to Filtering to ECG waveform"><div class="system-node"><strong>Electrodes</strong><span>Pick up the signal</span></div><div class="system-node"><strong>AD8232</strong><span>Condition and amplify</span></div><div class="system-node"><strong>ESP32 ADC</strong><span>Sample the output</span></div><div class="system-node"><strong>Filtering</strong><span>Process the samples</span></div><div class="system-node"><strong>ECG waveform</strong><span>Serial visualization</span></div></div></section><section class="section container"><div class="section-heading reveal"><h2>Current prototype</h2></div><p>The electrodes pick up small electrical potential differences from the body. The AD8232 conditions the signal before the ESP32 samples it through its ADC. Our C/C++ software filters the samples and sends them to a serial display for testing.</p></section><section class="section container"><div class="section-heading reveal"><h2>Signal testing</h2></div><div class="gallery-grid"><figure class="gallery-tile full contain project-signal-image reveal"><img src="/assets/images/projects/ecg-waveform.png" alt="ECG waveform captured during testing of the team’s prototype" width="782" height="516" loading="lazy" decoding="async"><figcaption>A waveform from our current prototype tests.</figcaption></figure></div><p>We are testing signal quality and working through electrical noise, electrode placement, and motion artifacts.</p></section><section class="section container"><div class="section-heading reveal"><h2>Current status</h2></div><p>Senior Design project currently in development. We are continuing to improve the wearable design and signal quality. This is a student engineering prototype.</p></section>
+    <nav class="container case-navigation" aria-label="Project navigation">
+      <a href="/projects/orbit-shift.html"><span>Previous project</span><strong>Orbit Shift</strong></a>
+      <a href="/projects/fpv-drone.html"><span>Next project</span><strong>Custom FPV Drone</strong></a>
+    </nav>
+  </main>
+  <footer class="site-footer"><div class="container footer-shell"><p>© <span data-current-year></span> Connor Hohlen.</p><nav class="footer-links" aria-label="Footer navigation"><a href="/#projects">All projects</a><a href="mailto:connorhohlen@gmail.com">Email</a><a href="https://github.com/ConConHeat1">GitHub</a></nav></div></footer>
+</body>
+</html>

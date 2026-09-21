@@ -60,7 +60,6 @@ body[data-page="home"] > .back-to-top {
 }
 
 [data-seasonal-stage][hidden],
-body[data-special-effects="off"] [data-seasonal-stage],
 body[data-special-event="none"] [data-seasonal-stage],
 body[data-page="home"]:not([data-special-event]) [data-seasonal-stage] {
   display: block;
@@ -244,82 +243,6 @@ html[data-theme="light"] body[data-special-event="easter"] {
 
 html[data-theme="light"] body[data-special-event="christmas"] {
   --seasonal-card-accent: #08774e;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Navigation animation control                                                */
-/* -------------------------------------------------------------------------- */
-
-[data-seasonal-toggle] {
-  display: none;
-  min-width: 44px;
-  min-height: 44px;
-  margin-left: 0.45rem;
-  padding: 0.5rem 0.72rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid color-mix(in srgb, var(--seasonal-card-accent) 46%, var(--border));
-  border-radius: 0.72rem;
-  background:
-    radial-gradient(circle at 16% 15%, var(--seasonal-card-glow), transparent 58%),
-    color-mix(in srgb, var(--surface) 92%, transparent);
-  color: var(--text);
-  cursor: pointer;
-  font-size: 0.76rem;
-  font-weight: 740;
-  gap: 0.48rem;
-  line-height: 1.15;
-  white-space: nowrap;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
-  transition:
-    border-color var(--transition-fast),
-    background var(--transition-fast),
-    box-shadow var(--transition-fast),
-    color var(--transition-fast),
-    transform var(--transition-fast);
-}
-
-body[data-page="home"][data-special-event]:not([data-special-event="none"])
-  [data-seasonal-toggle]:not([hidden]) {
-  display: inline-flex;
-}
-
-[data-seasonal-toggle]::before {
-  width: 0.74rem;
-  height: 0.74rem;
-  flex: 0 0 auto;
-  border: 1px solid color-mix(in srgb, var(--seasonal-card-accent) 72%, transparent);
-  border-radius: 50%;
-  background: var(--seasonal-card-accent);
-  content: "";
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--seasonal-card-accent) 14%, transparent),
-    0 0 1rem color-mix(in srgb, var(--seasonal-card-accent) 52%, transparent);
-}
-
-body[data-special-effects="off"] [data-seasonal-toggle] {
-  border-color: var(--border);
-  background: var(--surface);
-  color: var(--text-soft);
-  box-shadow: none;
-}
-
-body[data-special-effects="off"] [data-seasonal-toggle]::before {
-  background: transparent;
-  box-shadow: inset 0 0 0 2px var(--surface);
-}
-
-[data-seasonal-toggle]:hover {
-  border-color: var(--seasonal-card-accent);
-  background:
-    radial-gradient(circle at 16% 15%, var(--seasonal-card-glow), transparent 58%),
-    var(--surface-strong);
-  color: var(--text);
-  transform: translateY(-1px);
-}
-
-[data-seasonal-toggle]:active {
-  transform: translateY(0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1742,13 +1665,6 @@ body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quo
 /* -------------------------------------------------------------------------- */
 
 @media (max-width: 1120px) {
-  [data-seasonal-toggle] {
-    width: 100%;
-    margin: 0.75rem 0 0;
-    justify-content: flex-start;
-    padding-inline: 0.9rem;
-  }
-
   [data-event-preview-launcher] {
     right: max(0.75rem, env(safe-area-inset-right));
     bottom: max(0.75rem, env(safe-area-inset-bottom));
@@ -1914,10 +1830,6 @@ body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quo
 }
 
 @media (max-width: 480px) {
-  [data-seasonal-toggle] {
-    font-size: 0.78rem;
-  }
-
   [data-event-preview] {
     padding: 0.7rem;
     border-radius: 0.85rem;
@@ -1977,32 +1889,8 @@ body[data-page="home"][data-special-event]:not([data-special-event="none"]) .quo
 /* Accessibility and print                                                    */
 /* -------------------------------------------------------------------------- */
 
-@media (prefers-reduced-motion: reduce) {
-  [data-seasonal-stage],
-  [data-seasonal-stage] *,
-  [data-seasonal-stage] *::before,
-  [data-seasonal-stage] *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  [data-seasonal-stage] {
-    transition: none;
-  }
-
-  .seasonal-fog,
-  [data-seasonal-prop="fog"],
-  .seasonal-leaf,
-  [data-seasonal-prop="leaf"] {
-    transform: none;
-  }
-}
-
 @media print {
   [data-seasonal-stage],
-  [data-seasonal-toggle],
   [data-event-preview-launcher],
   [data-event-preview] {
     display: none !important;

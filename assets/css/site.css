@@ -367,7 +367,7 @@ strong {
 }
 
 .nav-dropdown-menu a {
-  min-height: 42px;
+  min-height: 44px;
   padding: 0.55rem 0.7rem;
   border-radius: 0.55rem;
   color: var(--text-soft);
@@ -382,6 +382,16 @@ strong {
   color: var(--text);
 }
 
+.nav-dropdown-overview {
+  border-bottom: 1px solid var(--border);
+  border-radius: 0.55rem 0.55rem 0.2rem 0.2rem;
+  color: var(--text);
+}
+
+html:not(.js) .theme-switcher {
+  display: none;
+}
+
 .theme-switcher {
   display: inline-flex;
   margin-left: 0.7rem;
@@ -393,7 +403,7 @@ strong {
 }
 
 .theme-button {
-  min-height: 36px;
+  min-height: 44px;
   padding: 0.35rem 0.55rem;
   border: 0;
   border-radius: 0.5rem;
@@ -565,7 +575,7 @@ strong {
 
 .inline-link {
   display: inline-flex;
-  min-height: 36px;
+  min-height: 44px;
   padding: 0.2rem 0;
   align-items: center;
   gap: 0.4rem;
@@ -1415,6 +1425,9 @@ strong {
 }
 
 .footer-links a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: var(--text-soft);
   font-size: 0.86rem;
   font-weight: 650;
@@ -1512,7 +1525,7 @@ strong {
 
 .case-sidebar a {
   display: flex;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0.45rem 0.65rem;
   align-items: center;
   border-left: 2px solid var(--border);
@@ -1568,6 +1581,25 @@ strong {
 .media-grid img {
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.media-grid .media-contain picture {
+  display: grid;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  place-items: center;
+}
+
+.media-grid .media-contain img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 28rem;
+  aspect-ratio: auto;
+  border: 0;
+  object-fit: contain;
 }
 
 .case-media img {
@@ -1831,44 +1863,6 @@ strong {
   background: var(--surface-strong);
 }
 
-.project-visual-rocket {
-  display: grid;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(125, 140, 255, 0.25), transparent 34%),
-    linear-gradient(145deg, #111b27, #070b10);
-  place-items: center;
-}
-
-.rocket-card-visual {
-  position: relative;
-  width: 5.2rem;
-  height: 8.5rem;
-  border: 2px solid var(--accent);
-  border-radius: 50% 50% 18% 18%;
-  background: linear-gradient(90deg, var(--surface-strong), var(--bg-elevated));
-  box-shadow: 0 0 2rem var(--glow);
-}
-
-.rocket-card-visual::before,
-.rocket-card-visual::after {
-  position: absolute;
-  bottom: 0.6rem;
-  width: 1.7rem;
-  height: 2.8rem;
-  border: 2px solid var(--accent-secondary);
-  background: var(--surface);
-  content: "";
-}
-
-.rocket-card-visual::before {
-  left: -1.3rem;
-  transform: skewY(-28deg);
-}
-
-.rocket-card-visual::after {
-  right: -1.3rem;
-  transform: skewY(28deg);
-}
 
 .visual-card-grid {
   display: grid;
@@ -2052,6 +2046,67 @@ strong {
 .visual-hero-media.contain img {
   padding: 1.5rem;
   object-fit: contain;
+}
+
+/* Keep supplied app screens intact and use the existing project layout. */
+.app-project-hero {
+  padding-block: clamp(2rem, 4vw, 3.5rem);
+}
+
+.visual-hero-media.phone-hero {
+  width: min(100%, 300px);
+  margin-inline: auto;
+  aspect-ratio: auto;
+}
+
+.visual-hero-media.phone-hero img,
+.project-phone-gallery .gallery-tile.portrait img,
+.gallery-tile.project-signal-image img {
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+.project-release {
+  margin-top: 1.5rem;
+}
+
+.app-store-link {
+  display: inline-block;
+  padding: 15px;
+  margin-left: -15px;
+}
+
+.app-store-link img {
+  width: 180px;
+  max-width: 100%;
+  height: auto;
+}
+
+.project-app-links {
+  justify-content: flex-start;
+}
+
+.project-flow {
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-template-columns: none;
+}
+
+@media (max-width: 1120px) {
+  .system-visual.project-flow {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-flow .system-node:not(:last-child)::after {
+    display: block;
+    top: auto;
+    right: 50%;
+    bottom: -1.4rem;
+    content: "↓";
+    transform: translateX(50%);
+  }
 }
 
 .visual-facts {
@@ -2430,14 +2485,20 @@ strong {
 }
 
 .reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 500ms ease, transform 500ms ease;
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+h1,
+h2,
+h3 {
+  overflow-wrap: anywhere;
 }
 
 .sr-only {
@@ -2471,11 +2532,38 @@ strong {
 }
 
 @media (max-width: 1120px) {
-  .menu-toggle {
+  html:not(.js) .site-header {
+    position: relative;
+    height: auto;
+  }
+
+  html:not(.js) .nav-shell {
+    height: auto;
+    min-height: var(--header-height);
+    padding-block: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  html:not(.js) .primary-nav {
+    position: static;
+    display: grid;
+    width: 100%;
+    max-height: none;
+    padding: 0 0 0.5rem;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    opacity: 1;
+    overflow: visible;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .js .menu-toggle {
     display: block;
   }
 
-  .primary-nav {
+  .js .primary-nav {
     position: fixed;
     top: calc(var(--header-height) + 0.75rem);
     right: 1rem;
@@ -2494,7 +2582,7 @@ strong {
     transition: opacity var(--transition-fast), transform var(--transition-fast);
   }
 
-  .primary-nav.is-open {
+  .js .primary-nav.is-open {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0) scale(1);
@@ -2659,7 +2747,7 @@ strong {
   }
 
   .hero-actions .button {
-    min-height: 42px;
+    min-height: 44px;
     padding-block: 0.55rem;
   }
 
@@ -2668,7 +2756,7 @@ strong {
   }
 
   .inline-link {
-    min-height: 32px;
+    min-height: 44px;
     font-size: 0.9rem;
   }
 
@@ -2774,8 +2862,8 @@ strong {
   }
 
   .project-arrow {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
   }
 
   .projects-grid > .project-card:first-child {
@@ -3028,12 +3116,12 @@ strong {
   }
 
   .project-carousel-frame {
-    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
   }
 
   .project-arrow {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     font-size: 1.15rem;
   }
 
@@ -3047,26 +3135,6 @@ strong {
     bottom: 0.75rem;
     width: 48px;
     height: 48px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  .reveal {
-    opacity: 1;
-    transform: none;
   }
 }
 

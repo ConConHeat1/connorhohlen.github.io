@@ -2,6 +2,7 @@
   "use strict";
 
   const root = document.documentElement;
+  root.classList.add("js");
   const themeButtons = Array.from(document.querySelectorAll("[data-theme-value]"));
   const themeColor = document.querySelector('meta[name="theme-color"]');
   const validThemes = new Set(["dark", "slate", "light"]);
@@ -17,13 +18,14 @@
       section: "projects",
       menuLabel: "Project pages",
       items: [
-        { title: "Flexin", url: "/projects/flexin.html" },
+        { title: "Orbit Shift", url: "/projects/orbit-shift.html" },
+        { title: "Wearable ECG Monitor", url: "/projects/wearable-ecg.html" },
         { title: "Custom FPV Drone", url: "/projects/fpv-drone.html" },
-        { title: "Portfolio Website", url: "/projects/portfolio.html" },
+        { title: "Flexin", url: "/projects/flexin.html" },
+        { title: "SQL + Java Data System", url: "/projects/sql-java-data-system.html" },
         { title: "Wi-Fi LED Lighting", url: "/projects/led-lighting.html" },
         { title: "Plant Monitor", url: "/projects/plant-monitor.html" },
-        { title: "SQL + Java Data System", url: "/projects/sql-java-data-system.html" },
-        { title: "Rocket Computer", url: "/projects/rocket-computer.html" },
+        { title: "Portfolio Website", url: "/projects/portfolio.html" },
       ],
     },
     {
@@ -101,6 +103,15 @@
       const menu = document.createElement("div");
       menu.className = "nav-dropdown-menu";
       menu.setAttribute("aria-label", group.menuLabel);
+
+      const overviewLink = document.createElement("a");
+      overviewLink.className = "nav-dropdown-overview";
+      overviewLink.href = group.href;
+      overviewLink.textContent = `${group.label} overview`;
+      if (sourceLink.hasAttribute("data-section-link")) {
+        overviewLink.dataset.sectionLink = group.section;
+      }
+      menu.append(overviewLink);
 
       let containsCurrentPage = false;
       group.items.forEach((item) => {
@@ -263,7 +274,12 @@
     trackedSections.forEach((section) => observer.observe(section));
   }
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  root.dataset.motion = "full";
+
+  function sharedMotionEnabled() {
+    return true;
+  }
+
   const resumeToggle = document.querySelector("[data-resume-toggle]");
   const resumeDialog = document.querySelector("[data-resume-dialog]");
   const resumeClose = document.querySelector("[data-resume-close]");
@@ -339,7 +355,7 @@
   const year = document.querySelector("[data-current-year]");
   if (year) year.textContent = String(new Date().getFullYear());
 
-  const carousel = document.querySelector("[data-project-carousel]");
+  const carousel = document.querySelector("[data-project-carousel]:not([data-home-cover-flow])");
   const projectTrack = carousel?.querySelector("[data-project-track]");
   const projectCards = projectTrack ? Array.from(projectTrack.querySelectorAll("[data-project-card]")) : [];
   const previousProject = carousel?.querySelector("[data-project-previous]");
@@ -387,7 +403,7 @@
       }
       projectTrack.scrollTo({
         left: projectLeft(activeProjectIndex),
-        behavior: reducedMotion ? "auto" : "smooth",
+        behavior: sharedMotionEnabled() ? "smooth" : "auto",
       });
       updateProjectControls();
     }
@@ -514,14 +530,14 @@
   }
 
   backToTop.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+    window.scrollTo({ top: 0, behavior: sharedMotionEnabled() ? "smooth" : "auto" });
   });
   updateBackToTop();
   window.addEventListener("scroll", updateBackToTop, { passive: true });
 
   const revealItems = Array.from(document.querySelectorAll(".reveal"));
 
-  if (reducedMotion || !("IntersectionObserver" in window)) {
+  if (!sharedMotionEnabled() || !("IntersectionObserver" in window)) {
     revealItems.forEach((item) => item.classList.add("is-visible"));
   } else {
     const revealObserver = new IntersectionObserver(

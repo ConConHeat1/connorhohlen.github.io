@@ -26,6 +26,7 @@
   <meta name="twitter:image:alt" content="Connor Hohlen computer engineering portfolio social preview">
   <script>
     (() => {
+      document.documentElement.classList.add("js");
       try {
         const saved = localStorage.getItem("portfolio-theme");
         const theme = ["dark", "slate", "light"].includes(saved) ? saved : "slate";
@@ -35,9 +36,13 @@
       }
     })();
   </script>
+  <script src="/assets/js/motion-init.js"></script>
   <link rel="stylesheet" href="/assets/css/site.css">
-  <link rel="stylesheet" href="/assets/css/seasonal.css">
+  <link rel="preload" href="/assets/css/seasonal.css" as="style">
+  <link rel="stylesheet" href="/assets/css/seasonal.css" media="print" data-seasonal-stylesheet>
+  <link rel="stylesheet" href="/assets/css/home.css">
   <script src="/assets/js/site.js" defer></script>
+  <script type="module" src="/assets/js/home.mjs"></script>
   <script type="module" src="/assets/js/seasonal/index.mjs"></script>
   <script type="application/ld+json">
     {
@@ -82,7 +87,7 @@
 
   <header class="site-header" data-site-header>
     <div class="nav-shell">
-      <a class="brand" href="/#top" aria-label="Connor Hohlen, home">
+      <a class="brand" href="/#top" aria-label="CH — Connor Hohlen, home">
         <span class="brand-mark" aria-hidden="true">CH</span>
         <span class="brand-name">Connor Hohlen</span>
       </a>
@@ -94,6 +99,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation" data-primary-nav>
         <a class="nav-link" href="/#top" data-section-link="top">Home</a>
         <a class="nav-link" href="/#projects" data-section-link="projects">Projects</a>
+        <a class="nav-link" href="/#skills" data-section-link="skills">Skills</a>
         <a class="nav-link" href="/#experience" data-section-link="experience">Experience</a>
         <a class="nav-link" href="/#education" data-section-link="education">Education</a>
         <a class="nav-link" href="/about.html">About</a>
@@ -103,7 +109,6 @@
           <button class="theme-button" type="button" data-theme-value="slate" aria-pressed="true">Slate</button>
           <button class="theme-button" type="button" data-theme-value="light" aria-pressed="false">Light</button>
         </div>
-        <button class="seasonal-toggle" type="button" data-seasonal-toggle hidden aria-pressed="false">Turn off animation</button>
       </nav>
     </div>
   </header>
@@ -143,7 +148,8 @@
   </aside>
 
   <main id="main-content">
-    <section class="container home-intro" id="top" data-nav-section>
+    <section class="home-story" id="top" data-nav-section data-hero-scene>
+      <div class="container home-intro" data-hero-stage>
       <aside class="quote-card" aria-labelledby="daily-quote-label">
         <span class="quote-mark" data-quote-mark aria-hidden="true">“</span>
         <div>
@@ -152,123 +158,178 @@
           <p class="quote-copy special-greeting" data-special-greeting hidden aria-live="polite"></p>
         </div>
         <div class="quote-meta">
-          <span data-quote-meta-label>Fresh perspective</span>
+          <span data-quote-meta-label></span>
           <time data-quote-date></time>
         </div>
       </aside>
 
-      <div class="hero">
+      <div class="hero hero-system">
         <div class="hero-copy">
+          <span class="hero-name">Connor Hohlen</span>
           <span class="eyebrow">Computer Engineering Student · University of Nebraska–Lincoln</span>
-          <h1>Building practical software, embedded systems, and connected products.</h1>
-          <p class="hero-summary">I’m Connor Hohlen, a Computer Engineering student at the University of Nebraska–Lincoln graduating in May 2027. I enjoy turning ideas into working systems through software development, electronics, embedded hardware, automation, and hands-on problem solving.</p>
-          <p class="availability"><span class="availability-dot" aria-hidden="true"></span><span>I’m seeking entry-level engineering opportunities beginning in May or June 2027.</span></p>
+          <h1>I build software, electronics, and connected systems.</h1>
+          <p class="hero-summary">I like projects that connect code with real hardware.</p>
+          <p class="availability"><span class="availability-dot" aria-hidden="true"></span><span>Graduating May 2027 · Looking for entry-level roles starting in May or June 2027.</span></p>
           <div class="hero-actions">
             <a class="button button-primary" href="#projects">View my projects</a>
+            <a class="button button-quiet" href="#contact">Contact me</a>
           </div>
           <nav class="inline-links" aria-label="Professional links">
             <a class="inline-link" href="https://github.com/ConConHeat1" rel="me">GitHub</a>
             <a class="inline-link" href="https://www.linkedin.com/in/connor-hohlen/" rel="me">LinkedIn</a>
             <a class="inline-link" href="mailto:connorhohlen@gmail.com">Email</a>
           </nav>
-          <dl class="stats-grid">
-            <div class="stat">
-              <dt>Graduation</dt>
-              <dd>May 2027</dd>
-            </div>
-            <div class="stat">
-              <dt>Focus</dt>
-              <dd>Hardware + software</dd>
-            </div>
-            <div class="stat">
-              <dt>Location</dt>
-              <dd>Lincoln, Nebraska</dd>
-            </div>
-          </dl>
         </div>
-        <div class="hero-visual">
-          <div class="hero-code" aria-hidden="true"></div>
-          <a class="portrait-frame" href="/about.html" aria-label="Learn more about Connor Hohlen">
-            <picture>
-              <source srcset="/assets/images/connor-hohlen.avif" type="image/avif">
-              <img src="/assets/images/connor-hohlen.jpg" alt="Connor Hohlen" width="968" height="1200" fetchpriority="high">
-            </picture>
-            <div class="portrait-label">
-              <strong>Connor Hohlen</strong>
-              <span>Computer Engineering · UNL</span>
+        <figure class="engineering-core" aria-labelledby="engineering-core-caption" data-engineering-core>
+          <div class="core-stage" aria-hidden="true">
+            <svg class="core-traces" viewBox="0 0 600 600" focusable="false">
+              <path d="M72 300h112l42-42h148l42 42h114"></path>
+              <path d="M300 72v112l-42 42v148l42 42v114"></path>
+              <circle cx="72" cy="300" r="7"></circle><circle cx="528" cy="300" r="7"></circle>
+              <circle cx="300" cy="72" r="7"></circle><circle cx="300" cy="528" r="7"></circle>
+            </svg>
+            <div class="core-layer core-layer-software">
+              <picture class="core-art">
+                <source srcset="/assets/images/home/core-software-480.avif 480w, /assets/images/home/core-software-900.avif 900w" sizes="(min-width: 761px) 280px, 42vw" type="image/avif">
+                <img src="/assets/images/home/core-software.png" alt="" width="900" height="900" decoding="async" fetchpriority="high">
+              </picture>
+              <span>Software</span>
             </div>
-          </a>
-        </div>
+            <div class="core-layer core-layer-connected">
+              <picture class="core-art">
+                <source srcset="/assets/images/home/core-connected-480.avif 480w, /assets/images/home/core-connected-900.avif 900w" sizes="(min-width: 761px) 250px, 40vw" type="image/avif">
+                <img src="/assets/images/home/core-connected.png" alt="" width="900" height="900" decoding="async">
+              </picture>
+              <span>Connected systems</span>
+            </div>
+            <div class="core-chip"><span>CH</span></div>
+            <div class="core-layer core-layer-hardware">
+              <picture class="core-art">
+                <source srcset="/assets/images/home/core-hardware-480.avif 480w, /assets/images/home/core-hardware-900.avif 900w" sizes="(min-width: 761px) 230px, 38vw" type="image/avif">
+                <img src="/assets/images/home/core-hardware.png" alt="" width="900" height="900" decoding="async">
+              </picture>
+              <span>Hardware</span>
+            </div>
+            <div class="core-layer core-layer-sensors">
+              <picture class="core-art">
+                <source srcset="/assets/images/home/core-sensors-480.avif 480w, /assets/images/home/core-sensors-900.avif 900w" sizes="(min-width: 761px) 300px, 44vw" type="image/avif">
+                <img src="/assets/images/home/core-sensors.png" alt="" width="900" height="900" decoding="async">
+              </picture>
+              <span>Sensors + electronics</span>
+            </div>
+            <span class="core-port core-port-a"></span><span class="core-port core-port-b"></span>
+            <span class="core-port core-port-c"></span><span class="core-port core-port-d"></span>
+          </div>
+          <ol class="core-callouts">
+            <li data-core-callout="software">
+              <span>01 · Software</span>
+              <strong>Flutter · Python · Java</strong>
+            </li>
+            <li data-core-callout="connected">
+              <span>02 · Connected systems</span>
+              <strong>Firebase · Cloud · Automation</strong>
+            </li>
+            <li data-core-callout="hardware">
+              <span>03 · Hardware</span>
+              <strong>Electronics · Soldering · Flight controllers</strong>
+            </li>
+            <li data-core-callout="sensors">
+              <span>04 · Sensors</span>
+              <strong>Arduino · I²C · MPU-6050</strong>
+            </li>
+          </ol>
+          <figcaption id="engineering-core-caption">Software, connected systems, hardware, and sensors working together.</figcaption>
+        </figure>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span>Scroll to explore</span><i></i></div>
       </div>
     </section>
 
-    <section class="section container" id="projects" data-nav-section>
+    <section class="project-story" id="projects" data-nav-section data-project-scene>
+      <section class="project-stage container" data-project-keyboard aria-labelledby="projects-title">
       <div class="section-heading reveal">
         <span class="eyebrow">Featured work</span>
-        <h2>Projects built to work in the real world.</h2>
-        <p>Browse software, electronics, embedded systems, and class projects. Every card opens the full project.</p>
+        <h2 id="projects-title">What I’ve been building.</h2>
+        <p>Open a card for the full project.</p>
+        <p class="sr-only" id="project-keyboard-help" hidden>Use the previous and next controls, or the left and right arrow keys while this section is focused.</p>
       </div>
-      <div class="project-carousel reveal" data-project-carousel>
+      <div class="project-carousel reveal" data-project-carousel data-home-cover-flow>
         <div class="project-browse">
-          <p class="project-position" aria-live="polite" data-project-position>Showing projects 1–3 of 7</p>
+          <p class="project-position" data-project-position hidden>01 / 08</p>
+          <p class="sr-only" aria-live="polite" aria-atomic="true" data-project-announcer></p>
         </div>
 
-        <div class="project-carousel-frame">
-          <button class="project-arrow" type="button" aria-label="Show previous project" data-project-previous>←</button>
+        <div class="project-carousel-frame project-cover-frame">
           <div class="project-track" data-project-track>
-            <a class="project-card" href="/projects/flexin.html" data-project-card data-project-id="flexin">
-              <div class="project-visual project-visual-flexin">
-                <img src="/assets/images/flexin-icon.png" alt="Flexin app icon" width="1024" height="1024" loading="lazy">
-              </div>
-              <div class="project-card-body">
-                <span class="project-kicker">Mobile + cloud</span>
-                <h3>Flexin</h3>
-                <p>Social workout Check-Ins, health data, friend feeds, and privacy-aware sharing.</p>
-                <ul class="tag-list"><li>Flutter</li><li>Firebase</li><li>iOS</li></ul>
-                <div class="project-card-actions"><span class="card-link">View case study</span><span class="status">In development</span></div>
-              </div>
+            <a class="project-card" href="/projects/orbit-shift.html" data-project-card data-project-id="orbit-shift">
+              <div class="project-visual project-visual-contain"><img src="/assets/images/projects/orbit-shift-gameplay.png" alt="Orbit Shift circular puzzle gameplay" width="1206" height="2622" loading="lazy" decoding="async"></div>
+              <div class="project-card-body"><span class="project-kicker">Mobile Game</span><h3>Orbit Shift</h3><p>A circular puzzle game I designed, built, and released for iPhone and iPad.</p><ul class="tag-list"><li>Godot</li><li>GDScript</li><li>iOS</li></ul><div class="project-card-actions"><span class="card-link">View project</span><span class="status">Released</span></div></div>
+            </a>
+
+            <a class="project-card" href="/projects/wearable-ecg.html" data-project-card data-project-id="wearable-ecg">
+              <div class="project-visual project-visual-contain"><img src="/assets/images/projects/ecg-prototype.png" alt="ESP32 and AD8232 ECG breadboard prototype" width="486" height="365" loading="lazy" decoding="async"></div>
+              <div class="project-card-body"><span class="project-kicker">Senior Design</span><h3>Wearable ECG Monitor</h3><p>An ESP32 + AD8232 prototype for capturing, processing, and displaying ECG signals.</p><ul class="tag-list"><li>ESP32</li><li>AD8232</li><li>C/C++</li></ul><div class="project-card-actions"><span class="card-link">View project</span><span class="status">In development</span></div></div>
             </a>
 
             <a class="project-card" href="/projects/fpv-drone.html" data-project-card data-project-id="fpv-drone">
               <div class="project-visual project-visual-contain">
                 <picture>
-                  <source srcset="/assets/images/fpv-drone-build.avif" type="image/avif">
-                  <img src="/assets/images/fpv-drone-build.jpg" alt="Custom FPV drone with its flight controller and wiring exposed" width="1181" height="1200" loading="lazy">
+                  <source srcset="/assets/images/home/fpv-drone-build-480.avif 480w, /assets/images/home/fpv-drone-build-640.avif 640w, /assets/images/home/fpv-drone-build-960.avif 960w" sizes="(min-width: 1024px) 400px, 88vw" type="image/avif">
+                  <img src="/assets/images/fpv-drone-build.jpg" alt="Custom FPV drone with its flight controller and wiring exposed" width="1181" height="1200" loading="lazy" decoding="async">
                 </picture>
               </div>
               <div class="project-card-body">
                 <span class="project-kicker">Embedded hardware</span>
                 <h3>Custom FPV Drone</h3>
-                <p>A ground-up quadcopter built through soldering, configuration, and flight validation.</p>
+                <p>A quadcopter I wired, configured, and flight-tested.</p>
                 <ul class="tag-list"><li>Electronics</li><li>Betaflight</li><li>SBUS</li></ul>
-                <div class="project-card-actions"><span class="card-link">View case study</span><span class="status">Completed</span></div>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Completed</span></div>
               </div>
             </a>
 
-            <a class="project-card" href="/projects/portfolio.html" data-project-card data-project-id="portfolio">
-              <div class="project-visual project-visual-contain project-visual-screenshot">
+            <a class="project-card" href="/projects/flexin.html" data-project-card data-project-id="flexin">
+              <div class="project-visual project-visual-flexin">
                 <picture>
-                  <source srcset="/assets/images/portfolio-before.avif" type="image/avif">
-                  <img src="/assets/images/portfolio-before.jpg" alt="Earlier version of Connor Hohlen’s portfolio website" width="1600" height="763" loading="lazy">
+                  <source srcset="/assets/images/home/flexin-mark-3d-480.avif 480w, /assets/images/home/flexin-mark-3d-640.avif 640w, /assets/images/home/flexin-mark-3d-960.avif 960w" sizes="(min-width: 1024px) 320px, 76vw" type="image/avif">
+                  <img src="/assets/images/home/flexin-mark-3d.png" alt="Three-dimensional gold Flexin logo" width="900" height="900" loading="lazy" decoding="async">
                 </picture>
               </div>
               <div class="project-card-body">
-                <span class="project-kicker">Web engineering</span>
-                <h3>Portfolio Website</h3>
-                <p>A responsive static portfolio focused on visual storytelling, accessibility, and speed.</p>
-                <ul class="tag-list"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
-                <div class="project-card-actions"><span class="card-link">View case study</span><span class="status">Live</span></div>
+                <span class="project-kicker">Mobile + cloud</span>
+                <h3>Flexin</h3>
+                <p>A social workout app built with Flutter and Firebase.</p>
+                <ul class="tag-list"><li>Flutter</li><li>Firebase</li><li>iOS</li></ul>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">In development</span></div>
+              </div>
+            </a>
+
+            <a class="project-card" href="/projects/sql-java-data-system.html" data-project-card data-project-id="sql-java">
+              <div class="project-visual project-visual-sql project-visual-contain">
+                <picture>
+                  <source srcset="/assets/images/home/sql-java-code-480.avif 480w, /assets/images/home/sql-java-code-640.avif 640w, /assets/images/home/sql-java-code-960.avif 960w" sizes="(min-width: 1024px) 400px, 88vw" type="image/avif">
+                  <img src="/assets/images/projects/sql-java-code.jpg" alt="Java data conversion code open in Eclipse" width="1200" height="1600" loading="lazy" decoding="async">
+                </picture>
+              </div>
+              <div class="project-card-body">
+                <span class="project-kicker">College project</span>
+                <h3>SQL + Java Data System</h3>
+                <p>A Java class project that turns structured data into organized reports.</p>
+                <ul class="tag-list"><li>Java</li><li>SQL</li><li>Data modeling</li></ul>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Coursework</span></div>
               </div>
             </a>
 
             <a class="project-card" href="/projects/led-lighting.html" data-project-card data-project-id="led-lighting">
               <div class="project-visual project-visual-led">
-                <img src="/assets/images/projects/led-lighting.jpg" alt="Individually addressable LED strips glowing red, white, and blue" width="1353" height="1400" loading="lazy">
+                <picture>
+                  <source srcset="/assets/images/home/led-lighting-480.avif 480w, /assets/images/home/led-lighting-640.avif 640w, /assets/images/home/led-lighting-960.avif 960w" sizes="(min-width: 1024px) 400px, 88vw" type="image/avif">
+                  <img src="/assets/images/projects/led-lighting.jpg" alt="Individually addressable LED strips glowing red, white, and blue" width="1353" height="1400" loading="lazy" decoding="async">
+                </picture>
               </div>
               <div class="project-card-body">
                 <span class="project-kicker">Connected lighting</span>
                 <h3>Wi-Fi LED Lighting</h3>
-                <p>An individually addressable lighting build created to explore connected control and color patterns.</p>
+                <p>Wi-Fi-controlled LEDs with programmable colors and patterns.</p>
                 <ul class="tag-list"><li>LEDs</li><li>Wi-Fi</li><li>Electronics</li></ul>
                 <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Prototype</span></div>
               </div>
@@ -276,211 +337,472 @@
 
             <a class="project-card" href="/projects/plant-monitor.html" data-project-card data-project-id="plant-monitor">
               <div class="project-visual project-visual-plant project-visual-contain">
-                <img src="/assets/images/projects/plant-monitor.jpg" alt="Breadboard plant monitor displaying temperature and humidity on an LCD" width="1400" height="1161" loading="lazy">
+                <picture>
+                  <source srcset="/assets/images/home/plant-monitor-480.avif 480w, /assets/images/home/plant-monitor-640.avif 640w, /assets/images/home/plant-monitor-960.avif 960w" sizes="(min-width: 1024px) 400px, 88vw" type="image/avif">
+                  <img src="/assets/images/projects/plant-monitor.jpg" alt="Breadboard plant monitor displaying temperature and humidity on an LCD" width="1400" height="1161" loading="lazy" decoding="async">
+                </picture>
               </div>
               <div class="project-card-body">
-                <span class="project-kicker">Sensors + display</span>
+                <span class="project-kicker">Personal Project</span>
                 <h3>Plant Monitor</h3>
-                <p>A breadboard monitor that reads environmental sensors and reports conditions on an LCD.</p>
+                <p>A breadboard monitor for light, temperature, and humidity.</p>
                 <ul class="tag-list"><li>Arduino</li><li>Sensors</li><li>LCD</li></ul>
-                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Class build</span></div>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Personal build</span></div>
               </div>
             </a>
 
-            <a class="project-card" href="/projects/sql-java-data-system.html" data-project-card data-project-id="sql-java">
-              <div class="project-visual project-visual-sql project-visual-contain">
-                <img src="/assets/images/projects/sql-java-code.jpg" alt="Java data conversion code open in Eclipse" width="1200" height="1600" loading="lazy">
+            <a class="project-card" href="/projects/portfolio.html" data-project-card data-project-id="portfolio">
+              <div class="project-visual project-visual-contain project-visual-screenshot">
+                <picture>
+                  <source srcset="/assets/images/home/portfolio-before-480.avif 480w, /assets/images/home/portfolio-before-640.avif 640w, /assets/images/home/portfolio-before-960.avif 960w" sizes="(min-width: 1024px) 400px, 88vw" type="image/avif">
+                  <img src="/assets/images/portfolio-before.jpg" alt="Earlier version of Connor Hohlen’s portfolio website" width="1600" height="763" loading="lazy" decoding="async">
+                </picture>
               </div>
               <div class="project-card-body">
-                <span class="project-kicker">College project</span>
-                <h3>SQL + Java Data System</h3>
-                <p>A class project for modeling company data, converting records, and producing organized outputs.</p>
-                <ul class="tag-list"><li>Java</li><li>SQL</li><li>Data modeling</li></ul>
-                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Coursework</span></div>
+                <span class="project-kicker">Web engineering</span>
+                <h3>Portfolio Website</h3>
+                <p>A fast, accessible site built with HTML, CSS, and JavaScript.</p>
+                <ul class="tag-list"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Live</span></div>
               </div>
             </a>
-
-            <a class="project-card" href="/projects/rocket-computer.html" data-project-card data-project-id="rocket-computer">
-              <div class="project-visual project-visual-rocket" aria-hidden="true">
-                <span class="rocket-card-visual"></span>
-              </div>
-              <div class="project-card-body">
-                <span class="project-kicker">Embedded sensors</span>
-                <h3>Rocket Computer</h3>
-                <p>An Arduino sensor system that combines motion, temperature, and pressure readings.</p>
-                <ul class="tag-list"><li>Arduino</li><li>I²C</li><li>MPU-6050</li></ul>
-                <div class="project-card-actions"><span class="card-link">View project</span><span class="status">Prototype</span></div>
-              </div>
-            </a>
+          </div>
+        </div>
+        <div class="project-controls" role="group" aria-label="Project navigation">
+          <button class="project-arrow" type="button" aria-label="Show previous project" data-project-previous>←</button>
+          <div class="project-dots" role="group" aria-label="Choose a project">
+            <button type="button" data-project-select="0" aria-label="Show project 1: Orbit Shift" aria-pressed="true"></button>
+            <button type="button" data-project-select="1" aria-label="Show project 2: Wearable ECG Monitor" aria-pressed="false"></button>
+            <button type="button" data-project-select="2" aria-label="Show project 3: Custom FPV Drone" aria-pressed="false"></button>
+            <button type="button" data-project-select="3" aria-label="Show project 4: Flexin" aria-pressed="false"></button>
+            <button type="button" data-project-select="4" aria-label="Show project 5: SQL + Java Data System" aria-pressed="false"></button>
+            <button type="button" data-project-select="5" aria-label="Show project 6: Wi-Fi LED Lighting" aria-pressed="false"></button>
+            <button type="button" data-project-select="6" aria-label="Show project 7: Plant Monitor" aria-pressed="false"></button>
+            <button type="button" data-project-select="7" aria-label="Show project 8: Portfolio Website" aria-pressed="false"></button>
           </div>
           <button class="project-arrow" type="button" aria-label="Show next project" data-project-next>→</button>
         </div>
       </div>
+      <div class="project-handoff" data-project-handoff aria-hidden="true">
+        <svg class="project-handoff-circuit handoff-layout-desktop" viewBox="0 0 1200 880" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
+          <g class="handoff-source-stage" data-handoff-stage="source" data-circuit-source>
+            <rect class="handoff-module-shell handoff-source-shell" pathLength="1" x="38" y="86" width="190" height="232" rx="20"></rect>
+            <path class="handoff-source-symbol" pathLength="1" d="M72 164H126M84 188H114M99 140V164M99 188V236"></path>
+            <path class="handoff-trace handoff-source-leads" pathLength="1" d="M99 140H228M99 236V276H228"></path>
+            <circle class="handoff-port" cx="228" cy="140" r="7"></circle>
+            <circle class="handoff-port" cx="228" cy="276" r="7"></circle>
+            <text class="handoff-svg-label handoff-svg-title" x="160" y="176" text-anchor="middle">
+              <tspan x="160">5 V</tspan>
+              <tspan class="handoff-svg-detail" x="160" dy="25">DC source</tspan>
+            </text>
+
+            <g class="handoff-switch handoff-reset-switch" data-circuit-switch="reset">
+              <path class="handoff-switch-base" pathLength="1" d="M290 220H330M390 220H440"></path>
+              <circle class="handoff-switch-contact" cx="330" cy="220" r="7"></circle>
+              <circle class="handoff-switch-contact" cx="390" cy="220" r="7"></circle>
+              <path class="handoff-switch-blade" pathLength="1" d="M330 220L386 193"></path>
+              <text class="handoff-wire-label" x="360" y="184" text-anchor="middle">RESET / OFF</text>
+            </g>
+            <g class="handoff-switch" data-circuit-switch="set">
+              <path class="handoff-switch-base" pathLength="1" d="M290 360H330M390 360H500"></path>
+              <circle class="handoff-switch-contact" cx="330" cy="360" r="7"></circle>
+              <circle class="handoff-switch-contact" cx="390" cy="360" r="7"></circle>
+              <path class="handoff-switch-blade" pathLength="1" d="M330 360L386 333"></path>
+              <text class="handoff-wire-label" x="360" y="324" text-anchor="middle">SET / ON</text>
+            </g>
+            <path class="handoff-resistor" pathLength="1" d="M440 220V250L428 262L452 278L428 294L452 310L440 322V520" data-circuit-resistor="reset"></path>
+            <path class="handoff-resistor" pathLength="1" d="M500 360V390L488 402L512 418L488 434L512 450L500 462V520" data-circuit-resistor="set"></path>
+            <text class="handoff-wire-label" x="418" y="288" text-anchor="end">R1</text>
+            <text class="handoff-wire-label" x="522" y="428">R2</text>
+          </g>
+
+          <g class="handoff-logic-stage" data-handoff-stage="logic">
+            <path class="handoff-gate" pathLength="1" d="M590 205Q670 205 742 250Q670 295 590 295Q624 250 590 205Z" data-circuit-gate="q"></path>
+            <circle class="handoff-port" cx="754" cy="250" r="10"></circle>
+            <path class="handoff-gate" pathLength="1" d="M590 345Q670 345 742 390Q670 435 590 435Q624 390 590 345Z" data-circuit-gate="qbar"></path>
+            <circle class="handoff-port" cx="754" cy="390" r="10"></circle>
+            <text class="handoff-svg-label handoff-svg-title" x="662" y="257" text-anchor="middle">NOR</text>
+            <text class="handoff-svg-label handoff-svg-title" x="662" y="397" text-anchor="middle">NOR</text>
+            <text class="handoff-wire-label" x="662" y="177" text-anchor="middle">ACTIVE-HIGH SR LATCH</text>
+            <text class="handoff-svg-label handoff-svg-title" x="782" y="242">Q</text>
+            <text class="handoff-svg-label handoff-svg-title" x="782" y="382">Q̄</text>
+          </g>
+
+          <g class="handoff-wiring-stage" data-handoff-stage="wiring">
+            <path class="handoff-trace handoff-power-trace" pathLength="1" d="M228 140H290V220M290 140V360M290 140H1040" data-circuit-rail="vcc"></path>
+            <path class="handoff-trace handoff-ground-trace" pathLength="1" d="M228 276H266V520H540" data-circuit-rail="gnd"></path>
+            <path class="handoff-trace handoff-data-trace" pathLength="1" d="M390 220H440H540V225H604" data-circuit-rail="reset" data-nor-anchor="upper-r"></path>
+            <path class="handoff-trace handoff-data-trace" pathLength="1" d="M390 360H500H540V415H608" data-circuit-rail="set" data-nor-anchor="lower-s"></path>
+            <path class="handoff-trace handoff-data-branch" pathLength="1" d="M764 250H820V455H520V365H608" data-circuit-rail="q" data-nor-anchor="lower-feedback"></path>
+            <path class="handoff-trace handoff-data-branch" pathLength="1" d="M764 390H854V315H520V275H608" data-circuit-rail="qbar" data-nor-anchor="upper-feedback"></path>
+            <path class="handoff-trace handoff-ground-branch" pathLength="1" d="M500 520V540M460 540H540M472 554H528M486 568H514"></path>
+            <circle class="handoff-convergence-node" cx="290" cy="140" r="6"></circle>
+            <circle class="handoff-convergence-node" cx="440" cy="220" r="6"></circle>
+            <circle class="handoff-convergence-node" cx="500" cy="360" r="6"></circle>
+            <circle class="handoff-convergence-node" cx="854" cy="390" r="6"></circle>
+            <circle class="handoff-convergence-node" cx="1040" cy="140" r="6"></circle>
+            <text class="handoff-wire-label" x="248" y="126">VCC</text>
+            <text class="handoff-wire-label" x="280" y="508">GND</text>
+            <text class="handoff-wire-label" x="570" y="216" text-anchor="end">R</text>
+            <text class="handoff-wire-label" x="570" y="406" text-anchor="end">S</text>
+          </g>
+
+          <g class="handoff-driver-stage" data-handoff-stage="driver">
+            <rect class="handoff-module-shell handoff-driver-shell" pathLength="1" x="900" y="166" width="254" height="324" rx="20"></rect>
+            <g class="handoff-mosfet" data-circuit-mosfet="pmos">
+              <path class="handoff-mosfet-control" pathLength="1" d="M980 252V318M980 285H950"></path>
+              <path class="handoff-mosfet-arrow" pathLength="1" d="M1034 258H1016M1016 258L1026 251M1016 258L1026 265"></path>
+              <path class="handoff-mosfet-enable" pathLength="1" d="M980 252V318M980 285H950M1034 258H1016M1016 258L1026 251M1016 258L1026 265"></path>
+              <path class="handoff-mosfet-channel handoff-output-trace" pathLength="1" d="M1040 196V376H1120V500H600V896" data-circuit-rail="switched-vcc"></path>
+            </g>
+            <path class="handoff-trace handoff-driver-input" pathLength="1" d="M854 390H880V285H950" data-circuit-rail="qbar-driver"></path>
+            <path class="handoff-low-state" pathLength="1" d="M854 390H880V285H950" data-low-state-path data-current-stage="gate"></path>
+            <path class="handoff-trace handoff-power-branch" pathLength="1" d="M1040 140V196"></path>
+            <rect class="handoff-label-plate" x="906" y="202" width="122" height="28" rx="7"></rect>
+            <text class="handoff-wire-label" x="967" y="221" text-anchor="middle">Q̄ LOW = ON</text>
+            <text class="handoff-svg-label handoff-svg-title" x="1015" y="424" text-anchor="middle">P-MOS</text>
+            <text class="handoff-wire-label handoff-device-pin" x="1058" y="218">S</text>
+            <text class="handoff-wire-label handoff-device-pin" x="1058" y="354">D</text>
+            <text class="handoff-wire-label handoff-device-pin" x="942" y="276" text-anchor="end">G</text>
+          </g>
+
+          <g class="handoff-current-layer">
+            <path class="handoff-current-trail" pathLength="1" d="M228 140H290V360H330H390H500H540V415H608" data-current-path data-current-stage="source" data-nor-anchor="lower-s"></path>
+            <path class="handoff-current-head" pathLength="1" d="M228 140H290V360H330H390H500H540V415H608" data-current-path data-current-stage="source" data-nor-anchor="lower-s"></path>
+            <path class="handoff-current-trail handoff-r2-current" pathLength="1" d="M500 360V390L488 402L512 418L488 434L512 450L500 462V520" data-current-path data-current-stage="r2"></path>
+            <path class="handoff-current-head handoff-r2-current" pathLength="1" d="M500 360V390L488 402L512 418L488 434L512 450L500 462V520" data-current-path data-current-stage="r2"></path>
+            <path class="handoff-logic-state-trail" pathLength="1" d="M764 390H854V315H520V275H608" data-current-path data-current-stage="latch" data-nor-anchor="upper-feedback"></path>
+            <path class="handoff-logic-state-head" pathLength="1" d="M764 390H854V315H520V275H608" data-current-path data-current-stage="latch" data-nor-anchor="upper-feedback"></path>
+            <path class="handoff-current-trail" pathLength="1" d="M228 140H1040V196V376H1120V500H600V896" data-current-path data-current-stage="output"></path>
+            <path class="handoff-current-head" pathLength="1" d="M228 140H1040V196V376H1120V500H600V896" data-current-path data-current-stage="output"></path>
+          </g>
+          <circle class="handoff-output-anchor" cx="600" cy="896" r="1" data-handoff-output-anchor></circle>
+        </svg>
+
+        <svg class="project-handoff-circuit handoff-layout-mobile" viewBox="0 0 480 980" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
+          <g class="handoff-source-stage" data-handoff-stage="source" data-circuit-source>
+            <rect class="handoff-module-shell handoff-source-shell" pathLength="1" x="20" y="24" width="142" height="196" rx="17"></rect>
+            <path class="handoff-source-symbol" pathLength="1" d="M44 92H78M50 110H72M61 72V92M61 110V166"></path>
+            <path class="handoff-trace handoff-source-leads" pathLength="1" d="M61 72H162M61 166V194H162"></path>
+            <circle class="handoff-port" cx="162" cy="72" r="6"></circle>
+            <circle class="handoff-port" cx="162" cy="194" r="6"></circle>
+            <text class="handoff-svg-label handoff-svg-title" x="112" y="108" text-anchor="middle">
+              <tspan x="112">5 V</tspan>
+              <tspan class="handoff-svg-detail" x="112" dy="21">DC source</tspan>
+            </text>
+
+            <g class="handoff-switch handoff-reset-switch" data-circuit-switch="reset">
+              <path class="handoff-switch-base" pathLength="1" d="M196 88H226M272 88H300"></path>
+              <circle class="handoff-switch-contact" cx="226" cy="88" r="6"></circle>
+              <circle class="handoff-switch-contact" cx="272" cy="88" r="6"></circle>
+              <path class="handoff-switch-blade" pathLength="1" d="M226 88L269 67"></path>
+              <text class="handoff-wire-label" x="250" y="54" text-anchor="middle">RESET / OFF</text>
+            </g>
+            <g class="handoff-switch" data-circuit-switch="set">
+              <path class="handoff-switch-base" pathLength="1" d="M196 176H226M272 176H338"></path>
+              <circle class="handoff-switch-contact" cx="226" cy="176" r="6"></circle>
+              <circle class="handoff-switch-contact" cx="272" cy="176" r="6"></circle>
+              <path class="handoff-switch-blade" pathLength="1" d="M226 176L269 155"></path>
+              <text class="handoff-wire-label" x="250" y="142" text-anchor="middle">SET / ON</text>
+            </g>
+            <path class="handoff-resistor" pathLength="1" d="M300 88V108L290 118L310 132L290 146L310 160L300 170V278" data-circuit-resistor="reset"></path>
+            <path class="handoff-resistor" pathLength="1" d="M338 176V196L328 206L348 220L328 234L348 248L338 258V278" data-circuit-resistor="set"></path>
+            <text class="handoff-wire-label" x="282" y="140" text-anchor="end">R1</text>
+            <text class="handoff-wire-label" x="358" y="232">R2</text>
+          </g>
+
+          <g class="handoff-logic-stage" data-handoff-stage="logic">
+            <path class="handoff-gate" pathLength="1" d="M116 336Q196 336 258 374Q196 412 116 412Q146 374 116 336Z" data-circuit-gate="q"></path>
+            <circle class="handoff-port" cx="267" cy="374" r="9"></circle>
+            <path class="handoff-gate" pathLength="1" d="M116 478Q196 478 258 516Q196 554 116 554Q146 516 116 478Z" data-circuit-gate="qbar"></path>
+            <circle class="handoff-port" cx="267" cy="516" r="9"></circle>
+            <text class="handoff-svg-label handoff-svg-title" x="187" y="381" text-anchor="middle">NOR</text>
+            <text class="handoff-svg-label handoff-svg-title" x="187" y="523" text-anchor="middle">NOR</text>
+            <text class="handoff-wire-label" x="187" y="318" text-anchor="middle">ACTIVE-HIGH SR LATCH</text>
+            <text class="handoff-svg-label handoff-svg-title" x="286" y="368">Q</text>
+            <text class="handoff-svg-label handoff-svg-title" x="286" y="510">Q̄</text>
+          </g>
+
+          <g class="handoff-wiring-stage" data-handoff-stage="wiring">
+            <path class="handoff-trace handoff-power-trace" pathLength="1" d="M162 72H196V88M196 72V176M196 72H436V628" data-circuit-rail="vcc"></path>
+            <path class="handoff-trace handoff-ground-trace" pathLength="1" d="M162 194H180V278H360" data-circuit-rail="gnd"></path>
+            <path class="handoff-trace handoff-data-trace" pathLength="1" d="M272 88H300H420V356H130" data-circuit-rail="reset" data-nor-anchor="upper-r"></path>
+            <path class="handoff-trace handoff-data-trace" pathLength="1" d="M272 176H338H392V496H134" data-circuit-rail="set" data-nor-anchor="lower-s"></path>
+            <path class="handoff-trace handoff-data-branch" pathLength="1" d="M276 374H320V574H88V536H134" data-circuit-rail="q" data-nor-anchor="lower-feedback"></path>
+            <path class="handoff-trace handoff-data-branch" pathLength="1" d="M276 516H350V446H88V394H134" data-circuit-rail="qbar" data-nor-anchor="upper-feedback"></path>
+            <path class="handoff-trace handoff-ground-branch" pathLength="1" d="M338 278V292M302 292H374M312 304H364M324 316H352"></path>
+            <circle class="handoff-convergence-node" cx="196" cy="72" r="5"></circle>
+            <circle class="handoff-convergence-node" cx="300" cy="88" r="5"></circle>
+            <circle class="handoff-convergence-node" cx="338" cy="176" r="5"></circle>
+            <circle class="handoff-convergence-node" cx="350" cy="516" r="5"></circle>
+            <circle class="handoff-convergence-node" cx="436" cy="72" r="5"></circle>
+            <text class="handoff-wire-label" x="174" y="58">VCC</text>
+            <text class="handoff-wire-label" x="190" y="268">GND</text>
+            <text class="handoff-wire-label" x="102" y="348" text-anchor="end">R</text>
+            <text class="handoff-wire-label" x="102" y="488" text-anchor="end">S</text>
+          </g>
+
+          <g class="handoff-driver-stage" data-handoff-stage="driver">
+            <rect class="handoff-module-shell handoff-driver-shell" pathLength="1" x="86" y="612" width="308" height="208" rx="18"></rect>
+            <g class="handoff-mosfet" data-circuit-mosfet="pmos">
+              <path class="handoff-mosfet-control" pathLength="1" d="M216 670V718M216 694H186"></path>
+              <path class="handoff-mosfet-arrow" pathLength="1" d="M270 676H252M252 676L262 669M252 676L262 683"></path>
+              <path class="handoff-mosfet-enable" pathLength="1" d="M216 670V718M216 694H186M270 676H252M252 676L262 669M252 676L262 683"></path>
+              <path class="handoff-mosfet-channel handoff-output-trace" pathLength="1" d="M276 628V760V840H240V996" data-circuit-rail="switched-vcc"></path>
+            </g>
+            <path class="handoff-trace handoff-driver-input" pathLength="1" d="M350 516H414V576H170V694H186" data-circuit-rail="qbar-driver"></path>
+            <path class="handoff-low-state" pathLength="1" d="M350 516H414V576H170V694H186" data-low-state-path data-current-stage="gate"></path>
+            <path class="handoff-trace handoff-power-branch" pathLength="1" d="M436 628H276"></path>
+            <rect class="handoff-label-plate" x="92" y="720" width="132" height="28" rx="7"></rect>
+            <text class="handoff-wire-label" x="158" y="739" text-anchor="middle">Q̄ LOW = ON</text>
+            <text class="handoff-svg-label handoff-svg-title" x="326" y="700" text-anchor="middle">P-MOS</text>
+            <text class="handoff-wire-label handoff-device-pin" x="292" y="650">S</text>
+            <text class="handoff-wire-label handoff-device-pin" x="292" y="754">D</text>
+            <text class="handoff-wire-label handoff-device-pin" x="180" y="686" text-anchor="end">G</text>
+          </g>
+
+          <g class="handoff-current-layer">
+            <path class="handoff-current-trail" pathLength="1" d="M162 72H196V176H226H272H338H392V496H134" data-current-path data-current-stage="source" data-nor-anchor="lower-s"></path>
+            <path class="handoff-current-head" pathLength="1" d="M162 72H196V176H226H272H338H392V496H134" data-current-path data-current-stage="source" data-nor-anchor="lower-s"></path>
+            <path class="handoff-current-trail handoff-r2-current" pathLength="1" d="M338 176V196L328 206L348 220L328 234L348 248L338 258V278" data-current-path data-current-stage="r2"></path>
+            <path class="handoff-current-head handoff-r2-current" pathLength="1" d="M338 176V196L328 206L348 220L328 234L348 248L338 258V278" data-current-path data-current-stage="r2"></path>
+            <path class="handoff-logic-state-trail" pathLength="1" d="M276 516H350V446H88V394H134" data-current-path data-current-stage="latch" data-nor-anchor="upper-feedback"></path>
+            <path class="handoff-logic-state-head" pathLength="1" d="M276 516H350V446H88V394H134" data-current-path data-current-stage="latch" data-nor-anchor="upper-feedback"></path>
+            <path class="handoff-current-trail" pathLength="1" d="M162 72H436V628H276V760V840H240V996" data-current-path data-current-stage="output"></path>
+            <path class="handoff-current-head" pathLength="1" d="M162 72H436V628H276V760V840H240V996" data-current-path data-current-stage="output"></path>
+          </g>
+          <circle class="handoff-output-anchor" cx="240" cy="996" r="1" data-handoff-output-anchor></circle>
+        </svg>
+      </div>
+      </section>
     </section>
 
-    <section class="section container" id="skills" data-nav-section>
-      <div class="section-heading reveal">
-        <span class="eyebrow">Capabilities</span>
-        <h2>Tools I use to move from idea to working system.</h2>
-        <p>Grouped by where I have applied them—in coursework, personal builds, professional support work, and active product development.</p>
-      </div>
-      <div class="skills-grid">
-        <article class="skill-card reveal">
-          <h3>Programming</h3>
-          <ul class="skill-list">
-            <li>Python</li>
-            <li>Dart</li>
-            <li>Java</li>
-            <li>JavaScript</li>
-            <li>C#</li>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>SQL</li>
-          </ul>
-        </article>
-        <article class="skill-card reveal">
-          <h3>Mobile + cloud</h3>
-          <ul class="skill-list">
-            <li>Flutter</li>
-            <li>Firebase Auth</li>
-            <li>Cloud Firestore</li>
-            <li>Cloud Storage</li>
-            <li>Cloud Functions</li>
-            <li>iOS</li>
-            <li>TestFlight</li>
-          </ul>
-        </article>
-        <article class="skill-card reveal">
-          <h3>Hardware + embedded</h3>
-          <ul class="skill-list">
-            <li>Electronics</li>
-            <li>Soldering</li>
-            <li>Systems integration</li>
-            <li>Flight controllers</li>
-            <li>Betaflight</li>
-            <li>Sensor integration</li>
-          </ul>
-        </article>
-        <article class="skill-card reveal">
-          <h3>Development tools</h3>
-          <ul class="skill-list">
-            <li>Git</li>
-            <li>GitHub</li>
-            <li>Xcode</li>
-            <li>Visual Studio Code</li>
-            <li>Fusion 360</li>
-            <li>Excel</li>
-            <li>Microsoft 365</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section container" id="experience" data-nav-section>
-      <div class="section-heading reveal">
-        <span class="eyebrow">Professional experience</span>
-        <h2>Technical support backed by practical problem solving.</h2>
-        <p>Experience working with users, hardware, software, internal workflows, and day-to-day operational priorities.</p>
-      </div>
-      <div class="visual-card-grid">
-        <a class="visual-link-card reveal" href="/workspace1.html">
-          <div class="visual-link-card-image">
-            <img src="/assets/images/work/amur-AmurFront.jpg" alt="Front entrance of Amur Equipment Finance" width="1600" height="900" loading="lazy">
-          </div>
-          <div class="visual-link-card-body">
-            <div>
-              <span class="project-kicker">IT Internship · 2024</span>
-              <h3>Amur Equipment Finance</h3>
-              <p>Technical support, laptop deployment, automation, and practical troubleshooting.</p>
-            </div>
-            <span class="visual-link-card-arrow" aria-hidden="true">→</span>
-          </div>
-        </a>
-        <a class="visual-link-card reveal" href="/workspace2.html">
-          <div class="visual-link-card-image">
-            <img src="/assets/images/work/menards-Menardspic2.jpg" alt="Menards storefront with company signage" width="1600" height="1200" loading="lazy">
-          </div>
-          <div class="visual-link-card-body">
-            <div>
-              <span class="project-kicker">Customer service + operations</span>
-              <h3>Menards</h3>
-              <p>Product problem solving, department organization, teamwork, and training.</p>
-            </div>
-            <span class="visual-link-card-arrow" aria-hidden="true">→</span>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="section container" id="education" data-nav-section>
-      <div class="section-heading reveal">
-        <span class="eyebrow">Education</span>
-        <h2>Computer Engineering at Nebraska.</h2>
-      </div>
-      <div class="visual-card-grid">
-        <a class="visual-link-card reveal" href="/college.html">
-          <div class="visual-link-card-image">
-            <img src="/assets/images/education/college-College.jpg" alt="University of Nebraska–Lincoln campus building and lawn" width="1600" height="900" loading="lazy">
-          </div>
-          <div class="visual-link-card-body">
-            <div>
-              <span class="project-kicker">College · Expected May 2027</span>
-              <h3>University of Nebraska–Lincoln</h3>
-              <p>Computer Engineering coursework, projects, electronics, and software.</p>
-            </div>
-            <span class="visual-link-card-arrow" aria-hidden="true">→</span>
-          </div>
-        </a>
-        <a class="visual-link-card reveal" href="/highschool.html">
-          <div class="visual-link-card-image">
-            <img src="/assets/images/education/highschool-Northwest.jpg" alt="Northwest High School building" width="1600" height="900" loading="lazy">
-          </div>
-          <div class="visual-link-card-body">
-            <div>
-              <span class="project-kicker">High school · Class of 2023</span>
-              <h3>Northwest High School</h3>
-              <p>Academics, show choir, musical performance, leadership, and service.</p>
-            </div>
-            <span class="visual-link-card-arrow" aria-hidden="true">→</span>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="section container" id="about" data-nav-section>
-      <div class="about-grid">
-        <div class="section-heading reveal">
-          <span class="eyebrow">About my approach</span>
-          <h2>I learn best by building, testing, and improving real things.</h2>
-          <p>I enjoy systems that combine software and hardware. My interests include embedded systems, firmware, mobile development, electronics, automation, and practical problem solving.</p>
-          <div>
-            <a class="button button-secondary" href="/about.html">More about me</a>
-          </div>
+    <div class="schematic-story" data-schematic-story>
+      <svg class="schematic-handoff-bridge" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-schematic-bridge>
+        <path class="schematic-bridge-guide" data-schematic-bridge-guide></path>
+        <path class="schematic-bridge-signal" pathLength="1" data-schematic-bridge-line></path>
+        <path class="schematic-bridge-current" pathLength="1" data-schematic-bridge-current></path>
+      </svg>
+      <section class="section container capabilities-section schematic-section" id="skills" data-nav-section data-schematic-section="skills">
+        <svg class="schematic-segment" viewBox="0 0 1200 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-schematic-segment="skills">
+          <path class="schematic-route schematic-route-guide" d="M600 0V1000" data-schematic-guide></path>
+          <path class="schematic-route schematic-route-signal" pathLength="1" d="M600 0V1000" data-schematic-line></path>
+          <path class="schematic-route schematic-route-current" pathLength="1" d="M600 0V1000" data-schematic-current-line></path>
+          <circle class="schematic-entry-anchor" cx="600" cy="0" r="1" data-schematic-entry-anchor></circle>
+          <g data-schematic-branch data-schematic-key="programming">
+            <path class="schematic-branch schematic-branch-guide" d="M600 180H500"></path>
+            <path class="schematic-branch schematic-branch-signal" pathLength="1" d="M600 180H500" data-schematic-branch-line></path>
+            <path class="schematic-branch schematic-branch-current" pathLength="1" d="M600 180H500" data-schematic-branch-current></path>
+            <circle class="schematic-junction" cx="600" cy="180" r="6" data-schematic-junction></circle>
+            <circle class="schematic-terminal" cx="500" cy="180" r="7" data-schematic-terminal></circle>
+          </g>
+          <g data-schematic-branch data-schematic-key="mobile-cloud">
+            <path class="schematic-branch schematic-branch-guide" d="M600 390H700"></path>
+            <path class="schematic-branch schematic-branch-signal" pathLength="1" d="M600 390H700" data-schematic-branch-line></path>
+            <path class="schematic-branch schematic-branch-current" pathLength="1" d="M600 390H700" data-schematic-branch-current></path>
+            <circle class="schematic-junction" cx="600" cy="390" r="6" data-schematic-junction></circle>
+            <circle class="schematic-terminal" cx="700" cy="390" r="7" data-schematic-terminal></circle>
+          </g>
+          <g data-schematic-branch data-schematic-key="hardware-embedded">
+            <path class="schematic-branch schematic-branch-guide" d="M600 610H500"></path>
+            <path class="schematic-branch schematic-branch-signal" pathLength="1" d="M600 610H500" data-schematic-branch-line></path>
+            <path class="schematic-branch schematic-branch-current" pathLength="1" d="M600 610H500" data-schematic-branch-current></path>
+            <circle class="schematic-junction" cx="600" cy="610" r="6" data-schematic-junction></circle>
+            <circle class="schematic-terminal" cx="500" cy="610" r="7" data-schematic-terminal></circle>
+          </g>
+          <g data-schematic-branch data-schematic-key="development-tools">
+            <path class="schematic-branch schematic-branch-guide" d="M600 820H700"></path>
+            <path class="schematic-branch schematic-branch-signal" pathLength="1" d="M600 820H700" data-schematic-branch-line></path>
+            <path class="schematic-branch schematic-branch-current" pathLength="1" d="M600 820H700" data-schematic-branch-current></path>
+            <circle class="schematic-junction" cx="600" cy="820" r="6" data-schematic-junction></circle>
+            <circle class="schematic-terminal" cx="700" cy="820" r="7" data-schematic-terminal></circle>
+          </g>
+        </svg>
+        <div class="section-heading reveal schematic-heading">
+          <span class="eyebrow">Capabilities · Signal stage 01</span>
+          <h2>Tools I use.</h2>
+          <p>Follow the signal into the skills I use across class, work, and personal projects.</p>
         </div>
-        <div class="content-card reveal">
-          <dl class="principles">
-            <div>
-              <dt>01</dt>
-              <dd>Understand the system before changing it.</dd>
-            </div>
-            <div>
-              <dt>02</dt>
-              <dd>Test assumptions with real hardware, data, or users.</dd>
-            </div>
-            <div>
-              <dt>03</dt>
-              <dd>Keep the final experience clear and dependable.</dd>
-            </div>
-          </dl>
+        <div class="skills-grid capability-grid schematic-module-grid">
+          <a class="skill-card schematic-module" href="/projects/sql-java-data-system.html" data-schematic-module data-schematic-key="programming">
+            <div class="capability-card-heading"><span>01</span><h3>Programming</h3></div>
+            <ul class="skill-list">
+              <li>Python</li><li>Dart</li><li>Java</li><li>JavaScript</li><li>C#</li><li>HTML</li><li>CSS</li><li>SQL</li>
+            </ul>
+            <span class="schematic-module-link">Open SQL + Java case study <span aria-hidden="true">→</span></span>
+          </a>
+          <a class="skill-card schematic-module" href="/projects/flexin.html" data-schematic-module data-schematic-key="mobile-cloud">
+            <div class="capability-card-heading"><span>02</span><h3>Mobile + cloud</h3></div>
+            <ul class="skill-list">
+              <li>Flutter</li><li>Firebase Auth</li><li>Cloud Firestore</li><li>Cloud Storage</li><li>Cloud Functions</li><li>iOS</li><li>TestFlight</li>
+            </ul>
+            <span class="schematic-module-link">Open Flexin case study <span aria-hidden="true">→</span></span>
+          </a>
+          <a class="skill-card schematic-module" href="/projects/wearable-ecg.html" data-schematic-module data-schematic-key="hardware-embedded">
+            <div class="capability-card-heading"><span>03</span><h3>Hardware + embedded</h3></div>
+            <ul class="skill-list">
+              <li>Electronics</li><li>Soldering</li><li>Systems integration</li><li>Flight controllers</li><li>Betaflight</li><li>Sensor integration</li>
+            </ul>
+            <span class="schematic-module-link">Open Wearable ECG project <span aria-hidden="true">→</span></span>
+          </a>
+          <a class="skill-card schematic-module" href="/projects/portfolio.html" data-schematic-module data-schematic-key="development-tools">
+            <div class="capability-card-heading"><span>04</span><h3>Development tools</h3></div>
+            <ul class="skill-list">
+              <li>Git</li><li>GitHub</li><li>Xcode</li><li>Visual Studio Code</li><li>Fusion 360</li><li>Excel</li><li>Microsoft 365</li>
+            </ul>
+            <span class="schematic-module-link">Open Portfolio case study <span aria-hidden="true">→</span></span>
+          </a>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section container" id="contact" data-nav-section>
-      <div class="contact-card reveal" data-contact-card>
+      <section class="section container experience-section schematic-section" id="experience" data-nav-section data-schematic-section="work">
+        <svg class="schematic-segment" viewBox="0 0 1200 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-schematic-segment="work">
+          <path class="schematic-route schematic-route-guide" d="M600 0V1000" data-schematic-guide></path>
+          <path class="schematic-route schematic-route-signal" pathLength="1" d="M600 0V1000" data-schematic-line></path>
+          <path class="schematic-route schematic-route-current" pathLength="1" d="M600 0V1000" data-schematic-current-line></path>
+          <g data-schematic-branch data-schematic-key="work-amur">
+            <path class="schematic-branch schematic-branch-guide" d="M600 300H500"></path>
+            <path class="schematic-branch schematic-branch-signal" pathLength="1" d="M600 300H500" data-schematic-branch-line></path>
+            <path class="schematic-branch schematic-branch-current" pathLength="1" d="M600 300H500" data-schematic-branch-current></path>
+            <circle class="schematic-junction" cx="600" cy="300" r="6" data-schematic-junction></circle>
+            <circle class="schematic-terminal" cx="500" cy="300" r="7" data-schematic-terminal></circle>
+          </g>
+          <g data-schematic-branch data-schematic-key="work-menards">
+            <path class="schematic-branch schematic-branch-guide" d="M600 700H700"></path>
+            <path class="schematic-branch schematic-branch-signal" pathLength="1" d="M600 700H700" data-schematic-branch-line></path>
+            <path class="schematic-branch schematic-branch-current" pathLength="1" d="M600 700H700" data-schematic-branch-current></path>
+            <circle class="schematic-junction" cx="600" cy="700" r="6" data-schematic-junction></circle>
+            <circle class="schematic-terminal" cx="700" cy="700" r="7" data-schematic-terminal></circle>
+          </g>
+        </svg>
+        <div class="section-heading reveal schematic-heading">
+          <span class="eyebrow">Professional experience · Signal stage 02</span>
+          <h2>Where I’ve worked.</h2>
+          <p>Real environments where the system had to be clear, dependable, and useful.</p>
+        </div>
+        <ol class="experience-timeline schematic-module-grid schematic-pair-grid">
+          <li>
+            <a class="visual-link-card experience-milestone schematic-module" href="/workspace1.html" data-schematic-module data-schematic-key="work-amur">
+              <div class="visual-link-card-image">
+                <picture>
+                  <source srcset="/assets/images/home/amur-front-640.avif 640w, /assets/images/home/amur-front-960.avif 960w" sizes="(min-width: 761px) 44vw, 100vw" type="image/avif">
+                  <img src="/assets/images/work/amur-AmurFront.jpg" alt="Front entrance of Amur Equipment Finance" width="1600" height="900" loading="lazy" decoding="async">
+                </picture>
+              </div>
+              <div class="visual-link-card-body">
+                <div><span class="project-kicker">IT Intern · May–August 2024</span><h3>Amur Equipment Finance</h3><p>Supported employees, prepared 100+ laptops, and built Python and Excel helpers.</p></div>
+                <span class="visual-link-card-arrow" aria-hidden="true">→</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="visual-link-card experience-milestone schematic-module" href="/workspace2.html" data-schematic-module data-schematic-key="work-menards">
+              <div class="visual-link-card-image">
+                <picture>
+                  <source srcset="/assets/images/home/menards-640.avif 640w, /assets/images/home/menards-960.avif 960w" sizes="(min-width: 761px) 44vw, 100vw" type="image/avif">
+                  <img src="/assets/images/work/menards-Menardspic2.jpg" alt="Menards team members moving equipment beneath a safety sign" width="1600" height="1200" loading="lazy" decoding="async">
+                </picture>
+              </div>
+              <div class="visual-link-card-body">
+                <div><span class="project-kicker">Plumbing Sales Associate · October 2020–Present, with breaks</span><h3>Menards</h3><p>Help customers solve plumbing problems, keep the department organized, and train new associates.</p></div>
+                <span class="visual-link-card-arrow" aria-hidden="true">→</span>
+              </div>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section container education-blueprint schematic-section" id="education" data-nav-section data-schematic-section="education">
+        <svg class="schematic-segment" viewBox="0 0 1200 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-schematic-segment="education">
+          <path class="schematic-route schematic-route-guide" d="M600 0V1000" data-schematic-guide></path>
+          <path class="schematic-route schematic-route-signal" pathLength="1" d="M600 0V1000" data-schematic-line></path>
+          <path class="schematic-route schematic-route-current" pathLength="1" d="M600 0V1000" data-schematic-current-line></path>
+          <g data-schematic-branch data-schematic-key="education-unl">
+            <path class="schematic-branch schematic-branch-guide" d="M600 300H500"></path>
+            <path class="schematic-branch schematic-branch-signal" pathLength="1" d="M600 300H500" data-schematic-branch-line></path>
+            <path class="schematic-branch schematic-branch-current" pathLength="1" d="M600 300H500" data-schematic-branch-current></path>
+            <circle class="schematic-junction" cx="600" cy="300" r="6" data-schematic-junction></circle>
+            <circle class="schematic-terminal" cx="500" cy="300" r="7" data-schematic-terminal></circle>
+          </g>
+          <g data-schematic-branch data-schematic-key="education-northwest">
+            <path class="schematic-branch schematic-branch-guide" d="M600 700H700"></path>
+            <path class="schematic-branch schematic-branch-signal" pathLength="1" d="M600 700H700" data-schematic-branch-line></path>
+            <path class="schematic-branch schematic-branch-current" pathLength="1" d="M600 700H700" data-schematic-branch-current></path>
+            <circle class="schematic-junction" cx="600" cy="700" r="6" data-schematic-junction></circle>
+            <circle class="schematic-terminal" cx="700" cy="700" r="7" data-schematic-terminal></circle>
+          </g>
+        </svg>
+        <div class="section-heading reveal schematic-heading">
+          <span class="eyebrow">Education · Signal stage 03</span>
+          <h2>Computer Engineering at Nebraska.</h2>
+          <p>The academic foundation behind the software, electronics, and systems work.</p>
+        </div>
+        <div class="visual-card-grid education-grid schematic-module-grid schematic-pair-grid">
+          <a class="visual-link-card schematic-module" href="/college.html" data-schematic-module data-schematic-key="education-unl">
+            <div class="visual-link-card-image">
+              <picture>
+                <source srcset="/assets/images/home/unl-campus-640.avif 640w, /assets/images/home/unl-campus-960.avif 960w" sizes="(min-width: 761px) 44vw, 100vw" type="image/avif">
+                <img src="/assets/images/education/college-College.jpg" alt="University of Nebraska–Lincoln campus building and lawn" width="1600" height="900" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <div class="visual-link-card-body">
+              <div><span class="project-kicker">B.S. Computer Engineering · August 2023–Present · Expected May 2027</span><h3>University of Nebraska–Lincoln</h3><p>Coursework and projects in software, electronics, and embedded systems.</p></div>
+              <span class="visual-link-card-arrow" aria-hidden="true">→</span>
+            </div>
+          </a>
+          <a class="visual-link-card schematic-module" href="/highschool.html" data-schematic-module data-schematic-key="education-northwest">
+            <div class="visual-link-card-image">
+              <picture>
+                <source srcset="/assets/images/home/northwest-high-640.avif 640w, /assets/images/home/northwest-high-960.avif 960w" sizes="(min-width: 761px) 44vw, 100vw" type="image/avif">
+                <img src="/assets/images/education/highschool-Northwest.jpg" alt="Northwest High School building" width="1600" height="900" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <div class="visual-link-card-body">
+              <div><span class="project-kicker">High school · Class of 2023</span><h3>Northwest High School</h3><p>Academics, show choir, musical performance, leadership, and service.</p></div>
+              <span class="visual-link-card-arrow" aria-hidden="true">→</span>
+            </div>
+          </a>
+        </div>
+        <div class="schematic-ground" data-schematic-ground aria-hidden="true">
+          <svg class="schematic-ground-diagram" viewBox="0 0 400 136" role="presentation" focusable="false">
+            <circle class="schematic-ground-entry" cx="200" cy="0" r="1" data-schematic-ground-entry></circle>
+            <path class="schematic-ground-feed" pathLength="1" d="M200 0V48" data-schematic-ground-line></path>
+            <path class="schematic-ground-current" pathLength="1" d="M200 0V48" data-schematic-ground-current></path>
+            <path class="schematic-ground-head" pathLength="1" d="M200 0V48" data-schematic-ground-head></path>
+            <g class="schematic-ground-symbol" data-schematic-ground-symbol>
+              <path pathLength="1" d="M200 48V64M126 64H274M148 88H252M172 112H228"></path>
+            </g>
+          </svg>
+        </div>
+      </section>
+    </div>
+
+    <section class="section container contact-section final-contact-section" id="contact" data-nav-section>
+        <div class="section-heading reveal contact-heading">
+          <span class="eyebrow">Contact · Final output</span>
+          <h2>Let’s build something useful.</h2>
+          <p>The circuit ends with the person behind the work and clear ways to connect.</p>
+        </div>
+        <div class="contact-system-layout">
+          <a class="about-profile-module schematic-module" id="about" href="/about.html">
+            <div class="about-profile-heading">
+              <picture class="about-profile-portrait">
+                <source srcset="/assets/images/connor-hohlen.avif" type="image/avif">
+                <img src="/assets/images/connor-hohlen.jpg" alt="Connor Hohlen" width="968" height="1200" loading="lazy" decoding="async">
+              </picture>
+              <div><span class="eyebrow">About my approach</span><h3>I learn by building, testing, and improving real things.</h3><p>I like understanding how software and hardware work together.</p></div>
+            </div>
+            <dl class="principles about-profile-principles">
+              <div><dt>01</dt><dd>Understand the system.</dd></div>
+              <div><dt>02</dt><dd>Test with real inputs.</dd></div>
+              <div><dt>03</dt><dd>Keep it clear and dependable.</dd></div>
+            </dl>
+            <span class="schematic-module-link">More about me <span aria-hidden="true">→</span></span>
+          </a>
+          <div class="contact-card schematic-module" data-contact-card>
         <span class="eyebrow">Contact</span>
-        <h2>Let’s build something useful.</h2>
-        <p>I’m interested in entry-level computer engineering, embedded systems, firmware, hardware, validation, systems, and software opportunities beginning in May or June 2027.</p>
+        <h3>Open a channel.</h3>
+        <p>I’m looking for entry-level embedded, hardware, validation, systems, or software roles starting in May or June 2027.</p>
         <div class="contact-actions">
           <a class="button button-primary contact-button contact-button-email" href="mailto:connorhohlen@gmail.com" data-contact-action>
             <span class="contact-icon" aria-hidden="true">
@@ -560,7 +882,8 @@
             </div>
           </div>
         </dialog>
-      </div>
+          </div>
+        </div>
     </section>
   </main>
 

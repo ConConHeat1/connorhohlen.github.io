@@ -19,7 +19,8 @@ const publicPages = [
   "projects/led-lighting.html",
   "projects/plant-monitor.html",
   "projects/sql-java-data-system.html",
-  "projects/rocket-computer.html",
+  "projects/orbit-shift.html",
+  "projects/wearable-ecg.html",
   "orbit-shift/privacy.html",
   "orbit-shift/support.html",
 ];
@@ -62,6 +63,7 @@ const seasonalFiles = [
   "scripts/seasonal-events.test.mjs",
   "scripts/seasonal-scenes.test.mjs",
 ];
+const coreModuleNames = ["core-software", "core-connected", "core-hardware", "core-sensors"];
 
 function fail(file, message) {
   errors.push(`${file}: ${message}`);
@@ -94,12 +96,43 @@ for (const required of [
   "robots.txt",
   "sitemap.xml",
   "assets/css/site.css",
+  "assets/css/home.css",
   "assets/js/site.js",
+  "assets/js/motion-init.js",
+  "assets/js/home.mjs",
+  "assets/js/home-state.mjs",
+  "assets/js/motion-preferences.mjs",
   "quotes.txt",
   "assets/images/og-card.png",
   "assets/images/resume-preview.png",
+  "assets/images/projects/app-store-badge.svg",
   "output/pdf/connor-hohlen-resume.pdf",
   "app-ads.txt",
+  ...coreModuleNames.flatMap((name) => [
+    `assets/images/home/${name}.png`,
+    `assets/images/home/${name}-480.avif`,
+    `assets/images/home/${name}-900.avif`,
+  ]),
+  ...[
+    "flexin-icon",
+    "fpv-drone-build",
+    "portfolio-before",
+    "led-lighting",
+    "plant-monitor",
+    "sql-java-code",
+    "amur-front",
+    "menards",
+    "unl-campus",
+    "northwest-high",
+  ].flatMap((name) => [640, 960].map((width) => `assets/images/home/${name}-${width}.avif`)),
+  ...[
+    "flexin-icon",
+    "fpv-drone-build",
+    "portfolio-before",
+    "led-lighting",
+    "plant-monitor",
+    "sql-java-code",
+  ].map((name) => `assets/images/home/${name}-480.avif`),
   ...seasonalFiles,
 ]) {
   if (!existsSync(join(root, required))) fail(required, "required file is missing");
@@ -141,6 +174,15 @@ for (const file of [...publicPages, ...legacyPages]) {
   for (const reference of references) {
     const target = localTarget(reference, file);
     if (target && !existsSync(target)) fail(file, `missing local target ${reference}`);
+  }
+}
+
+for (const file of [...publicPages, "orbit-shift/notices.html"]) {
+  const html = readFileSync(join(root, file), "utf8");
+  const motionBootstrapIndex = html.indexOf('<script src="/assets/js/motion-init.js"></script>');
+  const sharedStylesIndex = html.indexOf('<link rel="stylesheet" href="/assets/css/site.css">');
+  if (sharedStylesIndex >= 0 && (motionBootstrapIndex < 0 || motionBootstrapIndex > sharedStylesIndex)) {
+    fail(file, "motion bootstrap must load before the shared stylesheet");
   }
 }
 
@@ -186,12 +228,17 @@ if (!/<link\b[^>]*href="\/assets\/css\/seasonal\.css"/i.test(indexHtml)) {
 if (!/<script\b[^>]*type="module"[^>]*src="\/assets\/js\/seasonal\/index\.mjs"/i.test(indexHtml)) {
   fail("index.html", "missing seasonal module");
 }
+if (!/<link\b[^>]*href="\/assets\/css\/home\.css"/i.test(indexHtml)) {
+  fail("index.html", "missing homepage stylesheet");
+}
+if (!/<script\b[^>]*type="module"[^>]*src="\/assets\/js\/home\.mjs"/i.test(indexHtml)) {
+  fail("index.html", "missing homepage interaction module");
+}
 for (const hook of [
   "data-seasonal-stage",
   "data-seasonal-canvas",
   "data-seasonal-props",
   "data-seasonal-veil",
-  "data-seasonal-toggle",
   "data-event-preview-launcher",
   "data-event-preview",
   "data-event-preview-minimize",
@@ -204,22 +251,17 @@ for (const hook of [
   if (matches.length !== 1) fail("index.html", `expected one ${hook} hook, found ${matches.length}`);
 }
 
-const themeSwitcherIndex = indexHtml.indexOf('class="theme-switcher"');
-const seasonalToggleIndex = indexHtml.indexOf("data-seasonal-toggle");
-const primaryNavCloseIndex = indexHtml.indexOf("</nav>", themeSwitcherIndex);
+if (/\bdata-(?:seasonal|motion)-toggle(?:\s|=|>)/i.test(indexHtml)) {
+  fail("index.html", "obsolete motion control must remain removed");
+}
+
+const primaryNavIndex = indexHtml.indexOf("data-primary-nav");
+const primaryNavCloseIndex = indexHtml.indexOf("</nav>", primaryNavIndex);
 const headerCloseIndex = indexHtml.indexOf("</header>", primaryNavCloseIndex);
 const previewLauncherIndex = indexHtml.indexOf("data-event-preview-launcher");
 if (
   !(
-    themeSwitcherIndex >= 0 &&
-    themeSwitcherIndex < seasonalToggleIndex &&
-    seasonalToggleIndex < primaryNavCloseIndex
-  )
-) {
-  fail("index.html", "seasonal toggle must follow the theme switcher inside primary navigation");
-}
-if (
-  !(
+    primaryNavIndex >= 0 &&
     headerCloseIndex >= 0 &&
     headerCloseIndex < previewLauncherIndex
   )
@@ -229,6 +271,10 @@ if (
 
 const browserScripts = [
   "assets/js/site.js",
+  "assets/js/motion-init.js",
+  "assets/js/home.mjs",
+  "assets/js/home-state.mjs",
+  "assets/js/motion-preferences.mjs",
   ...seasonalFiles.filter((file) => /\.(?:js|mjs)$/.test(file) && file.startsWith("assets/")),
 ]
   .map((file) => readFileSync(join(root, file), "utf8"))
@@ -267,6 +313,16 @@ if (appAds !== "google.com, pub-8455848665034868, DIRECT, f08c47fec0942fa0") {
 
 const ogSize = statSync(join(root, "assets/images/og-card.png")).size;
 if (ogSize > 1_000_000) fail("assets/images/og-card.png", "social card should remain below 1 MB");
+
+for (const [label, files, budget] of [
+  ["480w core modules", coreModuleNames.map((name) => `assets/images/home/${name}-480.avif`), 400_000],
+  ["900w core modules", coreModuleNames.map((name) => `assets/images/home/${name}-900.avif`), 800_000],
+  ["PNG core fallbacks", coreModuleNames.map((name) => `assets/images/home/${name}.png`), 2_000_000],
+]) {
+  if (!files.every((file) => existsSync(join(root, file)))) continue;
+  const payload = files.reduce((total, file) => total + statSync(join(root, file)).size, 0);
+  if (payload > budget) fail("assets/images/home", `${label} exceed the ${budget}-byte combined budget`);
+}
 
 for (const asset of seasonalFiles.filter((file) => file.startsWith("assets/images/seasonal/"))) {
   if (statSync(join(root, asset)).size > 500_000) fail(asset, "seasonal image should remain below 500 KB");
